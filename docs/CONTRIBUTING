@@ -1,0 +1,21 @@
+To contribute to this project, please fork the project on Github.
+After you make changes you'd like to see in the master branch, please
+create a pull request.
+
+We ask that all contributions follow this coding standard:
+
+* Spaces are used in all cases. No tabs. Spaces. Four (4) of them.
+
+* Opening curly brackets should appear on the same line as the
+  function they are being called with. For example:
+
+    if(four == 4) {
+        // ...
+    }
+
+* camelCase is used, not under_lines. And yes, I realize underline is one word.
+
+* A modeline should be added to the bottom of each file:
+    // vim: ts=4 et sw=4 sts=4
+
+* No line, with few exceptions, shall surpass 80 characters in length. Really.
