@@ -11,3 +11,5 @@ int main(int argc, char** argv) {
     cout << "We do nothing so far!" << endl;
     return 1;
 }
+
+// vim:ts=4 et sw=4
