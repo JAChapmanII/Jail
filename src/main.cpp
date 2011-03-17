@@ -2,10 +2,8 @@
 using std::cout;
 using std::endl;
 
-int main( int argc, char** argv )
-{
-	if( argc < 1 ) // impossible, argv[0] is how the program was invoked
-	{
+int main(int argc, char** argv) {
+    if(argc < 1) { // impossible, argv[0] is how the program was invoked
 		cout << "Usage: " << argv[0] << endl;
 		return 1;
 	}
@@ -13,4 +11,3 @@ int main( int argc, char** argv )
 	cout << "We do nothing so far!" << endl;
 	return 1;
 }
-
