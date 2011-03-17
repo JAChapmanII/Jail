@@ -12,4 +12,4 @@ int main(int argc, char** argv) {
     return 1;
 }
 
-// vim:ts=4 et sw=4
+// vim:ts=4 et sw=4 sts=4
