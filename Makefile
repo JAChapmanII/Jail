@@ -3,7 +3,7 @@ BINDIR=bin
 SOURCES=$(wildcard $(SRCDIR)/*.cpp)
 HEADERS=$(wildcard $(SRCDIR)/*.hpp)
 OBJS=$(SOURCES:.cpp=.o)
-EXEC=jail
+EXEC=jl
 
 CC=g++
 CFLAGS=
