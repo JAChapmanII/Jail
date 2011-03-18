@@ -8,6 +8,8 @@ using std::string;
 #include <vector>
 using std::vector;
 
+#include "argparser.hpp"
+
 void parseCommand(string command);
 
 int main(int argc, char** argv) {
@@ -16,20 +18,10 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    bool isParseCommand = false;
-    string pCommand = "";
-
-    for(int i = 0; i < argc; ++i) {
-        if((string)argv[i] == (string)"--parse-command") {
-            isParseCommand = true;
-            if(i < argc - 1)
-                // set pCommand to be the next argument, and then skip it
-                pCommand = argv[i++ + 1];
-        }
-    }
-
-    if(isParseCommand)
-        parseCommand(pCommand);
+    ArgParser mArgParser;
+    mArgParser.add("--parse-command", "", true, &parseCommand);
+    mArgParser.parseArguments(argc, argv);
+    mArgParser.runCommands();
 
     return 0;
 }
