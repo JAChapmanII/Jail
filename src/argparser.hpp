@@ -8,18 +8,21 @@
 // TODO: template-ize this thing?
 class ArgParser {
     public:
+        /// A long/short switch name pair
+        typedef std::pair<std::string, std::string> SwitchName;
+
         /// Type for a void callback function invoked on different switches
         typedef int (*VoidCallbackFunction)();
-        /// Typedef for the map of (void) functions to run after parsing
-        typedef std::map<VoidCallbackFunction, std::string> VoidCallMap;
 
         /// Type for a string callback function invoked on different switches
         typedef int (*StringCallbackFunction)(std::string);
         /// Typedef for the map of (string) functions to run after parsing
         typedef std::map<StringCallbackFunction, std::string> StringCallMap;
 
-        /// A long/short switch name pair
-        typedef std::pair<std::string, std::string> SwitchName;
+        /// An entry in the stringCallbackMap
+        typedef std::pair<SwitchName, StringCallbackFunction> SCbMapEntry;
+        /// An entry in the voidCallbackMap
+        typedef std::pair<SwitchName, VoidCallbackFunction> VCbMapEntry;
 
         /// Construct an empty ArgParser
         ArgParser();
@@ -60,8 +63,8 @@ class ArgParser {
         /// Map of names to functions that take a string
         std::map<SwitchName, StringCallbackFunction> stringCallbackMap;
 
-        /// map of (void) functions to call on runCommands invocation
-        VoidCallMap voidCalls;
+        /// vector of (void) functions to call on runCommands invocation
+        std::vector<VoidCallbackFunction> voidCalls;
         /// map of (string) functions to call on runCommands invocation
         StringCallMap stringCalls;
 };
