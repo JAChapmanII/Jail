@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
 
     bool isParseCommand = false;
     string pCommand = "";
-    vector<string> arguments;
+
     for(int i = 0; i < argc; ++i) {
         if((string)argv[i] == (string)"--parse-command") {
             isParseCommand = true;
@@ -28,7 +28,6 @@ int main(int argc, char** argv) {
         }
     }
 
-
     if( isParseCommand )
         parseCommand(pCommand);
 
@@ -37,6 +36,7 @@ int main(int argc, char** argv) {
 
 void parseCommand(string command) {
     cout << "Looks like a fine command to me!" << endl;
+    cout << command << endl;
     return;
 }
 
