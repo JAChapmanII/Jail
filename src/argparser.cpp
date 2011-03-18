@@ -3,44 +3,65 @@ using std::string;
 using std::vector;
 using std::pair;
 
+// TODO: can't using these, still need prefix?
+//using ArgParser::SwitchName;
+//using ArgParser::VoidCallbackFunction;
+//using ArgParser::StringCallbackFunction;
+
 ArgParser::ArgParser() : // TODO: formatting guidlines here?
-        longCommands(),
-        shortCommands(),
-        hasArgs(),
-        callbackFunctions(),
-        toCall() { // TODO ?
+        voidCallbackMap(),
+        stringCallbackMap(),
+        voidCalls(),
+        stringCalls() { // TODO ?
 }
 
-ArgParser::ArgParser(string longCommand, string shortCommand, bool hasArg,
-        ArgParser::CallbackFunction function) :
-        longCommands(),
-        shortCommands(),
-        hasArgs(),
-        callbackFunctions(),
-        toCall() { // TODO: formatting guidlines here?
-    this->add(longCommand, shortCommand, hasArg, function);
+ArgParser::ArgParser(SwitchName commandName, StringCallbackFunction function) :
+        voidCallbackMap(),
+        stringCallbackMap(),
+        voidCalls(),
+        stringCalls() { // TODO: formatting guidlines here?
+    this->add(commandName, function);
 }
 
-void ArgParser::add(string longCommand, string shortCommand,
-        bool hasArg, ArgParser::CallbackFunction function) {
-    this->longCommands.push_back(longCommand);
-    this->shortCommands.push_back(shortCommand);
-    this->hasArgs.push_back(hasArg);
-    this->callbackFunctions.push_back(function);
+ArgParser::ArgParser(SwitchName commandName, VoidCallbackFunction function) :
+        voidCallbackMap(),
+        stringCallbackMap(),
+        voidCalls(),
+        stringCalls() { // TODO: formatting guidlines here?
+    this->add(commandName, function);
 }
 
-void ArgParser::remove(string commandName) {
+void ArgParser::add(SwitchName commandName, StringCallbackFunction function) {
+    this->stringCallbackMap.insert(SCbMapEntry(commandName, function));
+}
+
+void ArgParser::add(SwitchName commandName, VoidCallbackFunction function) {
+    this->voidCallbackMap.insert(VCbMapEntry(commandName, function));
+}
+
+void ArgParser::remove(SwitchName commandName) {
     // left as excersize for reader
 }
 
-void ArgParser::queue(ArgParser::CallbackFunction function, string argument) {
-    if(function == NULL)
-        return;
-    this->toCall.insert( // TODO: formatting guidlines here?
-        pair<ArgParser::CallbackFunction, string>(function, argument));
+void ArgParser::remove(SwitchName commandName, bool takesArgument) {
+    // left as excersize for reader
 }
 
+void ArgParser::queue(StringCallbackFunction function, string argument) {
+    if(function == NULL)
+        return;
+    this->stringCalls.insert(SCMapEntry(function, argument));
+}
+
+void ArgParser::queue(VoidCallbackFunction function) {
+    if(function == NULL)
+        return;
+    this->voidCalls.push_back(function);
+}
+
+
 int ArgParser::parseArguments(int argc, char **argv) {
+    // TODO implement
     /*
     for(int i = 0; i < argc; ++i) {
         if((string)argv[i] == (string)"--parse-command") {
@@ -53,12 +74,25 @@ int ArgParser::parseArguments(int argc, char **argv) {
     */
 }
 
+/* ------------------------------------------------------- */
+
 void ArgParser::runCommands() {
-    for(ArgParser::ToCallMap::iterator i = this->toCall.begin();
-        i != this->toCall.end(); ++i) // TODO spacing here too?
-        if(i->first != NULL)
-            // call the stored function with its argument
-            (*(i->first))(i->second);
+    this->runVoidCommands();
+    this->runStringCommands();
+}
+
+void ArgParser::runVoidCommands() {
+    for(vector<VoidCallbackFunction>::iterator i = this->voidCalls.begin();
+            i != this->voidCalls.end(); ++i)
+        // call the stored function
+        (*i)();
+}
+
+void ArgParser::runStringCommands() {
+    for(StringCallMap::iterator i = this->stringCalls.begin();
+            i != this->stringCalls.end(); ++i) // TODO spacing here too?
+        // call the stored function with its argument
+        (*(i->first))(i->second);
 }
 
 // vim:ts=4 et sw=4 sts=4
