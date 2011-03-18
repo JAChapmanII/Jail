@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
     }
 
     ArgParser mArgParser;
-    mArgParser.add((string)"--parse-command", (string)"", true, &parseCommand);
+    mArgParser.add(ArgParser::SwitchName("--parse-command", ""), &parseCommand);
     mArgParser.parseArguments(argc, argv);
     mArgParser.runCommands();
 
