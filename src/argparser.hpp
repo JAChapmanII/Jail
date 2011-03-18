@@ -11,8 +11,9 @@ class ArgParser {
             bool hasArg, ArgParser::CallbackFunction function); 
         void remove(std::string commandName);
 
-        int parseArguments(int &argc, char ***argv); // that may be a compile time error, we will see
+        int parseArguments(int &argc, char ***argv);
         void runCommands();
+
     protected:
         std::vector<std::string> longCommands;
         std::vector<std::string> shortCommands;
