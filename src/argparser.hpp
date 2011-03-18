@@ -10,8 +10,11 @@ class ArgParser {
         /// Type for a callback function invoked on different switches
         typedef int (*CallbackFunction)(std::string);
 
+        /// A long/short switch name pair
+        typedef std::pair<std::string, std::string> SwitchName;
+
         /// Typedef for the map of functions to run after parsing
-        typedef std::map<CallbackFunction, std::string> toCallMap;
+        typedef std::map<CallbackFunction, std::string> ToCallMap;
 
         /// Construct an empty ArgParser
         ArgParser();
@@ -44,7 +47,7 @@ class ArgParser {
         std::vector<ArgParser::CallbackFunction> callbackFunctions;
 
         /// map of functions to call on runCommands invocation
-        toCallMap toCall;
+        ToCallMap toCall;
 };
 
 // vim:ts=4 et sw=4 sts=4

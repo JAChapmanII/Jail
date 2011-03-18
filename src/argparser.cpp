@@ -54,7 +54,7 @@ int ArgParser::parseArguments(int argc, char **argv) {
 }
 
 void ArgParser::runCommands() {
-    for(ArgParser::toCallMap::iterator i = this->toCall.begin();
+    for(ArgParser::ToCallMap::iterator i = this->toCall.begin();
         i != this->toCall.end(); ++i) // TODO spacing here too?
         if(i->first != NULL)
             // call the stored function with its argument
