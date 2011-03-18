@@ -17,10 +17,9 @@ LFLAGS+=-pg
 endif
 
 ifndef nowall
-CFLAGS+=-Wextra -pedantic -Wmain -Weffc++ -Wswitch-default -Wswitch-enum
-CFLAGS+=-Wmissing-include-dirs -Wmissing-declarations -Wunreachable-code
-CFLAGS+=-Winline -Wfloat-equal -Wundef -Wcast-align -Wredundant-decls
-CFLAGS+=-Winit-self -Wshadow
+CFLAGS+=-Wextra -pedantic -Weffc++ -Wswitch-default -Wswitch-enum
+CFLAGS+=-Wmissing-include-dirs -Wunreachable-code -Winline -Wfloat-equal
+CFLAGS+=-Wundef -Wcast-align -Wredundant-decls -Winit-self -Wshadow
 endif
 
 ifdef release
