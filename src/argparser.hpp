@@ -18,6 +18,8 @@ class ArgParser {
         typedef int (*StringCallbackFunction)(std::string);
         /// Typedef for the map of (string) functions to run after parsing
         typedef std::map<StringCallbackFunction, std::string> StringCallMap;
+        /// An entry in a StringCallMap
+        typedef std::pair<StringCallbackFunction, std::string> SCMapEntry;
 
         /// An entry in the stringCallbackMap
         typedef std::pair<SwitchName, StringCallbackFunction> SCbMapEntry;
