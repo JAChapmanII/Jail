@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
         }
     }
 
-    if( isParseCommand )
+    if(isParseCommand)
         parseCommand(pCommand);
 
     return 0;
