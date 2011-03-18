@@ -29,7 +29,7 @@ class ArgParser {
         void queue(ArgParser::CallbackFunction function, std::string argument);
 
         /// Parse the arguments given the the main function
-        int parseArguments(int &argc, char ***argv);
+        int parseArguments(int argc, char **argv);
         /// Run the commands this has found need to be executed
         void runCommands();
 

@@ -40,8 +40,17 @@ void ArgParser::queue(ArgParser::CallbackFunction function, string argument) {
         pair<ArgParser::CallbackFunction, string>(function, argument));
 }
 
-int ArgParser::parseArguments(int &argc, char ***argv) {
-    // copy-pasta loop? XD wait why can't......
+int ArgParser::parseArguments(int argc, char **argv) {
+    /*
+    for(int i = 0; i < argc; ++i) {
+        if((string)argv[i] == (string)"--parse-command") {
+            isParseCommand = true;
+            if(i < argc - 1)
+                // set pCommand to be the next argument, and then skip it
+                pCommand = argv[i++ + 1];
+        }
+    }
+    */
 }
 
 void ArgParser::runCommands() {
