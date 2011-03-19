@@ -12,7 +12,7 @@ Building (the nothing):
 	See the Makefile for other options.
 
 Running (the nothing):
-	./bin/jail
+	./bin/jl
 
 Usage:
 	Read what it says. Maybe the devs will make a man page, or implement the
