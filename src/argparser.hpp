@@ -84,6 +84,8 @@ class ArgParser {
         StringCallMap stringCalls;
         /// vector of leftover arguments
         std::vector<std::string> extraArguments;
+        /// invocation name
+        std::string invocationName;
 };
 
 // vim:ts=4 et sw=4 sts=4

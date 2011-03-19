@@ -8,7 +8,8 @@ ArgParser::ArgParser() : // TODO: formatting guidlines here?
         stringCallbackMap(),
         voidCalls(),
         stringCalls(),
-        extraArguments() { // TODO ?
+        extraArguments(),
+        invocationName() { // TODO ?
 }
 
 ArgParser::ArgParser(SwitchName commandName, StringCallbackFunction function) :
@@ -16,7 +17,8 @@ ArgParser::ArgParser(SwitchName commandName, StringCallbackFunction function) :
         stringCallbackMap(),
         voidCalls(),
         stringCalls(),
-        extraArguments() { // TODO: formatting guidlines here?
+        extraArguments(),
+        invocationName() { // TODO: formatting guidlines here?
     this->add(commandName, function);
 }
 
@@ -25,7 +27,8 @@ ArgParser::ArgParser(SwitchName commandName, VoidCallbackFunction function) :
         stringCallbackMap(),
         voidCalls(),
         stringCalls(),
-        extraArguments() { // TODO: formatting guidlines here?
+        extraArguments(),
+        invocationName() { // TODO: formatting guidlines here?
     this->add(commandName, function);
 }
 
@@ -76,7 +79,8 @@ ArgParser::StringCallbackFunction *ArgParser::findStringCBF(string switchName) {
 }
 
 int ArgParser::parseArguments(int argc, char **argv) {
-    for(int i = 0; i < argc; ++i) {
+    this->invocationName = (string)argv[0];
+    for(int i = 1; i < argc; ++i) {
         string cArg = (string)argv[i];
         VoidCallbackFunction *vCBF = this->findVoidCBF(cArg);
         if(vCBF != NULL)
