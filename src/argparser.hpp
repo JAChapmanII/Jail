@@ -21,8 +21,13 @@ class ArgParser {
         /// An entry in a StringCallMap
         typedef std::pair<StringCallbackFunction, std::string> SCMapEntry;
 
+        /// A map between switch name and a string callback function
+        typedef std::map<SwitchName, StringCallbackFunction> StringCbMap;
         /// An entry in the stringCallbackMap
         typedef std::pair<SwitchName, StringCallbackFunction> SCbMapEntry;
+
+        /// A map between switch name and a void callback function
+        typedef std::map<SwitchName, VoidCallbackFunction> VoidCbMap;
         /// An entry in the voidCallbackMap
         typedef std::pair<SwitchName, VoidCallbackFunction> VCbMapEntry;
 
@@ -49,6 +54,11 @@ class ArgParser {
         /// Add a (void) function to run directly into the call map
         void queue(VoidCallbackFunction function);
 
+        /// Find a switch in the void function call map
+        VoidCallbackFunction *findVoidCBF(std::string switchName);
+        /// Find a switch in the string function call map
+        StringCallbackFunction *findStringCBF(std::string switchName);
+
         /// Parse the arguments given the the main function
         int parseArguments(int argc, char **argv);
 
@@ -61,14 +71,16 @@ class ArgParser {
 
     protected:
         /// Map of names to functions that don't take an argument
-        std::map<SwitchName, VoidCallbackFunction> voidCallbackMap;
+        VoidCbMap voidCallbackMap;
         /// Map of names to functions that take a string
-        std::map<SwitchName, StringCallbackFunction> stringCallbackMap;
+        StringCbMap stringCallbackMap;
 
         /// vector of (void) functions to call on runCommands invocation
         std::vector<VoidCallbackFunction> voidCalls;
         /// map of (string) functions to call on runCommands invocation
         StringCallMap stringCalls;
+        /// vector of leftover arguments
+        std::vector<std::string> extraArguments;
 };
 
 // vim:ts=4 et sw=4 sts=4
