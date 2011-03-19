@@ -12,14 +12,16 @@ ArgParser::ArgParser() : // TODO: formatting guidlines here?
         voidCallbackMap(),
         stringCallbackMap(),
         voidCalls(),
-        stringCalls() { // TODO ?
+        stringCalls(),
+        extraArguments() { // TODO ?
 }
 
 ArgParser::ArgParser(SwitchName commandName, StringCallbackFunction function) :
         voidCallbackMap(),
         stringCallbackMap(),
         voidCalls(),
-        stringCalls() { // TODO: formatting guidlines here?
+        stringCalls(),
+        extraArguments() { // TODO: formatting guidlines here?
     this->add(commandName, function);
 }
 
@@ -27,7 +29,8 @@ ArgParser::ArgParser(SwitchName commandName, VoidCallbackFunction function) :
         voidCallbackMap(),
         stringCallbackMap(),
         voidCalls(),
-        stringCalls() { // TODO: formatting guidlines here?
+        stringCalls(),
+        extraArguments() { // TODO: formatting guidlines here?
     this->add(commandName, function);
 }
 
@@ -59,22 +62,45 @@ void ArgParser::queue(VoidCallbackFunction function) {
     this->voidCalls.push_back(function);
 }
 
-
-int ArgParser::parseArguments(int argc, char **argv) {
-    // TODO implement
-    /*
-    for(int i = 0; i < argc; ++i) {
-        if((string)argv[i] == (string)"--parse-command") {
-            isParseCommand = true;
-            if(i < argc - 1)
-                // set pCommand to be the next argument, and then skip it
-                pCommand = argv[i++ + 1];
-        }
-    }
-    */
+ArgParser::VoidCallbackFunction *ArgParser::findVoidCBF(string switchName) {
+    for(VoidCbMap::iterator i = this->voidCallbackMap.begin();
+            i != this->voidCallbackMap.end(); ++i)
+        if((i->first.first == switchName) ||
+            (i->first.second == switchName))
+            return &(i->second);
+    return NULL;
 }
 
-/* ------------------------------------------------------- */
+ArgParser::StringCallbackFunction *ArgParser::findStringCBF(string switchName) {
+    for(StringCbMap::iterator i = this->stringCallbackMap.begin();
+            i != this->stringCallbackMap.end(); ++i)
+        if((i->first.first == switchName) ||
+            (i->first.second == switchName))
+            return &(i->second);
+    return NULL;
+}
+
+int ArgParser::parseArguments(int argc, char **argv) {
+    for(int i = 0; i < argc; ++i) {
+        string cArg = (string)argv[i];
+        VoidCallbackFunction *vCBF = this->findVoidCBF(cArg);
+        if(vCBF != NULL)
+            this->voidCalls.push_back(*vCBF);
+        else {
+            StringCallbackFunction *sCBF = this->findStringCBF(cArg);
+            if(sCBF != NULL) {
+                string arg = "";
+                if(i < argc - 1)
+                    // set pCommand to be the next argument, and then skip it
+                    arg = (string)argv[i++ + 1];
+
+                this->stringCalls.insert(SCMapEntry(*sCBF, arg));
+            } else {
+                this->extraArguments.push_back(cArg);
+            }
+        }
+    }
+}
 
 void ArgParser::runCommands() {
     this->runVoidCommands();
