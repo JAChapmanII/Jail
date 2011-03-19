@@ -63,11 +63,14 @@ class ArgParser {
         int parseArguments(int argc, char **argv);
 
         /// Run the commands this has found need to be executed
-        void runCommands();
+        void runCommands() const;
         /// Run the commands which take an argument
-        void runStringCommands();
+        void runStringCommands() const;
         /// Run the commands which take no arguments
-        void runVoidCommands();
+        void runVoidCommands() const;
+
+        /// Returns the leftover arguments
+        std::vector<std::string> getExtraArguments() const;
 
     protected:
         /// Map of names to functions that don't take an argument
