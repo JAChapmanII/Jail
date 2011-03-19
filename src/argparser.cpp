@@ -102,23 +102,27 @@ int ArgParser::parseArguments(int argc, char **argv) {
     }
 }
 
-void ArgParser::runCommands() {
+void ArgParser::runCommands() const {
     this->runVoidCommands();
     this->runStringCommands();
 }
 
-void ArgParser::runVoidCommands() {
-    for(vector<VoidCallbackFunction>::iterator i = this->voidCalls.begin();
+void ArgParser::runVoidCommands() const {
+    for(vector<VoidCallbackFunction>::const_iterator i = this->voidCalls.begin();
             i != this->voidCalls.end(); ++i)
         // call the stored function
         (*i)();
 }
 
-void ArgParser::runStringCommands() {
-    for(StringCallMap::iterator i = this->stringCalls.begin();
+void ArgParser::runStringCommands() const {
+    for(StringCallMap::const_iterator i = this->stringCalls.begin();
             i != this->stringCalls.end(); ++i) // TODO spacing here too?
         // call the stored function with its argument
         (*(i->first))(i->second);
+}
+
+vector<string> ArgParser::getExtraArguments() const {
+    return this->extraArguments;
 }
 
 // vim:ts=4 et sw=4 sts=4
