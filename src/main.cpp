@@ -39,8 +39,18 @@ int main(int argc, char** argv) {
 }
 
 int parseCommand(string command) {
-    cout << "Looks like a fine command to me!" << endl;
-    cout << command << endl;
+    cout << command;
+    switch(command[0]) {
+        case ':':
+            cout << " looks like an ex command to me!";
+            break;
+        case '/':
+            cout << " looks like a search to me!";
+            break;
+        default:
+            cout << " looks like a fine command to me!";
+    }
+    cout << endl;
     return 0;
 }
 
