@@ -124,4 +124,8 @@ vector<string> ArgParser::getExtraArguments() const {
     return this->extraArguments;
 }
 
+string ArgParser::getInvocationName() const {
+    return this->invocationName;
+}
+
 // vim:ts=4 et sw=4 sts=4

@@ -71,6 +71,8 @@ class ArgParser {
 
         /// Returns the leftover arguments
         std::vector<std::string> getExtraArguments() const;
+        /// Returns the program invocation name
+        std::string getInvocationName() const;
 
     protected:
         /// Map of names to functions that don't take an argument
