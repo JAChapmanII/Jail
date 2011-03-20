@@ -18,8 +18,8 @@ endif
 
 ifndef nowall
 CFLAGS+=-Wextra -pedantic -Weffc++ -Wswitch-default -Wswitch-enum
-CFLAGS+=-Wmissing-include-dirs -Wunreachable-code -Winline -Wfloat-equal
-CFLAGS+=-Wundef -Wcast-align -Wredundant-decls -Winit-self -Wshadow
+CFLAGS+=-Wmissing-include-dirs -Winline -Wfloat-equal -Wundef
+CFLAGS+=-Wcast-align -Wredundant-decls -Winit-self -Wshadow
 endif
 
 ifdef release

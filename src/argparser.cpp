@@ -3,11 +3,6 @@ using std::string;
 using std::vector;
 using std::pair;
 
-// TODO: can't using these, still need prefix?
-//using ArgParser::SwitchName;
-//using ArgParser::VoidCallbackFunction;
-//using ArgParser::StringCallbackFunction;
-
 ArgParser::ArgParser() : // TODO: formatting guidlines here?
         voidCallbackMap(),
         stringCallbackMap(),
