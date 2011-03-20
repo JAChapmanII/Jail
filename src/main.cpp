@@ -23,10 +23,15 @@ int main(int argc, char** argv) {
     mArgParser.parseArguments(argc, argv);
     mArgParser.runCommands();
 
+    cout << "We were invoked as: " << mArgParser.getInvocationName() << "\n";
+
     vector<string> extraArguments = mArgParser.getExtraArguments();
-    for(vector<string>::iterator i = extraArguments.begin();
-            i != extraArguments.end(); ++i)
-        cout << ": " + (*i) << "\n";
+    if(extraArguments.size() > 0) {
+        cout << "These arguments were left over after switch parsing: \n";
+        for(vector<string>::iterator i = extraArguments.begin();
+                i != extraArguments.end(); ++i)
+            cout << ": " + (*i) << "\n";
+    }
 
     cout << endl;
 
