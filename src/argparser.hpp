@@ -44,6 +44,9 @@ class ArgParser {
         /// Add another (void) switch to look for
         void add(SwitchName commandName, VoidCallbackFunction function);
 
+        /// Set the default callback function
+        void setDefault(VoidCallbackFunction function);
+
         /// Do not look for the specified switch any longer
         void remove(SwitchName commandName);
         /// Remove a switch, looking in only one map
@@ -68,6 +71,8 @@ class ArgParser {
         void runStringCommands() const;
         /// Run the commands which take no arguments
         void runVoidCommands() const;
+        /// Run the default command
+        void runDefaultCommand() const;
 
         /// Returns the leftover arguments
         std::vector<std::string> getExtraArguments() const;
@@ -84,6 +89,9 @@ class ArgParser {
         std::vector<VoidCallbackFunction> voidCalls;
         /// map of (string) functions to call on runCommands invocation
         StringCallMap stringCalls;
+        /// default function to call
+        VoidCallbackFunction defaultCall;
+
         /// vector of leftover arguments
         std::vector<std::string> extraArguments;
         /// invocation name

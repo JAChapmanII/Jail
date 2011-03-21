@@ -8,6 +8,7 @@ ArgParser::ArgParser() : // TODO: formatting guidlines here?
         stringCallbackMap(),
         voidCalls(),
         stringCalls(),
+        defaultCall(),
         extraArguments(),
         invocationName() { // TODO ?
 }
@@ -17,6 +18,7 @@ ArgParser::ArgParser(SwitchName commandName, StringCallbackFunction function) :
         stringCallbackMap(),
         voidCalls(),
         stringCalls(),
+        defaultCall(),
         extraArguments(),
         invocationName() { // TODO: formatting guidlines here?
     this->add(commandName, function);
@@ -27,6 +29,7 @@ ArgParser::ArgParser(SwitchName commandName, VoidCallbackFunction function) :
         stringCallbackMap(),
         voidCalls(),
         stringCalls(),
+        defaultCall(),
         extraArguments(),
         invocationName() { // TODO: formatting guidlines here?
     this->add(commandName, function);
@@ -38,6 +41,10 @@ void ArgParser::add(SwitchName commandName, StringCallbackFunction function) {
 
 void ArgParser::add(SwitchName commandName, VoidCallbackFunction function) {
     this->voidCallbackMap.insert(VCbMapEntry(commandName, function));
+}
+
+void ArgParser::setDefault(VoidCallbackFunction function) {
+    this->defaultCall = function;
 }
 
 void ArgParser::remove(SwitchName commandName) {
@@ -102,8 +109,11 @@ int ArgParser::parseArguments(int argc, char **argv) {
 }
 
 void ArgParser::runCommands() const {
-    this->runVoidCommands();
-    this->runStringCommands();
+    if(this->voidCalls.size() + this->stringCalls.size() > 0) {
+        this->runVoidCommands();
+        this->runStringCommands();
+    } else
+        this->runDefaultCommand();
 }
 
 void ArgParser::runVoidCommands() const {
@@ -118,6 +128,11 @@ void ArgParser::runStringCommands() const {
             i != this->stringCalls.end(); ++i) // TODO spacing here too?
         // call the stored function with its argument
         (*(i->first))(i->second);
+}
+
+void ArgParser::runDefaultCommand() const {
+    // run default callback function
+    (*(this->defaultCall))();
 }
 
 vector<string> ArgParser::getExtraArguments() const {
