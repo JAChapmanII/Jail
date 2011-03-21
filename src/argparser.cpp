@@ -3,6 +3,8 @@ using std::string;
 using std::vector;
 using std::pair;
 
+#include <algorithm>
+
 ArgParser::ArgParser() : // TODO: formatting guidlines here?
         voidCallbackMap(),
         stringCallbackMap(),
@@ -90,9 +92,12 @@ int ArgParser::parseArguments(int argc, char **argv) {
     for(int i = 1; i < argc; ++i) {
         string cArg = (string)argv[i];
         VoidCallbackFunction *vCBF = this->findVoidCBF(cArg);
-        if(vCBF != NULL)
-            this->voidCalls.push_back(*vCBF);
-        else {
+        if(vCBF != NULL) {
+            // only queue a void callback function once
+            if(find(this->voidCalls.begin(), this->voidCalls.end(), *vCBF)
+                    != this->voidCalls.end())
+                this->voidCalls.push_back(*vCBF);
+        } else {
             StringCallbackFunction *sCBF = this->findStringCBF(cArg);
             if(sCBF != NULL) {
                 string arg = "";
