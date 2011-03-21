@@ -11,6 +11,7 @@ using std::vector;
 #include "argparser.hpp"
 
 int parseCommand(string command);
+int printHelp();
 
 int main(int argc, char** argv) {
     if(argc < 1) { // impossible, argv[0] is how the program was invoked
@@ -20,6 +21,8 @@ int main(int argc, char** argv) {
 
     ArgParser mArgParser;
     mArgParser.add(ArgParser::SwitchName("--parse-command", ""), &parseCommand);
+    mArgParser.add(ArgParser::SwitchName("--help", "-h"), &printHelp);
+    mArgParser.setDefault(&printHelp);
     mArgParser.parseArguments(argc, argv);
     mArgParser.runCommands();
 
@@ -52,6 +55,16 @@ int parseCommand(string command) {
     }
     cout << endl;
     return 0;
+}
+
+int printHelp() {
+    cout << "jail alpha -- Soon to be able to read files!\n"
+        << "\n"
+        << "\t--parse-command <command>: try to output what jail would do if"
+        << " this command were used interactively\n"
+        << "\t--help|-h: display this extremely helpful message\n"
+        << "\t<nothing>: same as --help\n";
+    cout << endl;
 }
 
 // vim:ts=4 et sw=4 sts=4
