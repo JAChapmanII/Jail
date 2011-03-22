@@ -94,8 +94,7 @@ int ArgParser::parseArguments(int argc, char **argv) {
         VoidCallbackFunction *vCBF = this->findVoidCBF(cArg);
         if(vCBF != NULL) {
             // only queue a void callback function once
-            if(find(this->voidCalls.begin(), this->voidCalls.end(), *vCBF)
-                    != this->voidCalls.end())
+            if(find(this->voidCalls.begin(), this->voidCalls.end(), *vCBF) == this->voidCalls.end())
                 this->voidCalls.push_back(*vCBF);
         } else {
             StringCallbackFunction *sCBF = this->findStringCBF(cArg);
