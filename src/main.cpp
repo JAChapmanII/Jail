@@ -12,6 +12,20 @@ using std::vector;
 
 int parseCommand(string command);
 int printHelp();
+int printVersion();
+
+// TODO: Singleton config class with trampoline methods to static class members?
+bool beVerbose = false;
+bool beQuiet = false;
+
+int setVerbose() {
+    beVerbose = true;
+    beQuiet = false;
+}
+int setQuiet() {
+    beQuiet = true;
+    beVerbose = false;
+}
 
 int main(int argc, char** argv) {
     if(argc < 1) { // impossible, argv[0] is how the program was invoked
@@ -20,9 +34,14 @@ int main(int argc, char** argv) {
     }
 
     ArgParser mArgParser;
-    mArgParser.add(ArgParser::SwitchName("--parse-command", ""), &parseCommand);
-    mArgParser.add(ArgParser::SwitchName("--help", "-h"), &printHelp);
     mArgParser.setDefault(&printHelp);
+    mArgParser.add(ArgParser::SwitchName("--help", "-h"), &printHelp);
+    mArgParser.add(ArgParser::SwitchName("--version", ""), &printVersion);
+    mArgParser.add(ArgParser::SwitchName("--verbose", "-v"), &setVerbose);
+    mArgParser.add(ArgParser::SwitchName("--quiet", "-q"), &setQuiet);
+
+    mArgParser.add(ArgParser::SwitchName("--parse-command", ""), &parseCommand);
+
     mArgParser.parseArguments(argc, argv);
     mArgParser.runCommands();
 
@@ -37,6 +56,11 @@ int main(int argc, char** argv) {
     }
 
     cout << endl;
+
+    if(beVerbose)
+        cout << "We're being verbose!" << endl;
+    if(beQuiet)
+        cout << "Sssh... we're hunting wabbits..." << endl;
 
     return 0;
 }
@@ -65,6 +89,12 @@ int printHelp() {
         << "\t--help|-h: display this extremely helpful message\n"
         << "\t<nothing>: same as --help\n";
     cout << endl;
+    return 0;
+}
+
+int printVersion() {
+    cout << "version: Alpha!" << endl;
+    return 0;
 }
 
 // vim:ts=4 et sw=4 sts=4
