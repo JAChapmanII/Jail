@@ -1,5 +1,9 @@
 jail is currently nothing. Yay!
 
+WARNING: jail is starting to manipulate files. Use this functionality at your
+own risk. The developers hold no responsibility for any and all files and
+monetary loss the usage of jail causes you.
+
 What will it be?
 	Soon (I hope) it will be a rather bad clone of vim in C++. Further on, it
 	will hopefully be a not so bad clone of vim.
