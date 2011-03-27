@@ -1,5 +1,6 @@
 #include <iostream>
 using std::cout;
+using std::cerr;
 using std::endl;
 
 #include <string>
@@ -9,14 +10,17 @@ using std::string;
 using std::vector;
 
 #include "argparser.hpp"
+#include "fileio.hpp"
 
 int parseCommand(string command);
 int printHelp();
 int printVersion();
+void dump(vector<string> fileNames);
 
 // TODO: Singleton config class with trampoline methods to static class members?
 bool beVerbose = false;
 bool beQuiet = false;
+bool doDump = false;
 
 int setVerbose() {
     beVerbose = true;
@@ -25,6 +29,9 @@ int setVerbose() {
 int setQuiet() {
     beQuiet = true;
     beVerbose = false;
+}
+int setDump() {
+    doDump = true;
 }
 
 int main(int argc, char** argv) {
@@ -41,6 +48,7 @@ int main(int argc, char** argv) {
     mArgParser.add(ArgParser::SwitchName("--quiet", "-q"), &setQuiet);
 
     mArgParser.add(ArgParser::SwitchName("--parse-command", ""), &parseCommand);
+    mArgParser.add(ArgParser::SwitchName("--dump", ""), &setDump);
 
     mArgParser.parseArguments(argc, argv);
     mArgParser.runCommands();
@@ -61,6 +69,9 @@ int main(int argc, char** argv) {
         cout << "We're being verbose!" << endl;
     if(beQuiet)
         cout << "Sssh... we're hunting wabbits..." << endl;
+
+    if(doDump)
+        dump(mArgParser.getExtraArguments());
 
     return 0;
 }
@@ -84,6 +95,8 @@ int parseCommand(string command) {
 int printHelp() {
     cout << "jail alpha -- Soon to be able to read files!\n"
         << "\n"
+        << "jail [switches] <file>\n"
+        << "\t--dump: dumps to contents of <file> to std out\n"
         << "\t--parse-command <command>: try to output what jail would do if"
         << " this command were used interactively\n"
         << "\t--help|-h: display this extremely helpful message\n"
@@ -95,6 +108,26 @@ int printHelp() {
 int printVersion() {
     cout << "version: Alpha!" << endl;
     return 0;
+}
+
+void dump(vector<string> fileNames) {
+    if(fileNames.size() < 1)
+        return;
+
+    string fileName = fileNames.back();
+    FileIO file(fileName);
+    file.open();
+    int length = file.read();
+
+    if(length < 0) {
+        cerr << "There was a problem reading the file \""
+            << fileName << "\"." << endl;
+        return;
+    }
+
+    cout << "File \"" << fileName << "\" is " << length << " bytes long.\n";
+    cout << file.getData() << endl;
+    return;
 }
 
 // vim:ts=4 et sw=4 sts=4
