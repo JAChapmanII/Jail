@@ -2,6 +2,7 @@
 using std::cout;
 using std::cerr;
 using std::endl;
+using std::hex;
 
 #include <iomanip>
 using std::setw;
@@ -139,7 +140,7 @@ void dump(vector<string> fileNames) {
         cout << file.getData();
     } else {
         char *data = file.getData();
-        cout << std::hex;
+        cout << hex;
         for(int i = 0; i < length; ++i) {
             cout << setw(2) << setfill('0') << (unsigned int)data[i] << ' ';
             // TODO hard coded
