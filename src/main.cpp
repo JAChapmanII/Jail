@@ -42,6 +42,10 @@ int setDump() {
 int setHexMode() {
     hexMode = true;
 }
+int setHexDump() {
+    hexMode = true;
+    doDump = true;
+}
 
 int main(int argc, char** argv) {
     if(argc < 1) { // impossible, argv[0] is how the program was invoked
@@ -59,26 +63,26 @@ int main(int argc, char** argv) {
     mArgParser.add(ArgParser::SwitchName("--parse-command", ""), &parseCommand);
     mArgParser.add(ArgParser::SwitchName("--dump", ""), &setDump);
     mArgParser.add(ArgParser::SwitchName("--hex", ""), &setHexMode);
+    mArgParser.add(ArgParser::SwitchName("--hex-dump", ""), &setHexDump);
 
     mArgParser.parseArguments(argc, argv);
     mArgParser.runCommands();
 
-    cout << "We were invoked as: " << mArgParser.getInvocationName() << "\n";
+    if(beVerbose) {
+        cout << "Invoked as: " << mArgParser.getInvocationName() << "\n";
 
-    vector<string> extraArguments = mArgParser.getExtraArguments();
-    if(extraArguments.size() > 0) {
-        cout << "These arguments were left over after switch parsing: \n";
-        for(vector<string>::iterator i = extraArguments.begin();
-                i != extraArguments.end(); ++i)
-            cout << ": " + (*i) << "\n";
+        vector<string> extraArguments = mArgParser.getExtraArguments();
+        if(extraArguments.size() > 0) {
+            cout << "These arguments were left over after switch parsing: \n";
+            for(vector<string>::iterator i = extraArguments.begin();
+                    i != extraArguments.end(); ++i)
+                cout << ": " + (*i) << "\n";
+        }
+        cout << endl;
     }
-
-    cout << endl;
 
     if(beVerbose)
         cout << "We're being verbose!" << endl;
-    if(beQuiet)
-        cout << "Sssh... we're hunting wabbits..." << endl;
 
     if(doDump)
         dump(mArgParser.getExtraArguments());
@@ -135,7 +139,9 @@ void dump(vector<string> fileNames) {
         return;
     }
 
-    cout << "File \"" << fileName << "\" is " << length << " bytes long.\n";
+    if(beVerbose)
+        cout << "File \"" << fileName << "\" is " << length << " bytes long.\n";
+
     if(!hexMode) {
         cout << file.getData();
     } else {
