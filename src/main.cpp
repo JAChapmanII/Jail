@@ -3,6 +3,10 @@ using std::cout;
 using std::cerr;
 using std::endl;
 
+#include <iomanip>
+using std::setw;
+using std::setfill;
+
 #include <string>
 using std::string;
 
@@ -21,6 +25,7 @@ void dump(vector<string> fileNames);
 bool beVerbose = false;
 bool beQuiet = false;
 bool doDump = false;
+bool hexMode = false;
 
 int setVerbose() {
     beVerbose = true;
@@ -32,6 +37,9 @@ int setQuiet() {
 }
 int setDump() {
     doDump = true;
+}
+int setHexMode() {
+    hexMode = true;
 }
 
 int main(int argc, char** argv) {
@@ -49,6 +57,7 @@ int main(int argc, char** argv) {
 
     mArgParser.add(ArgParser::SwitchName("--parse-command", ""), &parseCommand);
     mArgParser.add(ArgParser::SwitchName("--dump", ""), &setDump);
+    mArgParser.add(ArgParser::SwitchName("--hex", ""), &setHexMode);
 
     mArgParser.parseArguments(argc, argv);
     mArgParser.runCommands();
@@ -126,7 +135,21 @@ void dump(vector<string> fileNames) {
     }
 
     cout << "File \"" << fileName << "\" is " << length << " bytes long.\n";
-    cout << file.getData() << endl;
+    if(!hexMode) {
+        cout << file.getData();
+    } else {
+        char *data = file.getData();
+        cout << std::hex;
+        for(int i = 0; i < length; ++i) {
+            cout << setw(2) << setfill('0') << (unsigned int)data[i] << ' ';
+            // TODO hard coded
+            // keep to 80 cols wide
+            if(((i + 1) % 26) == 0)
+                cout << '\n';
+        }
+    }
+    cout << endl;
+
     return;
 }
 
