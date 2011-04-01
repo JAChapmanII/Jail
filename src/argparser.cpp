@@ -14,6 +14,7 @@ ArgParser::ArgParser() : // TODO: formatting guidlines here?
         stringCallbackMap(),
         helpIsEnabled(false),
         helpMap(),
+        doPrintHelp(false),
         voidCalls(),
         stringCalls(),
         defaultCall(),
@@ -26,6 +27,7 @@ ArgParser::ArgParser(VoidCallbackFunction function) :
         stringCallbackMap(),
         helpIsEnabled(false),
         helpMap(),
+        doPrintHelp(false),
         voidCalls(),
         stringCalls(),
         defaultCall(),
@@ -112,6 +114,11 @@ int ArgParser::parseArguments(int argc, char **argv) {
     this->invocationName = (string)argv[0];
     for(int i = 1; i < argc; ++i) {
         string cArg = (string)argv[i];
+        if(this->helpIsEnabled &&
+            (cArg == (string)"--help" || cArg == (string)"-h")) {
+            this->doPrintHelp = true;
+            continue;
+        }
         VoidCallbackFunction *vCBF = this->findVoidCBF(cArg);
         if(vCBF != NULL) {
             // only queue a void callback function once
@@ -134,6 +141,8 @@ int ArgParser::parseArguments(int argc, char **argv) {
 }
 
 void ArgParser::runCommands() const {
+    if(this->doPrintHelp)
+        this->printHelp();
     if(this->voidCalls.size() + this->stringCalls.size() > 0) {
         this->runVoidCommands();
         this->runStringCommands();
@@ -156,18 +165,21 @@ void ArgParser::runStringCommands() const {
 }
 
 void ArgParser::runDefaultCommand() const {
-    // run default callback function
-    (*(this->defaultCall))();
+    if(this->defaultCall != NULL)
+        // run default callback function
+        (*(this->defaultCall))();
+    else if(this->helpIsEnabled)
+        this->printHelp();
 }
 
 void ArgParser::printHelp() const {
     // TODO: sort?
     for(HelpMap::const_iterator i = this->helpMap.begin();
             i != this->helpMap.end(); ++i) {
-        cout << i->first.first;
+        cout << "\t" << i->first.first;
         if(i->first.second != (string)"")
             cout << "|" << i->first.second;
-        cout << ": " << i->second;
+        cout << ": " << i->second << endl;
     }
 }
 

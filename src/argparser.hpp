@@ -109,6 +109,8 @@ class ArgParser {
         bool helpIsEnabled;
         /// Map between switch names and help messages
         HelpMap helpMap;
+        /// Is true if we should print the help
+        bool doPrintHelp;
 
         /// vector of (void) functions to call on runCommands invocation
         std::vector<VoidCallbackFunction> voidCalls;
