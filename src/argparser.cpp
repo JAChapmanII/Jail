@@ -21,7 +21,7 @@ ArgParser::ArgParser() : // TODO: formatting guidlines here?
         invocationName() { // TODO ?
 }
 
-ArgParser::ArgParser(SwitchName commandName, StringCallbackFunction function) :
+ArgParser::ArgParser(VoidCallbackFunction function) :
         voidCallbackMap(),
         stringCallbackMap(),
         helpIsEnabled(false),
@@ -31,20 +31,7 @@ ArgParser::ArgParser(SwitchName commandName, StringCallbackFunction function) :
         defaultCall(),
         extraArguments(),
         invocationName() { // TODO: formatting guidlines here?
-    this->add(commandName, function);
-}
-
-ArgParser::ArgParser(SwitchName commandName, VoidCallbackFunction function) :
-        voidCallbackMap(),
-        stringCallbackMap(),
-        helpIsEnabled(false),
-        helpMap(),
-        voidCalls(),
-        stringCalls(),
-        defaultCall(),
-        extraArguments(),
-        invocationName() { // TODO: formatting guidlines here?
-    this->add(commandName, function);
+    this->setDefault(function);
 }
 
 void ArgParser::add(SwitchName commandName, StringCallbackFunction function) {

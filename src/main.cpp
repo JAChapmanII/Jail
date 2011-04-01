@@ -53,8 +53,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    ArgParser mArgParser;
-    mArgParser.setDefault(&printHelp);
+    ArgParser mArgParser(&printHelp);
     mArgParser.add(ArgParser::SwitchName("--help", "-h"), &printHelp);
     mArgParser.add(ArgParser::SwitchName("--version", ""), &printVersion);
     mArgParser.add(ArgParser::SwitchName("--verbose", "-v"), &setVerbose);

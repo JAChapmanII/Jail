@@ -36,11 +36,8 @@ class ArgParser {
 
         /// Construct an empty ArgParser
         ArgParser();
-
-        /// Construct an ArgParser with an initial (string) switch
-        ArgParser(SwitchName commandName, StringCallbackFunction function);
-        /// Construct an ArgParser with an initial (void) switch
-        ArgParser(SwitchName commandName, VoidCallbackFunction function);
+        /// Construct an ArgParser with a default function
+        ArgParser(VoidCallbackFunction function);
 
         /// Add another (string) switch to look for
         void add(SwitchName commandName, StringCallbackFunction function);
