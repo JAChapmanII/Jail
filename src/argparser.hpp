@@ -33,6 +33,8 @@ class ArgParser {
 
         /// A map between switch name and help description
         typedef std::map<SwitchName, std::string> HelpMap;
+        /// An entry in the helpMap
+        typedef std::pair<SwitchName, std::string> HelpMapEntry;
 
         /// Construct an empty ArgParser
         ArgParser();
@@ -41,11 +43,21 @@ class ArgParser {
 
         /// Add another (string) switch to look for
         void add(SwitchName commandName, StringCallbackFunction function);
+        /// Add another (string) switch to look for, with help
+        void add(SwitchName commandName, StringCallbackFunction function,
+                std::string help);
+
         /// Add another (void) switch to look for
         void add(SwitchName commandName, VoidCallbackFunction function);
+        /// Add another (void) switch to look for, with help
+        void add(SwitchName commandName, VoidCallbackFunction function,
+                std::string help);
 
         /// Set the default callback function
         void setDefault(VoidCallbackFunction function);
+
+        /// Sets the help of a function
+        void addHelp(SwitchName commandName, std::string help);
 
         /// Sets whether help is enabled or not
         void setHelp(bool nval = true);

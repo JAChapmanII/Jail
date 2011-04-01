@@ -38,12 +38,28 @@ void ArgParser::add(SwitchName commandName, StringCallbackFunction function) {
     this->stringCallbackMap.insert(SCbMapEntry(commandName, function));
 }
 
+void ArgParser::add(SwitchName commandName, StringCallbackFunction function,
+        string help) {
+    this->add(commandName, function);
+    this->addHelp(commandName, help);
+}
+
 void ArgParser::add(SwitchName commandName, VoidCallbackFunction function) {
     this->voidCallbackMap.insert(VCbMapEntry(commandName, function));
 }
 
+void ArgParser::add(SwitchName commandName, VoidCallbackFunction function,
+        std::string help) {
+    this->add(commandName, function);
+    this->addHelp(commandName, help);
+}
+
 void ArgParser::setDefault(VoidCallbackFunction function) {
     this->defaultCall = function;
+}
+
+void ArgParser::addHelp(SwitchName commandName, string help) {
+    this->helpMap.insert(HelpMapEntry(commandName, help));
 }
 
 void ArgParser::setHelp(bool nval) {
