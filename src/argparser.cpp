@@ -5,9 +5,15 @@ using std::pair;
 
 #include <algorithm>
 
+#include <iostream>
+using std::cout;
+using std::endl;
+
 ArgParser::ArgParser() : // TODO: formatting guidlines here?
         voidCallbackMap(),
         stringCallbackMap(),
+        helpIsEnabled(false),
+        helpMap(),
         voidCalls(),
         stringCalls(),
         defaultCall(),
@@ -18,6 +24,8 @@ ArgParser::ArgParser() : // TODO: formatting guidlines here?
 ArgParser::ArgParser(SwitchName commandName, StringCallbackFunction function) :
         voidCallbackMap(),
         stringCallbackMap(),
+        helpIsEnabled(false),
+        helpMap(),
         voidCalls(),
         stringCalls(),
         defaultCall(),
@@ -29,6 +37,8 @@ ArgParser::ArgParser(SwitchName commandName, StringCallbackFunction function) :
 ArgParser::ArgParser(SwitchName commandName, VoidCallbackFunction function) :
         voidCallbackMap(),
         stringCallbackMap(),
+        helpIsEnabled(false),
+        helpMap(),
         voidCalls(),
         stringCalls(),
         defaultCall(),
@@ -47,6 +57,14 @@ void ArgParser::add(SwitchName commandName, VoidCallbackFunction function) {
 
 void ArgParser::setDefault(VoidCallbackFunction function) {
     this->defaultCall = function;
+}
+
+void ArgParser::setHelp(bool nval) {
+    this->helpIsEnabled = nval;
+}
+
+bool ArgParser::getHelp() const {
+    return this->helpIsEnabled;
 }
 
 void ArgParser::remove(SwitchName commandName) {
@@ -137,6 +155,17 @@ void ArgParser::runStringCommands() const {
 void ArgParser::runDefaultCommand() const {
     // run default callback function
     (*(this->defaultCall))();
+}
+
+void ArgParser::printHelp() const {
+    // TODO: sort?
+    for(HelpMap::const_iterator i = this->helpMap.begin();
+            i != this->helpMap.end(); ++i) {
+        cout << i->first.first;
+        if(i->first.second != (string)"")
+            cout << "|" << i->first.second;
+        cout << ": " << i->second;
+    }
 }
 
 vector<string> ArgParser::getExtraArguments() const {

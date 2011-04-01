@@ -31,6 +31,9 @@ class ArgParser {
         /// An entry in the voidCallbackMap
         typedef std::pair<SwitchName, VoidCallbackFunction> VCbMapEntry;
 
+        /// A map between switch name and help description
+        typedef std::map<SwitchName, std::string> HelpMap;
+
         /// Construct an empty ArgParser
         ArgParser();
 
@@ -46,6 +49,11 @@ class ArgParser {
 
         /// Set the default callback function
         void setDefault(VoidCallbackFunction function);
+
+        /// Sets whether help is enabled or not
+        void setHelp(bool nval = true);
+        /// Tests whether help is enabled or not
+        bool getHelp() const;
 
         /// Do not look for the specified switch any longer
         void remove(SwitchName commandName);
@@ -74,6 +82,9 @@ class ArgParser {
         /// Run the default command
         void runDefaultCommand() const;
 
+        /// Prints help message
+        void printHelp() const;
+
         /// Returns the leftover arguments
         std::vector<std::string> getExtraArguments() const;
         /// Returns the program invocation name
@@ -84,6 +95,11 @@ class ArgParser {
         VoidCbMap voidCallbackMap;
         /// Map of names to functions that take a string
         StringCbMap stringCallbackMap;
+
+        /// Whether or not help is enabled
+        bool helpIsEnabled;
+        /// Map between switch names and help messages
+        HelpMap helpMap;
 
         /// vector of (void) functions to call on runCommands invocation
         std::vector<VoidCallbackFunction> voidCalls;
