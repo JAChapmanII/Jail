@@ -53,16 +53,23 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    ArgParser mArgParser(&printHelp);
-    mArgParser.add(ArgParser::SwitchName("--help", "-h"), &printHelp);
-    mArgParser.add(ArgParser::SwitchName("--version", ""), &printVersion);
-    mArgParser.add(ArgParser::SwitchName("--verbose", "-v"), &setVerbose);
-    mArgParser.add(ArgParser::SwitchName("--quiet", "-q"), &setQuiet);
+    ArgParser mArgParser;
+    mArgParser.setHelp();
+    mArgParser.add(ArgParser::SwitchName("--version", ""), &printVersion,
+            "Print the version of jail which is running");
+    mArgParser.add(ArgParser::SwitchName("--verbose", "-v"), &setVerbose,
+            "Set the output to be verbose");
+    mArgParser.add(ArgParser::SwitchName("--quiet", "-q"), &setQuiet,
+            "Set the output to be quiet");
 
-    mArgParser.add(ArgParser::SwitchName("--parse-command", ""), &parseCommand);
-    mArgParser.add(ArgParser::SwitchName("--dump", ""), &setDump);
-    mArgParser.add(ArgParser::SwitchName("--hex", ""), &setHexMode);
-    mArgParser.add(ArgParser::SwitchName("--hex-dump", ""), &setHexDump);
+    mArgParser.add(ArgParser::SwitchName("--parse-command", ""), &parseCommand,
+            "Attempt to say what jail would do with a command");
+    mArgParser.add(ArgParser::SwitchName("--dump", ""), &setDump,
+            "Dump the contents of a file to the screen");
+    mArgParser.add(ArgParser::SwitchName("--hex", ""), &setHexMode,
+            "When dumping, output in hexadecimal");
+    mArgParser.add(ArgParser::SwitchName("--hex-dump", ""), &setHexDump,
+            "Combination of --hex and --dump");
 
     mArgParser.parseArguments(argc, argv);
     mArgParser.runCommands();
