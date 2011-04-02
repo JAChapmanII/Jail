@@ -187,7 +187,7 @@ void ArgParser::runDefaultCommand() const {
     if(this->defaultCall != NULL)
         // run default callback function
         (*(this->defaultCall))();
-    else if(this->helpIsEnabled)
+    else if(this->helpIsEnabled && !this->doPrintHelp)
         this->printHelp();
 }
 
