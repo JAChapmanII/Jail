@@ -55,6 +55,8 @@ int main(int argc, char** argv) {
 
     ArgParser mArgParser;
     mArgParser.setHelp();
+    mArgParser.setHelpHeader("jail [switches] <file>");
+
     mArgParser.add(ArgParser::SwitchName("--version", ""), &printVersion,
             "Print the version of jail which is running");
     mArgParser.add(ArgParser::SwitchName("--verbose", "-v"), &setVerbose,
@@ -108,19 +110,6 @@ int parseCommand(string command) {
         default:
             cout << " looks like a fine command to me!";
     }
-    cout << endl;
-    return 0;
-}
-
-int printHelp() {
-    cout << "jail alpha -- Soon to be able to read files!\n"
-        << "\n"
-        << "jail [switches] <file>\n"
-        << "\t--dump: dumps to contents of <file> to std out\n"
-        << "\t--parse-command <command>: try to output what jail would do if"
-        << " this command were used interactively\n"
-        << "\t--help|-h: display this extremely helpful message\n"
-        << "\t<nothing>: same as --help\n";
     cout << endl;
     return 0;
 }
