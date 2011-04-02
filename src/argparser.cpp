@@ -185,7 +185,6 @@ void ArgParser::runDefaultCommand() const {
 void ArgParser::printHelp() const {
     if(this->helpHeader != "")
         cout << this->helpHeader << endl;
-    // TODO: sort?
     for(HelpMap::const_iterator i = this->helpMap.begin();
             i != this->helpMap.end(); ++i) {
         cout << "\t" << i->first.first;
