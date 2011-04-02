@@ -124,11 +124,20 @@ int ArgParser::parseArguments(int argc, char **argv) {
     this->invocationName = (string)argv[0];
     for(int i = 1; i < argc; ++i) {
         string cArg = (string)argv[i];
+        // Break out of nomarl argument parsing
+        if(cArg == (string)"--") {
+            for(int j = i + 1; j < argc; ++j) {
+                cArg = (string)argv[j];
+                this->extraArguments.push_back(cArg);
+            }
+            break;
+        }
         if(this->helpIsEnabled &&
             (cArg == (string)"--help" || cArg == (string)"-h")) {
             this->doPrintHelp = true;
             continue;
         }
+
         VoidCallbackFunction *vCBF = this->findVoidCBF(cArg);
         if(vCBF != NULL) {
             // only queue a void callback function once
