@@ -15,6 +15,7 @@ ArgParser::ArgParser() : // TODO: formatting guidlines here?
         helpIsEnabled(false),
         helpMap(),
         doPrintHelp(false),
+        helpHeader(),
         voidCalls(),
         stringCalls(),
         defaultCall(),
@@ -28,6 +29,7 @@ ArgParser::ArgParser(VoidCallbackFunction function) :
         helpIsEnabled(false),
         helpMap(),
         doPrintHelp(false),
+        helpHeader(),
         voidCalls(),
         stringCalls(),
         defaultCall(),
@@ -70,6 +72,14 @@ void ArgParser::setHelp(bool nval) {
 
 bool ArgParser::getHelp() const {
     return this->helpIsEnabled;
+}
+
+void ArgParser::setHelpHeader(string nheader) {
+    this->helpHeader = nheader;
+}
+
+string ArgParser::getHelpHeader() const {
+    return this->helpHeader;
 }
 
 void ArgParser::remove(SwitchName commandName) {
@@ -173,6 +183,8 @@ void ArgParser::runDefaultCommand() const {
 }
 
 void ArgParser::printHelp() const {
+    if(this->helpHeader != "")
+        cout << this->helpHeader << endl;
     // TODO: sort?
     for(HelpMap::const_iterator i = this->helpMap.begin();
             i != this->helpMap.end(); ++i) {

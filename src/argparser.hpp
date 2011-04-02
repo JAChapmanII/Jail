@@ -64,6 +64,11 @@ class ArgParser {
         /// Tests whether help is enabled or not
         bool getHelp() const;
 
+        /// Changes the help header to something new
+        void setHelpHeader(std::string nheader);
+        /// Returns the currently saved help header
+        std::string getHelpHeader() const;
+
         /// Do not look for the specified switch any longer
         void remove(SwitchName commandName);
         /// Remove a switch, looking in only one map
@@ -111,6 +116,8 @@ class ArgParser {
         HelpMap helpMap;
         /// Is true if we should print the help
         bool doPrintHelp;
+        /// Header printed before help
+        std::string helpHeader;
 
         /// vector of (void) functions to call on runCommands invocation
         std::vector<VoidCallbackFunction> voidCalls;
