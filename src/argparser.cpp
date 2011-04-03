@@ -16,6 +16,7 @@ ArgParser::ArgParser() : // TODO: formatting guidlines here?
         helpMap(),
         doPrintHelp(false),
         helpHeader(),
+        helpFooter(),
         voidCalls(),
         stringCalls(),
         defaultCall(),
@@ -30,6 +31,7 @@ ArgParser::ArgParser(VoidCallbackFunction function) :
         helpMap(),
         doPrintHelp(false),
         helpHeader(),
+        helpFooter(),
         voidCalls(),
         stringCalls(),
         defaultCall(),
@@ -81,6 +83,15 @@ void ArgParser::setHelpHeader(string nheader) {
 string ArgParser::getHelpHeader() const {
     return this->helpHeader;
 }
+
+void ArgParser::setHelpFooter(string nfooter) {
+    this->helpFooter = nfooter;
+}
+
+string ArgParser::getHelpFooter() const {
+    return this->helpFooter;
+}
+
 
 void ArgParser::remove(SwitchName commandName) {
     // left as excersize for reader
@@ -201,6 +212,8 @@ void ArgParser::printHelp() const {
             cout << "|" << i->first.second;
         cout << ": " << i->second << endl;
     }
+    if(this->helpFooter != "")
+        cout << this->helpFooter << endl;
 }
 
 vector<string> ArgParser::getExtraArguments() const {

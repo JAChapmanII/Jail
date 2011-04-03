@@ -69,6 +69,11 @@ class ArgParser {
         /// Returns the currently saved help header
         std::string getHelpHeader() const;
 
+        /// Changes the help footer to something new
+        void setHelpFooter(std::string nfooter);
+        /// Returns the currently saved help footer
+        std::string getHelpFooter() const;
+
         /// Do not look for the specified switch any longer
         void remove(SwitchName commandName);
         /// Remove a switch, looking in only one map
@@ -118,6 +123,8 @@ class ArgParser {
         bool doPrintHelp;
         /// Header printed before help
         std::string helpHeader;
+        /// Footer printed after help
+        std::string helpFooter;
 
         /// vector of (void) functions to call on runCommands invocation
         std::vector<VoidCallbackFunction> voidCalls;
