@@ -55,7 +55,9 @@ int main(int argc, char** argv) {
 
     ArgParser mArgParser;
     mArgParser.setHelp();
-    mArgParser.setHelpHeader("jail [switches] <file>");
+    mArgParser.setHelpHeader("jail [switches] <file>\n");
+    mArgParser.setHelpFooter(
+            "\nYou may also wish to check the README for more information\n");
 
     mArgParser.add(ArgParser::SwitchName("--version", ""), &printVersion,
             "Print the version of jail which is running");
