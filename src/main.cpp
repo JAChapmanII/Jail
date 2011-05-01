@@ -50,6 +50,8 @@ int main(int argc, char** argv) {
             "When dumping, output in hexadecimal");
     mArgParser.add(ArgParser::SwitchName("--hex-dump", ""), &setHexDump,
             "Combination of --hex and --dump");
+    mArgParser.add(ArgParser::SwitchName("--width", "-w"), &setWidth,
+            "Sets the maximum width in columns of the hex dump output");
 
     mArgParser.parseArguments(argc, argv);
     mArgParser.runCommands();
@@ -119,12 +121,11 @@ void dump(vector<string> fileNames) {
         cout << file.getData();
     } else {
         char *data = file.getData();
+        int stop = (getWidth() + 1) / 3;
         cout << hex;
         for(int i = 0; i < length; ++i) {
             cout << setw(2) << setfill('0') << (unsigned int)data[i] << ' ';
-            // TODO hard coded
-            // keep to 80 cols wide
-            if(((i + 1) % 26) == 0)
+            if((i % stop) == 0)
                 cout << '\n';
         }
     }
