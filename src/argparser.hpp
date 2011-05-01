@@ -1,3 +1,6 @@
+#ifndef ARGPARSER_HPP
+#define ARGPARSER_HPP
+
 #include <string>
 #include <vector>
 #include <map>
@@ -139,4 +142,5 @@ class ArgParser {
         std::string invocationName;
 };
 
+#endif // ARGPARSER_HPP
 // vim:ts=4 et sw=4 sts=4
