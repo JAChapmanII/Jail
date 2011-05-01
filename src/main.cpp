@@ -126,7 +126,7 @@ void dump(vector<string> fileNames) {
         cout << hex;
         for(int i = 0; i < length; ++i) {
             cout << setw(2) << setfill('0') << (unsigned int)data[i] << ' ';
-            if((i % stop) == 0)
+            if(((i+1) % stop) == 0)
                 cout << '\n';
         }
         cout << dec;
