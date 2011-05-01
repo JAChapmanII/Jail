@@ -3,6 +3,7 @@ using std::cout;
 using std::cerr;
 using std::endl;
 using std::hex;
+using std::dec;
 
 #include <iomanip>
 using std::setw;
@@ -37,26 +38,26 @@ int main(int argc, char** argv) {
 
     mArgParser.add(ArgParser::SwitchName("--version", ""), &printVersion,
             "Print the version of jail which is running");
-    mArgParser.add(ArgParser::SwitchName("--verbose", "-v"), &setVerbose,
-            "Set the output to be verbose");
-    mArgParser.add(ArgParser::SwitchName("--quiet", "-q"), &setQuiet,
+    mArgParser.add(ArgParser::SwitchName("--verbose", "-v"),
+            &Config::setVerbose, "Set the output to be verbose");
+    mArgParser.add(ArgParser::SwitchName("--quiet", "-q"), &Config::setQuiet,
             "Set the output to be quiet");
 
     mArgParser.add(ArgParser::SwitchName("--parse-command", ""), &parseCommand,
             "Attempt to say what jail would do with a command");
-    mArgParser.add(ArgParser::SwitchName("--dump", ""), &setDump,
+    mArgParser.add(ArgParser::SwitchName("--dump", ""), &Config::setDump,
             "Dump the contents of a file to the screen");
-    mArgParser.add(ArgParser::SwitchName("--hex", ""), &setHexMode,
+    mArgParser.add(ArgParser::SwitchName("--hex", ""), &Config::setHexMode,
             "When dumping, output in hexadecimal");
-    mArgParser.add(ArgParser::SwitchName("--hex-dump", ""), &setHexDump,
-            "Combination of --hex and --dump");
-    mArgParser.add(ArgParser::SwitchName("--width", "-w"), &setWidth,
+    mArgParser.add(ArgParser::SwitchName("--hex-dump", ""),
+            &Config::setHexDump, "Combination of --hex and --dump");
+    mArgParser.add(ArgParser::SwitchName("--width", "-w"), &Config::setWidth,
             "Sets the maximum width in columns of the hex dump output");
 
     mArgParser.parseArguments(argc, argv);
     mArgParser.runCommands();
 
-    if(isVerbose()) {
+    if(Config::isVerbose()) {
         cout << "Invoked as: " << mArgParser.getInvocationName() << "\n";
 
         vector<string> extraArguments = mArgParser.getExtraArguments();
@@ -69,10 +70,10 @@ int main(int argc, char** argv) {
         cout << endl;
     }
 
-    if(isVerbose())
+    if(Config::isVerbose())
         cout << "We're being verbose!" << endl;
 
-    if(isDump())
+    if(Config::isDump())
         dump(mArgParser.getExtraArguments());
 
     return 0;
@@ -114,20 +115,21 @@ void dump(vector<string> fileNames) {
         return;
     }
 
-    if(isVerbose())
+    if(Config::isVerbose())
         cout << "File \"" << fileName << "\" is " << length << " bytes long.\n";
 
-    if(!isHexMode()) {
+    if(!Config::isHexMode()) {
         cout << file.getData();
     } else {
         char *data = file.getData();
-        int stop = (getWidth() + 1) / 3;
+        int stop = (Config::getWidth() + 1) / 3;
         cout << hex;
         for(int i = 0; i < length; ++i) {
             cout << setw(2) << setfill('0') << (unsigned int)data[i] << ' ';
             if((i % stop) == 0)
                 cout << '\n';
         }
+        cout << dec;
     }
     cout << endl;
 
