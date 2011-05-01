@@ -16,36 +16,12 @@ using std::vector;
 
 #include "argparser.hpp"
 #include "fileio.hpp"
+#include "config.hpp"
 
 int parseCommand(string command);
 int printHelp();
 int printVersion();
 void dump(vector<string> fileNames);
-
-// TODO: Singleton config class with trampoline methods to static class members?
-bool beVerbose = false;
-bool beQuiet = false;
-bool doDump = false;
-bool hexMode = false;
-
-int setVerbose() {
-    beVerbose = true;
-    beQuiet = false;
-}
-int setQuiet() {
-    beQuiet = true;
-    beVerbose = false;
-}
-int setDump() {
-    doDump = true;
-}
-int setHexMode() {
-    hexMode = true;
-}
-int setHexDump() {
-    hexMode = true;
-    doDump = true;
-}
 
 int main(int argc, char** argv) {
     if(argc < 1) { // impossible, argv[0] is how the program was invoked
@@ -78,7 +54,7 @@ int main(int argc, char** argv) {
     mArgParser.parseArguments(argc, argv);
     mArgParser.runCommands();
 
-    if(beVerbose) {
+    if(isVerbose()) {
         cout << "Invoked as: " << mArgParser.getInvocationName() << "\n";
 
         vector<string> extraArguments = mArgParser.getExtraArguments();
@@ -91,10 +67,10 @@ int main(int argc, char** argv) {
         cout << endl;
     }
 
-    if(beVerbose)
+    if(isVerbose())
         cout << "We're being verbose!" << endl;
 
-    if(doDump)
+    if(isDump())
         dump(mArgParser.getExtraArguments());
 
     return 0;
@@ -136,10 +112,10 @@ void dump(vector<string> fileNames) {
         return;
     }
 
-    if(beVerbose)
+    if(isVerbose())
         cout << "File \"" << fileName << "\" is " << length << " bytes long.\n";
 
-    if(!hexMode) {
+    if(!isHexMode()) {
         cout << file.getData();
     } else {
         char *data = file.getData();
