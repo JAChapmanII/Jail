@@ -9,7 +9,7 @@ CC=g++
 CFLAGS=
 
 LD=ld
-LFLAGS=
+LFLAGS=-lncurses
 
 ifdef profile
 CFLAGS+=-pg
