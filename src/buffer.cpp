@@ -1,9 +1,16 @@
 #include "buffer.hpp"
 using std::string;
 
-Buffer::Buffer(string iFileName) : // TODO: formatting guidelines
+Buffer::Buffer() : // TODO: formatting guidelines
         length(-1),
         data(NULL) {
+}
+
+Buffer::Buffer(string contents) : // TODO: formatting guidelines
+        length(contents.length()),
+        data(NULL) {
+    this->data = new char[this->length];
+    contents.copy(this->data, this->length);
 }
 
 Buffer::~Buffer() {
