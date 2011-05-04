@@ -1,4 +1,6 @@
 #include "view.hpp"
+using std::string;
+using std::vector;
 
 #include <ncurses.h>
 
@@ -14,8 +16,14 @@ void View::view() const {
     intrflush(stdscr, false);
     keypad(stdscr, true);
 
+    vector<string> data = this->buffer->getData();
+    // TODO this should be done in a loop somewhere XD
+    for(unsigned int i = 0; i < data.size() && (int)i < LINES; ++i)
+        mvprintw(i, 0, "%s", data[i].c_str());
+
     // TODO cursor class?
     int r = 0, c = 0;
+    move(0, 0);
 
     bool done = false;
     while(!done) {
@@ -29,8 +37,8 @@ void View::view() const {
             default:
                 done = true;
         }
-        move(r, c);
         refresh();
+        move(r, c);
     }
     endwin();
 }
