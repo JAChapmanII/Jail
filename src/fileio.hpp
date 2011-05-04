@@ -1,8 +1,8 @@
 #ifndef FILEIO_HPP
 #define FILEIO_HPP
 
-#include <iostream>
 #include <fstream>
+#include <string>
 
 class FileIO {
     public:
