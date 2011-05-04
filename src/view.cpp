@@ -2,6 +2,9 @@
 using std::string;
 using std::vector;
 
+#include <sstream>
+using std::stringstream;
+
 #include <ncurses.h>
 
 View::View(Buffer *buf) : // TODO: once again, styling on init lists
@@ -16,10 +19,11 @@ void View::view() const {
     intrflush(stdscr, false);
     keypad(stdscr, true);
 
+    stringstream oss; oss << "%." << (COLS-1) << "s";
     vector<string> data = this->buffer->getData();
     // TODO this should be done in a loop somewhere XD
     for(unsigned int i = 0; i < data.size() && (int)i < LINES; ++i)
-        mvprintw(i, 0, "%s", data[i].c_str());
+        mvprintw(i, 0, oss.str().c_str(), data[i].c_str());
 
     // TODO cursor class?
     int r = 0, c = 0;
