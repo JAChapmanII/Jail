@@ -207,9 +207,14 @@ void ArgParser::printHelp() const {
         cout << this->helpHeader << endl;
     for(HelpMap::const_iterator i = this->helpMap.begin();
             i != this->helpMap.end(); ++i) {
-        cout << "\t" << i->first.first;
-        if(i->first.second != (string)"")
-            cout << "|" << i->first.second;
+        cout << "\t";
+        if(!i->first.first.empty())
+            cout << i->first.first;
+        if(!i->first.second.empty()) {
+            if(!i->first.first.empty())
+                cout << "|";
+            cout << i->first.second;
+        }
         cout << ": " << i->second << endl;
     }
     if(this->helpFooter != "")
