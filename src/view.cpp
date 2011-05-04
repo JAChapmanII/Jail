@@ -35,16 +35,25 @@ void View::view() const {
         int i = getch();
         switch(i) {
             case 'j':
-            case KEY_DOWN: if(r < LINES) r++; break;
+            case KEY_DOWN:
+                if(r < LINES) r++;
+                break;
 
             case 'k':
-            case KEY_UP: if(r >     0) r--; break;
+            case KEY_UP:
+                if(r >     0) r--;
+                break;
 
             case 'h':
-            case KEY_LEFT: if(c >     0) c--; break;
+            case KEY_LEFT:
+                if(c >     0) c--;
+                break;
 
             case 'l':
-            case KEY_RIGHT: if(c <  COLS) c++; break;
+            case KEY_RIGHT:
+                if(c <  COLS) c++;
+                break;
+
             default:
                 done = true;
         }
