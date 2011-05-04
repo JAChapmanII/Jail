@@ -2,6 +2,7 @@
 #define BUFFER_HPP
 
 #include <string>
+#include <vector>
 
 /**
  * Buffer is an in-memory representation of a file.
@@ -19,7 +20,9 @@ class Buffer {
         /// Return the length of this buffer's contents
         int getLength() const;
         /// Return a string representation of this buffer's contents
-        std::string getData();
+        std::string getString();
+        /// Return a vector of strings of this buffer's contents
+        std::vector<std::string> getData();
 
         /// Clear this buffer's data
         void clear();
@@ -30,7 +33,8 @@ class Buffer {
         Buffer &operator=(const Buffer &rhs);
 
         int length;
-        char *data;
+        // TODO data type here? Change-able later
+        std::vector<std::string> data;
 };
 
 #endif // BUFFER_HPP

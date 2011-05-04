@@ -1,16 +1,20 @@
 #include "buffer.hpp"
 using std::string;
+using std::vector;
 
 Buffer::Buffer() : // TODO: formatting guidelines
         length(-1),
-        data(NULL) {
+        data() {
 }
 
 Buffer::Buffer(string contents) : // TODO: formatting guidelines
         length(contents.length()),
-        data(NULL) {
-    this->data = new char[this->length];
-    contents.copy(this->data, this->length);
+        data() {
+    int l = 0, c = 0;
+    while((c = contents.find('\n', l + 1)) != string::npos) {
+        this->data.push_back(contents.substr(l + 1, c));
+        l = c;
+    }
 }
 
 Buffer::~Buffer() {
@@ -21,15 +25,23 @@ int Buffer::getLength() const {
     return this->length;
 }
 
-string Buffer::getData() {
-    return (string)this->data;
+string Buffer::getString() {
+    string res;
+    for(vector<string>::iterator i = this->data.begin(); i != this->data.end();
+            ++i)
+        res += (*i) + '\n';
+    return res;
+}
+
+vector<string> Buffer::getData() {
+    return this->data;
 }
 
 void Buffer::clear() {
     if(this->length < 0)
         return;
 
-    delete[] this->data;
+    this->data.clear();
     this->length = -1;
 }
 
