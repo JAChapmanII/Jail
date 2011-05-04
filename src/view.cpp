@@ -6,6 +6,8 @@ using std::vector;
 using std::stringstream;
 
 #include <ncurses.h>
+// TODO why isn't this defined in ncurses.h?
+const int KEY_ESCAPE = 27;
 
 View::View(Buffer *buf) : // TODO: once again, styling on init lists
         buffer(buf) {
@@ -29,6 +31,7 @@ void View::view() const {
     int r = 0, c = 0;
     move(0, 0);
 
+    ESCDELAY = 0;
     bool done = false;
     while(!done) {
         getyx(stdscr, r, c);
@@ -54,11 +57,16 @@ void View::view() const {
                 if(c <  COLS) c++;
                 break;
 
-            default:
+            case KEY_ESCAPE:
                 done = true;
+                break;
+
+            default:
+                break;
         }
-        refresh();
+        mvprintw(LINES - 1, 0, ":%4d", i);
         move(r, c);
+        refresh();
     }
     endwin();
 }
