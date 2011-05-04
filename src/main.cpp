@@ -83,6 +83,8 @@ int main(int argc, char** argv) {
     if(Config::isDump())
         dump(mArgParser.getExtraArguments());
     else {
+        // TODO: this may not be the only other option. Currently, the output
+        // looks alright though. Must fix! /TODO
         if(Config::isReadOnly())
             view(mArgParser.getExtraArguments());
         else
