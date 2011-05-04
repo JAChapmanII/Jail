@@ -20,6 +20,7 @@ using std::vector;
 #include "config.hpp"
 
 #include "buffer.hpp"
+#include "view.hpp"
 
 int parseCommand(string command);
 int printHelp();
@@ -168,6 +169,8 @@ void view(vector<string> fileNames) {
 
     char *data = file.getData();
     Buffer mBuffer((string)data);
+    View mView(&mBuffer);
+    mView();
 }
 
 void edit(vector<string> fileNames) {
