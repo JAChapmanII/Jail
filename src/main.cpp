@@ -19,10 +19,14 @@ using std::vector;
 #include "fileio.hpp"
 #include "config.hpp"
 
+#include "buffer.hpp"
+
 int parseCommand(string command);
 int printHelp();
 int printVersion();
 void dump(vector<string> fileNames);
+void view(vector<string> fileNames);
+void edit(vector<string> fileNames);
 
 int main(int argc, char** argv) {
     if(argc < 1) { // impossible, argv[0] is how the program was invoked
@@ -78,6 +82,12 @@ int main(int argc, char** argv) {
 
     if(Config::isDump())
         dump(mArgParser.getExtraArguments());
+    else {
+        if(Config::isReadOnly())
+            view(mArgParser.getExtraArguments());
+        else
+            edit(mArgParser.getExtraArguments());
+    }
 
     return 0;
 }
@@ -104,7 +114,7 @@ int printVersion() {
 }
 
 void dump(vector<string> fileNames) {
-    if(fileNames.size() < 1)
+    if(fileNames.empty())
         return;
 
     string fileName = fileNames.back();
@@ -114,7 +124,7 @@ void dump(vector<string> fileNames) {
 
     if(length < 0) {
         cerr << "There was a problem reading the file \""
-            << fileName << "\"." << endl;
+            << fileName << "\" for dumping." << endl;
         return;
     }
 
@@ -136,6 +146,30 @@ void dump(vector<string> fileNames) {
     }
     cout << endl;
 
+    return;
+}
+
+void view(vector<string> fileNames) {
+    if(fileNames.empty())
+        return;
+
+    string fileName = fileNames.back();
+    FileIO file(fileName);
+    file.open();
+    int length = file.read();
+
+    if(length < 0) {
+        cerr << "There was a problem reading the file \""
+            << fileName << "\" for viewing." << endl;
+        return;
+    }
+
+    char *data = file.getData();
+    Buffer mBuffer((string)data);
+}
+
+void edit(vector<string> fileNames) {
+    cout << "We can't yet edit files, sorry!" << endl;
     return;
 }
 
