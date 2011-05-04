@@ -10,7 +10,7 @@ namespace Config {
     bool doDump = false;
     bool hexMode = false;
     int outWidth = 80;
-    string version = "VSTRING";
+#include "version.hpp"
 
     int setVerbose() {
         beVerbose = true;

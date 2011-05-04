@@ -28,9 +28,10 @@ else
 CFLAGS+=-g
 endif
 
-all: $(EXEC)
+all: config $(EXEC)
 
-full: release
+config:
+	./mkversion.sh
 
 $(EXEC): $(OBJS)
 	mkdir -p $(BINDIR)
