@@ -9,11 +9,13 @@ namespace Config {
     int setDump();
     int setHexMode();
     int setHexDump();
+    int setReadOnly();
 
     bool isVerbose();
     bool isQuiet();
     bool isDump();
     bool isHexMode();
+    bool isReadOnly();
 
     int setWidth(std::string w);
     int getWidth();

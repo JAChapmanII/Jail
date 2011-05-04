@@ -9,6 +9,8 @@ namespace Config {
     bool beQuiet = false;
     bool doDump = false;
     bool hexMode = false;
+    // TODO: This should probably be per buffer
+    bool readOnly = false;
     int outWidth = 80;
 #include "version.hpp"
 
@@ -35,17 +37,28 @@ namespace Config {
         doDump = true;
     }
 
+    int setReadOnly() {
+        readOnly = true;
+    }
+
     bool isVerbose() {
         return beVerbose;
     }
-    bool isVuiet() {
+
+    bool isQuiet() {
         return beQuiet;
     }
+
     bool isDump() {
         return doDump;
     }
+
     bool isHexMode() {
         return hexMode;
+    }
+
+    bool isReadOnly() {
+        return readOnly;
     }
 
     int setWidth(string w) {
