@@ -30,10 +30,17 @@ void View::view() const {
         getyx(stdscr, r, c);
         int i = getch();
         switch(i) {
-            case 'j': if(r < LINES) r++; break;
-            case 'k': if(r >     0) r--; break;
-            case 'h': if(c >     0) c--; break;
-            case 'l': if(c <  COLS) c++; break;
+            case 'j':
+            case KEY_DOWN: if(r < LINES) r++; break;
+
+            case 'k':
+            case KEY_UP: if(r >     0) r--; break;
+
+            case 'h':
+            case KEY_LEFT: if(c >     0) c--; break;
+
+            case 'l':
+            case KEY_RIGHT: if(c <  COLS) c++; break;
             default:
                 done = true;
         }
