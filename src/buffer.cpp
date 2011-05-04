@@ -10,7 +10,7 @@ Buffer::Buffer() : // TODO: formatting guidelines
 Buffer::Buffer(string contents) : // TODO: formatting guidelines
         length(contents.length()),
         data() {
-    int l = 0, c = 0;
+    int l = -1, c = 0;
     while((c = contents.find('\n', l + 1)) != string::npos) {
         this->data.push_back(contents.substr(l + 1, c));
         l = c;
