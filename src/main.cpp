@@ -96,7 +96,7 @@ int parseCommand(string command) {
 }
 
 int printVersion() {
-    cout << "version: Alpha!" << endl;
+    cout << "version: " << Config::getVersion() << endl;
     return 0;
 }
 
