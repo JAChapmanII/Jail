@@ -3,15 +3,25 @@
 
 #include <string>
 
+/**
+ * Buffer is an in-memory representation of a file.
+ */
 class Buffer {
     public:
+        /// Construct an empty Buffer
+        Buffer();
+        /// Contruct a Buffer with already existing content
         Buffer(std::string contents);
-        Buffer(char *contents);
+
+        /// Destroy a Buffer safely
         ~Buffer();
 
+        /// Return the length of this buffer's contents
         int getLength() const;
+        /// Return a string representation of this buffer's contents
         std::string getData();
 
+        /// Clear this buffer's data
         void clear();
 
     protected:
