@@ -5,20 +5,20 @@ own risk. The developers hold no responsibility for any and all files and
 monetary loss the usage of jail causes you.
 
 What will it be?
-	Soon (I hope) it will be a rather bad clone of vim in C++. Further on, it
-	will hopefully be a not so bad clone of vim.
+    Soon (I hope) it will be a rather bad clone of vim in C++. Further on, it
+    will hopefully be a not so bad clone of vim.
 
 Building (the nothing):
-	A standard Makefile is set up, so simply issue
-		make
-	on any decently set up GNU/Linux machine
+    A standard Makefile is set up, so simply issue
+        make
+    on any decently set up GNU/Linux machine
 
-	See the Makefile for other options.
+    See the Makefile for other options.
 
 Running (the nothing):
-	./bin/jl
+    ./bin/jl
 
 Usage:
-	Read what it says. Maybe the devs will make a man page. Or maybe the --help
-	switch will actually provide some level of help in the future. Maybe.
+    Read what it says. Maybe the devs will make a man page. Or maybe the --help
+    switch will actually provide some level of help in the future. Maybe.
 

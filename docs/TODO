@@ -6,8 +6,8 @@ Fix/remove all TODOs found in source files.
 TODO should have actual TODO things in it.
 
 Configuration needs to have attention drawn to it and talked about.
-	Most of the functions in main should be elsewhere, as half are about
-	configuration
+    Most of the functions in main should be elsewhere, as half are about
+    configuration
 
 Move non-configuration, non-main functions to some other file/class
 
