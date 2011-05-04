@@ -10,6 +10,7 @@ namespace Config {
     bool doDump = false;
     bool hexMode = false;
     int outWidth = 80;
+    string version = "VSTRING";
 
     int setVerbose() {
         beVerbose = true;
@@ -57,6 +58,10 @@ namespace Config {
     }
     int getWidth() {
         return outWidth;
+    }
+
+    string getVersion() {
+        return version;
     }
 }
 

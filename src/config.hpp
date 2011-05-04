@@ -17,6 +17,8 @@ namespace Config {
 
     int setWidth(std::string w);
     int getWidth();
+
+    std::string getVersion();
 }
 
 #endif // CONFIG_HPP
