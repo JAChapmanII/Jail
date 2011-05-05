@@ -135,7 +135,10 @@ void dump(vector<string> fileNames) {
         cout << "File \"" << fileName << "\" is " << length << " bytes long.\n";
 
     if(!Config::isHexMode()) {
-        cout << file.getData();
+        Buffer mBuffer((string)file.getData());
+        vector<string> data = mBuffer.getData();
+        for(vector<string>::iterator i = data.begin(); i != data.end(); ++i)
+            cout << (*i) << '\n';
     } else {
         char *data = file.getData();
         int stop = (Config::getWidth() + 1) / 3;
