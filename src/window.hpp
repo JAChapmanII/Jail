@@ -12,7 +12,9 @@ class Window;
 
 // TODO guh, better way to do this?
 namespace Key {
-    enum Key { Escape = 27,
+    enum Key {
+        CtrlB = 2, CtrlF = 6,
+        Escape = 27,
         Up = KEY_UP, Down = KEY_DOWN, Left = KEY_LEFT, Right = KEY_RIGHT,
         Space = ' ', ExclamationPoint, QuotationMark, Octothorpe, Currency,
         Modulus, Ampersand, Apostraphe, OpenParenthesis, CloseParenthesis,
