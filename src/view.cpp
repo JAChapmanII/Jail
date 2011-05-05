@@ -19,7 +19,7 @@ void View::view() const {
     int end = min((int)data.size(), this->window->getHeight());
     for(int i = 0; i < end; ++i) {
         if((int)data[i].length() > this->window->getWidth() - 1)
-            this->window->write(data[i].substr(0, this->window->getWidth() - 1));
+            this->window->write(data[i].substr(0, this->window->getWidth()));
         else
             this->window->write(data[i]);
         mCursor->down();
