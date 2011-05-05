@@ -13,14 +13,18 @@ class View {
         View(Window *win, Buffer *buf);
 
         /// Display an ncurses view of the backing Buffer
-        void view() const;
+        void view();
 
         /// Alias to view function
-        void operator()() const;
+        void operator()();
 
     protected:
+        /// Repaints Buffer contents into Window
+        void repaint();
+
         Window *window;
         Buffer *buffer;
+        long row, col;
 };
 
 #endif // VIEW_HPP
