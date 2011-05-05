@@ -37,6 +37,7 @@ void Window::stop() {
 }
 
 int Window::update() {
+    move(this->cursor->getRow(), this->cursor->getCol());
     return refresh();
 }
 
