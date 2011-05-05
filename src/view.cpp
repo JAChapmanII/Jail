@@ -92,13 +92,13 @@ void View::repaint() {
 
     if(this->row < 0)
         this->row = 0;
-    if(this->row > (int)data.size() - this->window->getHeight())
-        this->row = (int)data.size() - this->window->getHeight();
+    if(this->row > (int)data.size() - (this->window->getHeight() - 1))
+        this->row = (int)data.size() - (this->window->getHeight() - 1);
 
     Cursor mCursor(this->window);
     // incase the Window is longer than the buffer
     int end = min((int)((int)data.size() - this->row),
-            this->window->getHeight());
+            this->window->getHeight() - 1);
     for(int i = 0; i < end; ++i) {
         this->window->write(&mCursor, data[i + this->row].substr(
                 this->col, this->window->getWidth()));
