@@ -3,7 +3,7 @@ using std::string;
 using std::vector;
 
 #include <algorithm>
-using std::max;
+using std::min;
 
 View::View(Window *win, Buffer *buf) : // TODO: again, styling on init lists
         window(win),
@@ -16,9 +16,12 @@ void View::view() const {
 
     vector<string> data = this->buffer->getData();
     // TODO this should be done in a loop somewhere XD
-    int end = max((int)data.size(), this->window->getHeight());
+    int end = min((int)data.size(), this->window->getHeight());
     for(int i = 0; i < end; ++i) {
-        this->window->write(data[i].substr(0, this->window->getWidth()));
+        if((int)data[i].length() > this->window->getWidth() - 1)
+            this->window->write(data[i].substr(0, this->window->getWidth() - 1));
+        else
+            this->window->write(data[i]);
         mCursor->down();
     }
 
