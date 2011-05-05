@@ -169,7 +169,8 @@ void view(vector<string> fileNames) {
 
     char *data = file.getData();
     Buffer mBuffer((string)data);
-    View mView(&mBuffer);
+    Window mWindow;
+    View mView(&mWindow, &mBuffer);
     mView();
 }
 
