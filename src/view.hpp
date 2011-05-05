@@ -2,6 +2,7 @@
 #define VIEW_HPP
 
 #include "buffer.hpp"
+#include "window.hpp"
 
 /**
  * An ncurses view of a Buffer
@@ -9,7 +10,7 @@
 class View {
     public:
         /// Construct a View with a backing Buffer object
-        View(Buffer *buf);
+        View(Window *win, Buffer *buf);
 
         /// Display an ncurses view of the backing Buffer
         void view() const;
@@ -18,6 +19,7 @@ class View {
         void operator()() const;
 
     protected:
+        Window *window;
         Buffer *buffer;
 };
 

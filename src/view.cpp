@@ -2,73 +2,64 @@
 using std::string;
 using std::vector;
 
-#include <sstream>
-using std::stringstream;
+#include <algorithm>
+using std::max;
 
-#include <ncurses.h>
-// TODO why isn't this defined in ncurses.h?
-const int KEY_ESCAPE = 27;
-
-View::View(Buffer *buf) : // TODO: once again, styling on init lists
+View::View(Window *win, Buffer *buf) : // TODO: again, styling on init lists
+        window(win),
         buffer(buf) {
 }
 
 void View::view() const {
-    // TODO ncurses interface class?
-    initscr();
-    cbreak();
-    noecho();
-    intrflush(stdscr, false);
-    keypad(stdscr, true);
+    this->window->start();
+    Cursor *mCursor = this->window->getCursor();
 
-    stringstream oss; oss << "%." << (COLS-1) << "s";
     vector<string> data = this->buffer->getData();
     // TODO this should be done in a loop somewhere XD
-    for(unsigned int i = 0; i < data.size() && (int)i < LINES; ++i)
-        mvprintw(i, 0, oss.str().c_str(), data[i].c_str());
+    int end = max((int)data.size(), this->window->getHeight());
+    for(int i = 0; i < end; ++i) {
+        this->window->write(data[i].substr(0, this->window->getWidth()));
+        mCursor->down();
+    }
 
-    // TODO cursor class?
-    int r = 0, c = 0;
-    move(0, 0);
 
-    ESCDELAY = 0;
+    mCursor->move(0, 0);
+    Cursor bottomLeft(this->window, this->window->getHeight() - 1, 0);
     bool done = false;
     while(!done) {
-        getyx(stdscr, r, c);
-        int i = getch();
+        //ncurses::getyx(stdscr, r, c);
+        int i = this->window->getKey();
         switch(i) {
             case 'j':
-            case KEY_DOWN:
-                if(r < LINES) r++;
+            case Key::Down:
+                mCursor->down();
                 break;
 
             case 'k':
-            case KEY_UP:
-                if(r >     0) r--;
+            case Key::Up:
+                mCursor->up();
                 break;
 
             case 'h':
-            case KEY_LEFT:
-                if(c >     0) c--;
+            case Key::Left:
+                mCursor->left();
                 break;
 
             case 'l':
-            case KEY_RIGHT:
-                if(c <  COLS) c++;
+            case Key::Right:
+                mCursor->right();
                 break;
 
-            case KEY_ESCAPE:
+            case Key::Escape:
                 done = true;
                 break;
 
             default:
                 break;
         }
-        mvprintw(LINES - 1, 0, ":%4d", i);
-        move(r, c);
-        refresh();
+        this->window->write(&bottomLeft, i);
+        this->window->update();
     }
-    endwin();
 }
 
 void View::operator()() const {
