@@ -28,6 +28,7 @@ void View::view() const {
 
     mCursor->move(0, 0);
     Cursor bottomLeft(this->window, this->window->getHeight() - 1, 0);
+    string line(this->window->getWidth(), ' ');
     bool done = false;
     while(!done) {
         //ncurses::getyx(stdscr, r, c);
@@ -60,6 +61,7 @@ void View::view() const {
             default:
                 break;
         }
+        this->window->write(&bottomLeft, line);
         this->window->write(&bottomLeft, i);
         this->window->update();
     }
