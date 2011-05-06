@@ -48,7 +48,7 @@ int Buffer::getSize() const {
 }
 
 int Buffer::getRowLength(int row) const {
-    if(this->data.size() - 1 < row)
+    if((int)this->data.size() - 1 < row)
         return -1;
     return (this->data)[row].length();
 }
