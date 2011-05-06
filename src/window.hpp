@@ -44,6 +44,8 @@ class Window {
         void stop();
         /// Updates the window
         int update();
+        /// Updates the window, moves cursor to set position
+        int update(int x, int y);
 
         /// Returns the next input key
         int getKey();

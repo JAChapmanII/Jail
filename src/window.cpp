@@ -41,6 +41,11 @@ int Window::update() {
     return refresh();
 }
 
+int Window::update(int x, int y) {
+    move(y, x);
+    return refresh();
+}
+
 int Window::getKey() {
     return getch();
 }
