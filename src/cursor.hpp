@@ -1,6 +1,8 @@
 #ifndef CURSOR_HPP
 #define CURSOR_HPP
 
+#include "buffer.hpp"
+
 // TODO better trickery here?
 class Cursor;
 #include "window.hpp"
@@ -36,12 +38,17 @@ class Cursor {
         /// Get the col number this cursor is in
         int getCol() const;
 
+        /// Sets the backing buffer to be a new Buffer object
+        void setBuffer(Buffer *nBuffer);
+
     protected:
         bool checkSanity();
 
         Window *parent;
         int row;
         int col;
+
+        Buffer *buffer;
 };
 
 #endif // CURSOR_HPP

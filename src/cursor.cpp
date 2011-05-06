@@ -3,13 +3,15 @@
 Cursor::Cursor(Window *iParent) :
         parent(iParent),
         row(0),
-        col(0) {
+        col(0),
+        buffer(NULL) {
 }
 
 Cursor::Cursor(Window *iParent, int iRow, int iCol) :
         parent(iParent),
         row(iRow),
-        col(iCol) {
+        col(iCol),
+        buffer(NULL) {
 }
 
 bool Cursor::move(int nRow, int nCol) {
@@ -56,6 +58,19 @@ bool Cursor::checkSanity() {
         return false;
     }
 
+    if(this->buffer == NULL)
+        return true;
+
+    if(this->row > this->buffer->getSize() - 1) {
+        this->row = this->buffer->getSize() - 1;
+        return false;
+    }
+
+    if(this->col > this->buffer->getRowLength(this->row) - 1) {
+        this->col = this->buffer->getRowLength(this->row) - 1;
+        return false;
+    }
+
     return true;
 }
 
@@ -68,6 +83,10 @@ int Cursor::getRow() const {
 
 int Cursor::getCol() const {
     return this->col;
+}
+
+void Cursor::setBuffer(Buffer *nBuffer) {
+    this->buffer = nBuffer;
 }
 
 // vim:ts=4 et sw=4 sts=4
