@@ -14,6 +14,7 @@ View::View(Window *win, Buffer *buf) : // TODO: again, styling on init lists
 void View::view() {
     this->window->start();
     Cursor *mCursor = this->window->getCursor();
+    mCursor->setBuffer(this->buffer);
 
     this->repaint();
 
@@ -97,11 +98,20 @@ void View::repaint() {
 
     Cursor mCursor(this->window);
     // incase the Window is longer than the buffer
-    int end = min((int)data.size() - (int)this->row - 1,
+    int end = min((int)data.size() - (int)this->row,
             this->window->getHeight() - 1);
     for(int i = 0; i < end; ++i) {
-        this->window->write(&mCursor, data[i + this->row].substr(
-                this->col, this->window->getWidth()));
+        // if this line does not go completely across, we must erase what
+        // might have been there before, so we add a section of spaces
+        if(data[i + this->row].length() < this->window->getWidth())
+            this->window->write(&mCursor, data[i + this->row].substr(
+                    this->col, this->window->getWidth()) +
+                    string(this->window->getWidth() -
+                        data[i + this->row].length(), ' '));
+        else
+            this->window->write(&mCursor, data[i + this->row].substr(
+                    this->col, this->window->getWidth()));
+
         mCursor.down();
     }
 }
