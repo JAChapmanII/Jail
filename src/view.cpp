@@ -90,14 +90,14 @@ void View::repaint() {
 
     vector<string> data = this->buffer->getData();
 
-    if(this->row < 0)
-        this->row = 0;
     if(this->row > (int)data.size() - (this->window->getHeight() - 1))
         this->row = (int)data.size() - (this->window->getHeight() - 1);
+    if(this->row < 0)
+        this->row = 0;
 
     Cursor mCursor(this->window);
     // incase the Window is longer than the buffer
-    int end = min((int)((int)data.size() - this->row),
+    int end = min((int)data.size() - (int)this->row - 1,
             this->window->getHeight() - 1);
     for(int i = 0; i < end; ++i) {
         this->window->write(&mCursor, data[i + this->row].substr(
