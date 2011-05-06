@@ -44,19 +44,23 @@ bool Cursor::checkSanity() {
         this->row = 0;
         return false;
     }
+    /*
     if(this->row > this->parent->getHeight() - 1) {
         this->row = this->parent->getHeight() - 1;
         return false;
     }
+    */
 
     if(this->col < 0) {
         this->col = 0;
         return false;
     }
+    /*
     if(this->col > this->parent->getWidth() - 1) {
         this->col = this->parent->getWidth() - 1;
         return false;
     }
+    */
 
     if(this->buffer == NULL)
         return true;
