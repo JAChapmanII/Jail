@@ -11,3 +11,8 @@ Configuration needs to have attention drawn to it and talked about.
 
 Move non-configuration, non-main functions to some other file/class
 
+We're using the return value of the Cursor's move functions to see if we
+should try to scroll or not, however this has caused a dirty hack to be
+implemented when we are merely moving down into a line shorter than where the
+cursor was previously, in which we should not scroll. Is there a better way?
+
