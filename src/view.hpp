@@ -21,10 +21,13 @@ class View {
     protected:
         /// Repaints Buffer contents into Window
         void repaint();
+        /// make sure the view has the cursor in it
+        bool checkSanity();
 
         Window *window;
         Buffer *buffer;
-        long row, col;
+        long startX, endX;
+        long startY, endY;
 };
 
 #endif // VIEW_HPP
