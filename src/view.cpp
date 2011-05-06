@@ -15,7 +15,7 @@ View::View(Window *win, Buffer *buf) : // TODO: again, styling on init lists
 void View::view() {
     this->window->start();
     this->endX = this->window->getWidth() - 1;
-    this->endY = this->window->getHeight() - 1;
+    this->endY = this->window->getHeight() - 2;
 
     Cursor *mCursor = this->window->getCursor();
     mCursor->setBuffer(this->buffer);
@@ -51,13 +51,13 @@ void View::view() {
                 break;
 
             case Key::CtrlB:
-                mCursor->move(mCursor->getCol(),
-                        mCursor->getRow() - this->window->getHeight());
+                mCursor->move(mCursor->getRow() - this->window->getHeight() + 1,
+                        mCursor->getCol());
                 break;
 
             case Key::CtrlF:
-                mCursor->move(mCursor->getCol(),
-                        mCursor->getRow() + this->window->getHeight());
+                mCursor->move(mCursor->getRow() + this->window->getHeight() - 1,
+                        mCursor->getCol());
                 break;
 
             case Key::Escape:
@@ -85,7 +85,7 @@ void View::repaint() {
     Cursor mCursor(this->window);
     vector<string> data = this->buffer->getData();
     // incase the Window is longer than the buffer
-    int end = min((int)data.size(), (int)this->endY);
+    int end = min((int)data.size(), (int)this->endY + 1);
     for(int i = startY; i < end; ++i) {
         // if this line does not go completely across, we must erase what
         // might have been there before, so we add a section of spaces
@@ -111,12 +111,12 @@ bool View::checkSanity() {
 
     if(mCursor->getRow() < this->startY) {
         this->startY = mCursor->getRow();
-        this->endY = this->startY + this->window->getHeight() - 1;
+        this->endY = this->startY + (this->window->getHeight() - 2);
         return false;
     }
     if(mCursor->getRow() > this->endY) {
         this->endY = mCursor->getRow();
-        this->startY = this->endY - this->window->getHeight() + 1;
+        this->startY = this->endY - (this->window->getHeight() - 2);
         return false;
     }
 
