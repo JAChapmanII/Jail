@@ -18,28 +18,28 @@ bool Cursor::move(int nRow, int nCol) {
     // TODO sanity checks
     this->row = nRow;
     this->col = nCol;
-    return this->checkSanity(false);
+    return this->checkSanity();
 }
 
 bool Cursor::left() {
     this->col--;
-    return this->checkSanity(false);
+    return this->checkSanity();
 }
 bool Cursor::right() {
     this->col++;
-    return this->checkSanity(false);
+    return this->checkSanity();
 }
 
 bool Cursor::up() {
     this->row--;
-    return this->checkSanity(true);
+    return this->checkSanity();
 }
 bool Cursor::down() {
     this->row++;
-    return this->checkSanity(true);
+    return this->checkSanity();
 }
 
-bool Cursor::checkSanity(bool vertical) {
+bool Cursor::checkSanity() {
     if(this->row < 0) {
         this->row = 0;
         return false;
@@ -70,11 +70,9 @@ bool Cursor::checkSanity(bool vertical) {
     if(this->col > this->buffer->getRowLength(this->row) - 1) {
         this->col = this->buffer->getRowLength(this->row) - 1;
         // We should just be at the start of a blank line
-        if(this->buffer->getRowLength(this->row) == 0) {
+        if(this->buffer->getRowLength(this->row) == 0)
             this->col = 0;
-            return vertical;
-        }
-        return false;
+        return true;
     }
 
     return true;

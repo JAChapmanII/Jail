@@ -42,7 +42,7 @@ class Cursor {
         void setBuffer(Buffer *nBuffer);
 
     protected:
-        bool checkSanity(bool vertical);
+        bool checkSanity();
 
         Window *parent;
         int row;
