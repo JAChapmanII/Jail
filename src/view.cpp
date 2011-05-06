@@ -50,11 +50,13 @@ void View::view() {
                 mCursor->right();
                 break;
 
+            case Key::PageUp:
             case Key::CtrlB:
                 mCursor->move(mCursor->getRow() - this->window->getHeight() + 1,
                         mCursor->getCol());
                 break;
 
+            case Key::PageDown:
             case Key::CtrlF:
                 mCursor->move(mCursor->getRow() + this->window->getHeight() - 1,
                         mCursor->getCol());
