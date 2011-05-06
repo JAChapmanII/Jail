@@ -103,7 +103,7 @@ void View::repaint() {
     for(int i = 0; i < end; ++i) {
         // if this line does not go completely across, we must erase what
         // might have been there before, so we add a section of spaces
-        if(data[i + this->row].length() < this->window->getWidth())
+        if((int)data[i + this->row].length() < this->window->getWidth())
             this->window->write(&mCursor, data[i + this->row].substr(
                     this->col, this->window->getWidth()) +
                     string(this->window->getWidth() -
