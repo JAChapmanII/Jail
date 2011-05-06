@@ -24,6 +24,12 @@ class Buffer {
         /// Return a vector of strings of this buffer's contents
         std::vector<std::string> getData();
 
+        /// Returns the number of rows in this Buffer
+        int getSize() const;
+
+        /// Returns the length of a row, if it exists
+        int getRowLength(int row) const;
+
         /// Clear this buffer's data
         void clear();
 

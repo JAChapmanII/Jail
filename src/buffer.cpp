@@ -43,6 +43,16 @@ vector<string> Buffer::getData() {
     return this->data;
 }
 
+int Buffer::getSize() const {
+    return this->data.size();
+}
+
+int Buffer::getRowLength(int row) const {
+    if(this->data.size() - 1 < row)
+        return -1;
+    return (this->data)[row].length();
+}
+
 void Buffer::clear() {
     if(this->length < 0)
         return;
