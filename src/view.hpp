@@ -28,6 +28,8 @@ class View {
         Buffer *buffer;
         long startX, endX;
         long startY, endY;
+
+        Cursor *cursor;
 };
 
 #endif // VIEW_HPP

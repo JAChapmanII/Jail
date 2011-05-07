@@ -5,11 +5,16 @@ using std::vector;
 #include <algorithm>
 using std::min;
 
+#include <sstream>
+using std::stringstream;
+
 View::View(Window *win, Buffer *buf) : // TODO: again, styling on init lists
         window(win),
         buffer(buf),
         startX(0), endX(win->getWidth() - 1),
-        startY(0), endY(win->getHeight() - 1) {
+        startY(0), endY(win->getHeight() - 1),
+        cursor(NULL) {
+    this->cursor = new Cursor(buf);
 }
 
 void View::view() {
@@ -17,49 +22,46 @@ void View::view() {
     this->endX = this->window->getWidth() - 1;
     this->endY = this->window->getHeight() - 2;
 
-    Cursor *mCursor = this->window->getCursor();
-    mCursor->setBuffer(this->buffer);
-
     this->repaint();
 
-    mCursor->move(0, 0);
-    Cursor bottomLeft(this->window, this->window->getHeight() - 1, 0);
+    this->cursor->move(0, 0);
     string line(this->window->getWidth(), ' ');
     bool done = false;
     while(!done) {
-        //ncurses::getyx(stdscr, r, c);
         int i = this->window->getKey();
         switch(i) {
             case 'j':
             case Key::Down:
-                mCursor->down();
+                this->cursor->down();
                 break;
 
             case 'k':
             case Key::Up:
-                mCursor->up();
+                this->cursor->up();
                 break;
 
             case 'h':
             case Key::Left:
-                mCursor->left();
+                this->cursor->left();
                 break;
 
             case 'l':
             case Key::Right:
-                mCursor->right();
+                this->cursor->right();
                 break;
 
             case Key::PageUp:
             case Key::CtrlB:
-                mCursor->move(mCursor->getRow() - this->window->getHeight() + 1,
-                        mCursor->getCol());
+                this->cursor->move(
+                        this->cursor->getRow() - this->window->getHeight() + 1,
+                        this->cursor->getCol());
                 break;
 
             case Key::PageDown:
             case Key::CtrlF:
-                mCursor->move(mCursor->getRow() + this->window->getHeight() - 1,
-                        mCursor->getCol());
+                this->cursor->move(
+                        this->cursor->getRow() + this->window->getHeight() - 1,
+                        this->cursor->getCol());
                 break;
 
             case Key::Escape:
@@ -72,10 +74,10 @@ void View::view() {
         if(!this->checkSanity())
             this->repaint();
 
-        this->window->write(&bottomLeft, line);
-        this->window->write(&bottomLeft, i);
-        this->window->update(mCursor->getCol() - startX,
-                mCursor->getRow() - startY);
+        stringstream ss; ss << ": k" << i;
+        this->window->write(this->window->getHeight() - 1, ss.str());
+        this->window->update(this->cursor->getCol() - startX,
+                this->cursor->getRow() - startY);
     }
 }
 
@@ -84,40 +86,28 @@ void View::operator()() {
 }
 
 void View::repaint() {
-    Cursor mCursor(this->window);
     vector<string> data = this->buffer->getData();
     // incase the Window is longer than the buffer
     int end = min((int)data.size(), (int)this->endY + 1);
+    this->window->setRow(0);
     for(int i = startY; i < end; ++i) {
-        // if this line does not go completely across, we must erase what
-        // might have been there before, so we add a section of spaces
-        int viewWidth = this->endX - this->startX;
         int stringWidth = (int)data[i].length() - this->startX;
-        if(stringWidth < viewWidth)
-            this->window->write(&mCursor,
-                    data[i].substr(this->startX, stringWidth) +
-                    string(viewWidth - stringWidth, ' '));
-        else
-            this->window->write(&mCursor, data[i].substr(
-                    this->startX, this->window->getWidth()));
-
-        mCursor.down();
+        this->window->write(data[i].substr(this->startX, stringWidth));
     }
 }
 
 bool View::checkSanity() {
-    Cursor *mCursor = this->window->getCursor();
     // TODO left-right movement inside Buffer
     this->startX = 0;
     this->endX = this->window->getWidth() - 1;
 
-    if(mCursor->getRow() < this->startY) {
-        this->startY = mCursor->getRow();
+    if(this->cursor->getRow() < this->startY) {
+        this->startY = this->cursor->getRow();
         this->endY = this->startY + (this->window->getHeight() - 2);
         return false;
     }
-    if(mCursor->getRow() > this->endY) {
-        this->endY = mCursor->getRow();
+    if(this->cursor->getRow() > this->endY) {
+        this->endY = this->cursor->getRow();
         this->startY = this->endY - (this->window->getHeight() - 2);
         return false;
     }
