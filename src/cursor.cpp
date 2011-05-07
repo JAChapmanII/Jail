@@ -93,7 +93,11 @@ void Cursor::setBuffer(Buffer *nBuffer) {
 
 int Cursor::insert(char c) {
     this->buffer->insert(this->row, this->col, c);
-    this->right();
+    if(c == '\n') {
+        this->col = 0;
+        return this->down();
+    }
+    return this->right();
 }
 
 int Cursor::backspace() {

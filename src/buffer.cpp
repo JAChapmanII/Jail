@@ -62,6 +62,16 @@ void Buffer::clear() {
 }
 
 int Buffer::insert(long iRow, long iCol, char c) {
+    if(c == '\n') {
+        vector<string>::iterator i = this->data.begin(); i += iRow + 1;
+        if(iCol > (int)this->data[iRow].length()) {
+            this->data.insert(i, string());
+            return 0;
+        }
+        this->data.insert(i, this->data[iRow].substr(iCol));
+        this->data[iRow].erase(iCol);
+        return 0;
+    }
     this->data[iRow].insert(iCol, 1, c);
 }
 
