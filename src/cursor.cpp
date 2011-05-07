@@ -97,8 +97,17 @@ int Cursor::insert(char c) {
 }
 
 int Cursor::backspace() {
+    if(this->col == 0) {
+        if(this->row == 0)
+            return 1;
+        long r = this->row, c = this->col;
+        this->col = this->buffer->getRowLength(this->row - 1);
+        this->up();
+        this->buffer->erase(r, c - 1);
+        return 0;
+    }
     this->buffer->erase(this->row, this->col - 1);
-    this->left();
+    return this->left();
 }
 
 // vim:ts=4 et sw=4 sts=4
