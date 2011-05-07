@@ -91,4 +91,12 @@ void Cursor::setBuffer(Buffer *nBuffer) {
     this->buffer = nBuffer;
 }
 
+int Cursor::insert(char c) {
+    this->buffer->getData()[this->row].insert(this->col++, 1, c);
+}
+
+int Cursor::backspace() {
+    this->buffer->getData()[this->row].erase(this->col - 1, 1);
+}
+
 // vim:ts=4 et sw=4 sts=4

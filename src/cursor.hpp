@@ -41,6 +41,11 @@ class Cursor {
         /// Sets the backing buffer to be a new Buffer object
         void setBuffer(Buffer *nBuffer);
 
+        /// Inserts a character into the buffer at the current position
+        int insert(char c);
+        /// Delete the character before the cursor
+        int backspace();
+
     protected:
         bool checkSanity();
 
