@@ -1,23 +1,31 @@
 #include "cursor.hpp"
 
-Cursor::Cursor(Window *iParent) :
-        parent(iParent),
+Cursor::Cursor(Buffer *iBuffer) :
+        buffer(iBuffer),
         row(0),
-        col(0),
-        buffer(NULL) {
+        col(0) {
 }
 
-Cursor::Cursor(Window *iParent, int iRow, int iCol) :
-        parent(iParent),
+Cursor::Cursor(Buffer *iBuffer, long iRow, long iCol) :
+        buffer(iBuffer),
         row(iRow),
-        col(iCol),
-        buffer(NULL) {
+        col(iCol) {
 }
 
-bool Cursor::move(int nRow, int nCol) {
+bool Cursor::move(long nRow, long nCol) {
     // TODO sanity checks
     this->row = nRow;
     this->col = nCol;
+    return this->checkSanity();
+}
+
+bool Cursor::setColumn(long nCol) {
+    this->col = nCol;
+    return this->checkSanity();
+}
+
+bool Cursor::setRow(long nRow) {
+    this->row = nRow;
     return this->checkSanity();
 }
 
@@ -44,31 +52,17 @@ bool Cursor::checkSanity() {
         this->row = 0;
         return false;
     }
-    /*
-    if(this->row > this->parent->getHeight() - 1) {
-        this->row = this->parent->getHeight() - 1;
-        return false;
-    }
-    */
-
     if(this->col < 0) {
         this->col = 0;
         return false;
     }
-    /*
-    if(this->col > this->parent->getWidth() - 1) {
-        this->col = this->parent->getWidth() - 1;
-        return false;
-    }
-    */
 
     if(this->buffer == NULL)
         return true;
 
     if(this->row > this->buffer->getSize() - 1) {
         this->row = this->buffer->getSize() - 1;
-        // Return true because we should not try to scroll down
-        return true;
+        return false;
     }
 
     if(this->col > this->buffer->getRowLength(this->row) - 1) {
@@ -85,11 +79,11 @@ bool Cursor::checkSanity() {
 // TODO these are constant, but I fear they may provide inconsistent state if
 // TODO the backing window is resized without having any mutating methods being
 // TODO called in between.
-int Cursor::getRow() const {
+long Cursor::getRow() const {
     return this->row;
 }
 
-int Cursor::getCol() const {
+long Cursor::getCol() const {
     return this->col;
 }
 
