@@ -78,6 +78,7 @@ void Controller::run() {
 
                     case Key::Backspace:
                         this->cursor->backspace();
+                        this->view->repaint();
                         break;
 
                     default:
