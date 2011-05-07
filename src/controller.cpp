@@ -112,7 +112,7 @@ void Controller::run() {
                         break;
 
                     default:
-                        if(i >= ' ' && i <= 126) {
+                        if((i >= ' ' && i <= 126) || (i == '\n')) {
                             this->cursor->insert((char)i);
                             this->view->repaint();
                         }
@@ -127,6 +127,7 @@ void Controller::run() {
             this->view->repaint();
 
         stringstream ss; ss << ": k" << i;
+        // TODO sometimes part of the end of this word get's erased
         ss << "\t" << ((this->state == State::Insert) ? "Insert" : "Command");
         this->window->write(this->window->getHeight() - 1, ss.str());
         this->window->update(this->cursor->getCol() - this->view->getStartX(),
