@@ -65,8 +65,8 @@ bool Cursor::checkSanity() {
         return false;
     }
 
-    if(this->col > this->buffer->getRowLength(this->row) - 1) {
-        this->col = this->buffer->getRowLength(this->row) - 1;
+    if(this->col > this->buffer->getRowLength(this->row)) {
+        this->col = this->buffer->getRowLength(this->row);
         // We should just be at the start of a blank line
         if(this->buffer->getRowLength(this->row) == 0)
             this->col = 0;
