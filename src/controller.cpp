@@ -81,8 +81,10 @@ void Controller::run() {
                         break;
 
                     default:
-                        if(i >= ' ' && i <= 126)
+                        if(i >= ' ' && i <= 126) {
                             this->cursor->insert((char)i);
+                            this->view->repaint();
+                        }
                         break;
                 }
                 break;
