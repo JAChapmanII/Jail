@@ -126,9 +126,13 @@ void Controller::run() {
         if(!this->view->checkSanity())
             this->view->repaint();
 
-        stringstream ss; ss << ": k" << i;
-        // TODO sometimes part of the end of this word get's erased
-        ss << "\t" << ((this->state == State::Insert) ? "Insert" : "Command");
+        stringstream ss; ss << ": k" << i
+            << " " << "(" << this->cursor->getCol()
+            << ", " << this->cursor->getRow() << ") -- %"
+            << this->cursor->getRow() * 100 /
+                // TODO ugly hack to get number of lines
+                this->view->getBuffer()->getData().size() << " ";
+        ss << " " << ((this->state == State::Insert) ? "Insert" : "Command");
         this->window->write(this->window->getHeight() - 1, ss.str());
         this->window->update(this->cursor->getCol() - this->view->getStartX(),
                 this->cursor->getRow() - this->view->getStartY());
