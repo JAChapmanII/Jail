@@ -5,6 +5,10 @@
 #include "view.hpp"
 #include "cursor.hpp"
 
+namespace State {
+    enum State { Command, Insert };
+}
+
 /**
  * Handles input and keeps track of mode
  */
@@ -23,6 +27,7 @@ class Controller {
         View *view;
         Window *window;
         Cursor *cursor;
+        State::State state;
 };
 
 #endif // CONTROLLER_HPP
