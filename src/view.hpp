@@ -27,6 +27,8 @@ class View {
         Cursor *getCursor();
         /// Returns a pointer to this's window
         Window *getWindow();
+        /// Returs a pointer to this's buffer
+        Buffer *getBuffer();
 
         /// Get's this's startX value
         long getStartX() const;

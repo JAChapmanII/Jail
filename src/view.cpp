@@ -35,8 +35,8 @@ void View::repaint() {
         int stringWidth = (int)data[i].length() - this->startX;
         this->window->write(data[i].substr(this->startX, stringWidth));
     }
-    if(end - startY < this->window->getHeight())
-        for(int i = end; i < this->window->getHeight(); ++i)
+    if(end - startY < this->window->getHeight() - 1)
+        for(int i = end; i < this->window->getHeight() - 1; ++i)
             this->window->write((string)" ");
 }
 
@@ -67,11 +67,16 @@ Window *View::getWindow() {
     return this->window;
 }
 
+Buffer *View::getBuffer() {
+    return this->buffer;
+}
+
 long View::getStartX() const {
     return this->startX;
 }
 long View::getStartY() const {
     return this->startY;
 }
+
 
 // vim:ts=4 et sw=4 sts=4
