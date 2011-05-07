@@ -21,6 +21,7 @@ using std::vector;
 
 #include "buffer.hpp"
 #include "view.hpp"
+#include "controller.hpp"
 
 int parseCommand(string command);
 int printHelp();
@@ -174,7 +175,8 @@ void view(vector<string> fileNames) {
     Buffer mBuffer((string)data);
     Window mWindow;
     View mView(&mWindow, &mBuffer);
-    mView();
+    Controller mController(&mView);
+    mController();
 }
 
 void edit(vector<string> fileNames) {
