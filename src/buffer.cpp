@@ -61,4 +61,15 @@ void Buffer::clear() {
     this->length = -1;
 }
 
+int Buffer::insert(long iRow, long iCol, char c) {
+    this->data[iRow].insert(iCol, 1, c);
+}
+
+int Buffer::erase(long eRow, long eCol) {
+    if((eCol < 0) || (eCol > (int)this->data[eRow].length()))
+        return 1;
+    this->data[eRow].erase(eCol, 1);
+    return 0;
+}
+
 // vim:ts=4 et sw=4 sts=4

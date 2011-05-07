@@ -33,6 +33,11 @@ class Buffer {
         /// Clear this buffer's data
         void clear();
 
+        /// Insert a character into specified row and column
+        int insert(long iRow, long iCol, char c);
+        /// Erase a character out of the Buffer
+        int erase(long eRow, long eCol);
+
     protected:
         // TODO: implement these, or not?
         Buffer(const Buffer &rhs);
