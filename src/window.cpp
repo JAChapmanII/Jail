@@ -6,9 +6,8 @@ const int KEY_ESCAPE = 27;
 
 Window::Window() : // TODO style, CodeBlock!
         cursesMode(false),
-        cursor() {
+        row(0) {
     ESCDELAY = 0;
-    this->cursor = new Cursor(this);
 }
 
 Window::~Window() {
@@ -26,7 +25,7 @@ void Window::start() {
     intrflush(stdscr, false);
     keypad(stdscr, true);
 
-    this->update();
+    this->update(0, 0);
 }
 
 void Window::stop() {
@@ -34,11 +33,6 @@ void Window::stop() {
         endwin();
         cursesMode = false;
     }
-}
-
-int Window::update() {
-    move(this->cursor->getRow(), this->cursor->getCol());
-    return refresh();
 }
 
 int Window::update(int x, int y) {
@@ -51,15 +45,12 @@ int Window::getKey() {
 }
 
 bool Window::write(string s) {
-    return this->write(this->cursor, s);
+    mvprintw(this->row, 0, "%s", (s + string(COLS - s.length(), ' ')).c_str());
+    this->row++;
 }
 
-bool Window::write(Cursor *c, string s) {
-    mvprintw(c->getRow(), c->getCol(), "%s", s.c_str());
-}
-
-bool Window::write(Cursor *c, int i) {
-    mvprintw(c->getRow(), c->getCol(), "%4i", i);
+bool Window::write(int wRow, string s) {
+    mvprintw(wRow, 0, "%s", (s + string(COLS - s.length(), ' ')).c_str());
 }
 
 int Window::getHeight() const {
@@ -70,8 +61,8 @@ int Window::getWidth() const {
     return COLS;
 }
 
-Cursor *Window::getCursor() {
-    return this->cursor;
+void Window::setRow(int nRow) {
+    this->row = nRow;
 }
 
 // vim:ts=4 et sw=4 sts=4

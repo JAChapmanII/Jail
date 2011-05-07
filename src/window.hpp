@@ -6,8 +6,6 @@
 // TODO include into a namespace?
 #include <ncurses.h>
 
-// TODO better trickery here?
-class Window;
 #include "cursor.hpp"
 
 // TODO guh, better way to do this?
@@ -43,8 +41,6 @@ class Window {
         void start();
         /// Puts the backing screen into regular mode
         void stop();
-        /// Updates the window
-        int update();
         /// Updates the window, moves cursor to set position
         int update(int x, int y);
 
@@ -53,18 +49,16 @@ class Window {
 
         /// Write a string where the internal cursor is at
         bool write(std::string s);
-        /// Writes a string to where a Cursor is at
-        bool write(Cursor *c, std::string s);
-        /// Writes a four width int to a specified position
-        bool write(Cursor *c, int i);
+        /// Writes a string at a specified row
+        bool write(int wRow, std::string s);
 
         /// Returns the width of the window
         int getWidth() const;
         /// Returns the height of the window
         int getHeight() const;
 
-        /// Returns a pointer to this's internal cursor
-        Cursor *getCursor();
+        /// Set the internal cursor's row
+        void setRow(int nRow);
 
     protected:
         // todo: implement these, or not?
@@ -72,7 +66,7 @@ class Window {
         Window &operator=(const Window &rhs);
 
         bool cursesMode;
-        Cursor *cursor;
+        int row;
 };
 
 #endif // WINDOW_HPP
