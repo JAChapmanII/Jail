@@ -62,7 +62,7 @@ void Controller::run() {
                                 this->cursor->getCol());
                         break;
 
-                    case Key::Escape:
+                    case 'q':
                         done = true;
                         break;
 
@@ -72,6 +72,36 @@ void Controller::run() {
                 break;
             case State::Insert:
                 switch(i) {
+                    case Key::Down:
+                        this->cursor->down();
+                        break;
+
+                    case Key::Up:
+                        this->cursor->up();
+                        break;
+
+                    case Key::Left:
+                        this->cursor->left();
+                        break;
+
+                    case Key::Right:
+                        this->cursor->right();
+                        break;
+
+                    case Key::PageUp:
+                    case Key::CtrlB:
+                        this->cursor->move(
+                                this->cursor->getRow() - this->window->getHeight() + 1,
+                                this->cursor->getCol());
+                        break;
+
+                    case Key::PageDown:
+                    case Key::CtrlF:
+                        this->cursor->move(
+                                this->cursor->getRow() + this->window->getHeight() - 1,
+                                this->cursor->getCol());
+                        break;
+
                     case Key::Escape:
                         this->state = State::Command;
                         break;
