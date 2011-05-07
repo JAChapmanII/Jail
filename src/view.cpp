@@ -35,6 +35,9 @@ void View::repaint() {
         int stringWidth = (int)data[i].length() - this->startX;
         this->window->write(data[i].substr(this->startX, stringWidth));
     }
+    if(end - startY < this->window->getHeight())
+        for(int i = end; i < this->window->getHeight(); ++i)
+            this->window->write((string)" ");
 }
 
 bool View::checkSanity() {
