@@ -66,8 +66,17 @@ int Buffer::insert(long iRow, long iCol, char c) {
 }
 
 int Buffer::erase(long eRow, long eCol) {
-    if((eCol < 0) || (eCol > (int)this->data[eRow].length()))
+    if((eCol < -1) || (eCol > (int)this->data[eRow].length()))
         return 1;
+    if(eCol == -1) {
+        if(eRow == 0)
+            return 1;
+        this->data[eRow - 1].append(this->data[eRow]);
+        vector<string>::iterator i = this->data.begin();
+        i += eRow;
+        this->data.erase(i);
+        return 0;
+    }
     this->data[eRow].erase(eCol, 1);
     return 0;
 }
