@@ -18,12 +18,22 @@ class View {
         /// Alias to view function
         void operator()();
 
-    protected:
         /// Repaints Buffer contents into Window
         void repaint();
         /// make sure the view has the cursor in it
         bool checkSanity();
 
+        /// Returns a pointer to this's cursor
+        Cursor *getCursor();
+        /// Returns a pointer to this's window
+        Window *getWindow();
+
+        /// Get's this's startX value
+        long getStartX() const;
+        /// Get's this's startY value
+        long getStartY() const;
+
+    protected:
         Window *window;
         Buffer *buffer;
         long startX, endX;
