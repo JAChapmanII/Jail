@@ -45,12 +45,18 @@ int Window::getKey() {
 }
 
 bool Window::write(string s) {
-    mvprintw(this->row, 0, "%s", (s + string(COLS - s.length(), ' ')).c_str());
+    mvprintw(this->row, 0, "%s", s.c_str());
+    if((int)s.length() < COLS)
+        mvprintw(this->row, s.length(), "%s",
+                string(COLS - (int)s.length(), ' ').c_str());
     this->row++;
 }
 
 bool Window::write(int wRow, string s) {
-    mvprintw(wRow, 0, "%s", (s + string(COLS - s.length(), ' ')).c_str());
+    mvprintw(wRow, 0, "%s", s.c_str());
+    if((int)s.length() < COLS)
+        mvprintw(this->row, s.length(), "%s",
+                string(COLS - (int)s.length(), ' ').c_str());
 }
 
 int Window::getHeight() const {
