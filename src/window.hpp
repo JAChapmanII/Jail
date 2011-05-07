@@ -23,7 +23,8 @@ namespace Key {
         W, X, Y, Z, OpenSquareBracket, Backslash, CloseSquareBracket, Caret,
         Underscore, Grave, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p,
         q, r, s, t, u, v, w, x, y, z, OpenBrace, Pipe, CloseBrace, Tilde,
-        Delete = 127, Backspace = KEY_BACKSPACE,
+        // TODO fix these
+        Delete = 127, Backspace = 127,
         PageDown = 338, PageUp };
 }
 
