@@ -24,6 +24,11 @@ class Cursor {
         /// Set's this cursor to be in a certain row
         bool setRow(long nRow);
 
+        /// Moves cursor to beginning of line
+        bool toBeginning();
+        /// Moves cursor to end of line
+        bool toEnd();
+
         /// Move the cursor to the left
         bool left();
         /// Move the cursor to the right
