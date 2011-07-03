@@ -49,8 +49,15 @@ char *FileIO::getData() {
 }
 
 int FileIO::write(string nContent) {
-    // TODO: implement
+    // TODO: HORRIBLE HACK
     this->clear();
+    this->close();
+    this->file.open(this->fileName.c_str(), fstream::out | fstream::trunc);
+    this->file.write(nContent.c_str(), nContent.length());
+    return nContent.length();
+    this->clear();
+    this->close();
+    // TODO: /HORRIBLE HACK
 }
 
 void FileIO::clear() {
