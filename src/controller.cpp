@@ -66,6 +66,21 @@ void Controller::run() {
                         this->state = State::Insert;
                         break;
 
+                    case 'o':
+                        this->cursor->toEnd();
+                        this->cursor->insert('\n');
+                        this->state = State::Insert;
+                        this->view->repaint();
+                        break;
+
+                    case 'O':
+                        this->cursor->toBeginning();
+                        this->cursor->insert('\n');
+                        this->cursor->up();
+                        this->state = State::Insert;
+                        this->view->repaint();
+                        break;
+
                     case Key::PageUp:
                     case Key::CtrlB:
                         this->cursor->move(
