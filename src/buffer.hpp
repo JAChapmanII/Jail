@@ -4,15 +4,15 @@
 #include <string>
 #include <vector>
 
+#include "fileio.hpp"
+
 /**
  * Buffer is an in-memory representation of a file.
  */
 class Buffer {
     public:
-        /// Construct an empty Buffer
-        Buffer();
-        /// Contruct a Buffer with already existing content
-        Buffer(std::string contents);
+        /// Contruct a Buffer with a FileIO backing store
+        Buffer(FileIO *iFile, bool iReadOnly = false);
 
         /// Destroy a Buffer safely
         ~Buffer();
@@ -38,11 +38,19 @@ class Buffer {
         /// Erase a character out of the Buffer
         int erase(long eRow, long eCol);
 
+        /// Save this buffer to its backing store
+        int save();
+
+        /// Checks to see if this buffer is read only
+        bool isReadOnly() const;
+
     protected:
         // TODO: implement these, or not?
         Buffer(const Buffer &rhs);
         Buffer &operator=(const Buffer &rhs);
 
+        bool readOnly;
+        FileIO *file;
         int length;
         // TODO data type here? Change-able later
         std::vector<std::string> data;

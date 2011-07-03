@@ -2,14 +2,20 @@
 using std::string;
 using std::vector;
 
-Buffer::Buffer() : // TODO: formatting guidelines
+Buffer::Buffer(FileIO *iFile, bool iReadOnly) : // TODO: formatting guidelines
+        readOnly(iReadOnly),
+        file(iFile),
         length(-1),
         data() {
-}
 
-Buffer::Buffer(string contents) : // TODO: formatting guidelines
-        length(contents.length()),
-        data() {
+    this->file->open();
+    int fLength = this->file->read();
+
+    if(fLength < 0)
+        throw fLength;
+
+    string contents = (string)this->file->getData();
+    this->length = contents.length();
 
     if(contents.find('\n') == string::npos) {
         this->data.push_back(contents);
@@ -89,6 +95,16 @@ int Buffer::erase(long eRow, long eCol) {
     }
     this->data[eRow].erase(eCol, 1);
     return 0;
+}
+
+int Buffer::save() {
+    if(this->readOnly)
+        return -2;
+    return this->file->write(this->getString());
+}
+
+bool Buffer::isReadOnly() const {
+    return this->readOnly;
 }
 
 // vim:ts=4 et sw=4 sts=4
