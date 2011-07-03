@@ -70,6 +70,17 @@ void Controller::run() {
                     case ':':
                         command = this->getCommand();
                         if(command == "w") {
+                            if(this->view->getBuffer()->isReadOnly()) {
+                                stringstream ss; ss << this->getModeline();
+                                ss << " -- Buffer is read only";
+                                this->window->write(
+                                        this->window->getHeight() - 1, ss.str());
+                                this->window->update(
+                                        this->cursor->getCol() - this->view->getStartX(),
+                                        this->cursor->getRow() - this->view->getStartY());
+                                sleep(1);
+                                break;
+                            }
                             int saved = this->view->getBuffer()->save();
                             stringstream ss; ss << this->getModeline();
                             ss << " -- ";
