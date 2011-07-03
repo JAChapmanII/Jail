@@ -136,10 +136,7 @@ void dump(vector<string> fileNames) {
         cout << "File \"" << fileName << "\" is " << length << " bytes long.\n";
 
     if(!Config::isHexMode()) {
-        Buffer mBuffer((string)file.getData());
-        vector<string> data = mBuffer.getData();
-        for(vector<string>::iterator i = data.begin(); i != data.end(); ++i)
-            cout << (*i) << '\n';
+        cout << file.getData();
     } else {
         char *data = file.getData();
         int stop = (Config::getWidth() + 1) / 3;
@@ -162,17 +159,8 @@ void view(vector<string> fileNames) {
 
     string fileName = fileNames.back();
     FileIO file(fileName);
-    file.open();
-    int length = file.read();
 
-    if(length < 0) {
-        cerr << "There was a problem reading the file \""
-            << fileName << "\" for viewing." << endl;
-        return;
-    }
-
-    char *data = file.getData();
-    Buffer mBuffer((string)data);
+    Buffer mBuffer(&file, true);
     Window mWindow;
     View mView(&mWindow, &mBuffer);
     Controller mController(&mView);
@@ -180,8 +168,18 @@ void view(vector<string> fileNames) {
 }
 
 void edit(vector<string> fileNames) {
-    cout << "We can't yet edit files, sorry!" << endl;
-    return;
+    if(fileNames.empty())
+        return;
+
+    string fileName = fileNames.back();
+    FileIO file(fileName);
+
+    Buffer mBuffer(&file);
+    Window mWindow;
+    View mView(&mWindow, &mBuffer);
+    Controller mController(&mView);
+    mController();
+
 }
 
 // vim:ts=4 et sw=4 sts=4
