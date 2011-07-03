@@ -1,10 +1,10 @@
 #include "controller.hpp"
-
-#include <string>
 using std::string;
 
 #include <sstream>
 using std::stringstream;
+
+#include <unistd.h>
 
 Controller::Controller(View *iView) :
         view(iView),
@@ -19,6 +19,7 @@ void Controller::run() {
     this->cursor->move(0, 0);
     string line(this->window->getWidth(), ' ');
     bool done = false;
+    string command;
     while(!done) {
         int i = this->window->getKey();
         switch(this->state) {
@@ -64,6 +65,25 @@ void Controller::run() {
 
                     case 'q':
                         done = true;
+                        break;
+
+                    case ':':
+                        command = this->getCommand();
+                        if(command == "w") {
+                            int saved = this->view->getBuffer()->save();
+                            stringstream ss; ss << this->getModeline();
+                            ss << " -- ";
+                            if(saved < 0)
+                                ss << "Failed to save.";
+                            else
+                                ss << "Saved " << saved << " bytes to file";
+                            string m = ss.str();
+                            this->window->write(this->window->getHeight() - 1, m);
+                            this->window->update(
+                                    this->cursor->getCol() - this->view->getStartX(),
+                                    this->cursor->getRow() - this->view->getStartY());
+                            sleep(1);
+                        }
                         break;
 
                     default:
@@ -126,17 +146,43 @@ void Controller::run() {
         if(!this->view->checkSanity())
             this->view->repaint();
 
-        stringstream ss; ss << ": k" << i
-            << " " << "(" << this->cursor->getCol()
-            << ", " << this->cursor->getRow() << ") -- %"
-            << this->cursor->getRow() * 100 /
-                // TODO ugly hack to get number of lines
-                this->view->getBuffer()->getData().size() << " ";
-        ss << " " << ((this->state == State::Insert) ? "Insert" : "Command");
-        this->window->write(this->window->getHeight() - 1, ss.str());
+        this->window->write(this->window->getHeight() - 1, this->getModeline());
         this->window->update(this->cursor->getCol() - this->view->getStartX(),
                 this->cursor->getRow() - this->view->getStartY());
     }
+}
+
+string Controller::getCommand() {
+    string ret;
+    this->window->write(this->window->getHeight() - 1, "Command: ");
+    this->window->update(this->cursor->getCol() - this->view->getStartX(),
+            this->cursor->getRow() - this->view->getStartY());
+    while(true) {
+        int i = this->window->getKey();
+        switch(i) {
+            case Key::Escape:
+                return "";
+            case '\n':
+                return ret;
+            default:
+                if(i >= ' ' && i <= 126)
+                    ret += (char)i;
+        }
+        this->window->write(this->window->getHeight() - 1, ("Command: " + ret));
+        this->window->update(this->cursor->getCol() - this->view->getStartX(),
+                this->cursor->getRow() - this->view->getStartY());
+    }
+}
+
+string Controller::getModeline() {
+    stringstream ss; 
+    ss << ": (" << this->cursor->getCol()
+        << ", " << this->cursor->getRow() << ") -- %"
+        << this->cursor->getRow() * 100 /
+            // TODO ugly hack to get number of lines
+            this->view->getBuffer()->getData().size() << " ";
+    ss << " " << ((this->state == State::Insert) ? "Insert" : "Command");
+    return ss.str();
 }
 
 void Controller::operator()() {

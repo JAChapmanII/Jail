@@ -1,6 +1,8 @@
 #ifndef CONTROLLER_HPP
 #define CONTROLLER_HPP
 
+#include <string>
+
 #include "window.hpp"
 #include "view.hpp"
 #include "cursor.hpp"
@@ -24,6 +26,9 @@ class Controller {
         void operator()();
 
     protected:
+        std::string getCommand();
+        std::string getModeline();
+
         View *view;
         Window *window;
         Cursor *cursor;
