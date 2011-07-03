@@ -48,6 +48,11 @@ char *FileIO::getData() {
     return this->data;
 }
 
+int FileIO::write(string nContent) {
+    // TODO: implement
+    this->clear();
+}
+
 void FileIO::clear() {
     if(this->length < 0)
         return;

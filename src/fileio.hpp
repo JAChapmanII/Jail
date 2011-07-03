@@ -26,6 +26,9 @@ class FileIO {
         /// Get a pointer to the internal representation of the read data
         char *getData();
 
+        /// Overwrite old contents with the contents of a string
+        int write(std::string nContent);
+
         /// Clear the data buffer
         void clear();
 
