@@ -16,3 +16,9 @@ should try to scroll or not, however this has caused a dirty hack to be
 implemented when we are merely moving down into a line shorter than where the
 cursor was previously, in which we should not scroll. Is there a better way?
 
+FileIO's write function, which is used through Buffer (which is obtained
+through a Controller's view's getBuffer function, yay indirection!) is a
+horrible hack. It most likely invalidates all assumed state. I don't know what
+happens if you use it more than once. Or try to read from the FileIO
+afterward. Yay!
+
