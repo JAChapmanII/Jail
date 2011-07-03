@@ -25,6 +25,14 @@ void Controller::run() {
         switch(this->state) {
             case State::Command:
                 switch(i) {
+                    case '0':
+                        this->cursor->toBeginning();
+                        break;
+
+                    case '$':
+                        this->cursor->toEnd();
+                        break;
+
                     case 'j':
                     case Key::Down:
                         this->cursor->down();
@@ -45,7 +53,16 @@ void Controller::run() {
                         this->cursor->right();
                         break;
 
+                    case 'I':
+                        this->cursor->toBeginning();
                     case 'i':
+                        this->state = State::Insert;
+                        break;
+
+                    case 'A':
+                        this->cursor->toEnd();
+                    case 'a':
+                        this->cursor->right();
                         this->state = State::Insert;
                         break;
 
