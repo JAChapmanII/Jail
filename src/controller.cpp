@@ -40,6 +40,13 @@ void Controller::run() {
                             if(i == '\n')
                                 command = "";
                             // execute command if it is one
+                            if(command == (string)"dd") {
+                                this->cursor->deleteLine();
+                                this->view->checkSanity();
+                                this->view->repaint();
+                                command = "";
+                                break;
+                            }
                             if(command == (string)"gg") {
                                 this->cursor->toBeginningOfBuffer();
                                 command = "";
