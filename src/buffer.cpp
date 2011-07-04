@@ -37,6 +37,7 @@ Buffer::~Buffer() {
 }
 
 int Buffer::getLength() const {
+    // TODO: invalidate by lots of stuff
     return this->length;
 }
 
@@ -97,6 +98,11 @@ int Buffer::erase(long eRow, long eCol) {
         return 0;
     }
     this->data[eRow].erase(eCol, 1);
+    return 0;
+}
+
+int Buffer::deleteLine(long eRow) {
+    this->data.erase(this->data.begin() + eRow);
     return 0;
 }
 
