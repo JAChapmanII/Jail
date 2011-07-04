@@ -15,11 +15,8 @@ Buffer::Buffer(FileIO *iFile, bool iReadOnly) : // TODO: formatting guidelines
         throw fLength;
 
     string contents;
-    // TODO: implement proper fix
     if(fLength > 0)
         contents = (string)this->file->getData();
-    else
-        contents = " ";
 
     this->length = contents.length();
 
