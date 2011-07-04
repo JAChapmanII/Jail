@@ -40,6 +40,11 @@ void Controller::run() {
                             if(i == '\n')
                                 command = "";
                             // execute command if it is one
+                            if(command == (string)"gg") {
+                                this->cursor->toBeginningOfBuffer();
+                                command = "";
+                                break;
+                            }
                             if(command == (string)"ZZ") {
                                 if(this->view->getBuffer()->isReadOnly()) {
                                     stringstream ss; ss << this->getModeline();
@@ -72,11 +77,11 @@ void Controller::run() {
                 }
                 switch(i) {
                     case '0':
-                        this->cursor->toBeginning();
+                        this->cursor->toBeginningOfLine();
                         break;
 
                     case '$':
-                        this->cursor->toEnd();
+                        this->cursor->toEndOfLine();
                         break;
 
                     case 'j':
@@ -99,28 +104,32 @@ void Controller::run() {
                         this->cursor->right();
                         break;
 
+                    case 'G':
+                        this->cursor->toEndOfBuffer();
+                        break;
+
                     case 'I':
-                        this->cursor->toBeginning();
+                        this->cursor->toBeginningOfLine();
                     case 'i':
                         this->state = State::Insert;
                         break;
 
                     case 'A':
-                        this->cursor->toEnd();
+                        this->cursor->toEndOfLine();
                     case 'a':
                         this->cursor->right();
                         this->state = State::Insert;
                         break;
 
                     case 'o':
-                        this->cursor->toEnd();
+                        this->cursor->toEndOfLine();
                         this->cursor->insert('\n');
                         this->state = State::Insert;
                         this->view->repaint();
                         break;
 
                     case 'O':
-                        this->cursor->toBeginning();
+                        this->cursor->toBeginningOfLine();
                         this->cursor->insert('\n');
                         this->cursor->up();
                         this->state = State::Insert;
@@ -152,6 +161,7 @@ void Controller::run() {
                         break;
 
                     case ':':
+                    case ';':
                         command = this->getCommand();
                         if(command == "w") {
                             if(this->view->getBuffer()->isReadOnly()) {
