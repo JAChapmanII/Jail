@@ -130,4 +130,9 @@ int Cursor::backspace() {
     return this->left();
 }
 
+int Cursor::deleteLine() {
+    this->buffer->deleteLine(this->getRow());
+    return this->checkSanity();
+}
+
 // vim:ts=4 et sw=4 sts=4

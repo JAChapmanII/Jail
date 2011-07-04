@@ -55,6 +55,8 @@ class Cursor {
         int insert(char c);
         /// Delete the character before the cursor
         int backspace();
+        /// Deletes the entire line the cursor is on
+        int deleteLine();
 
     protected:
         bool checkSanity();
