@@ -29,12 +29,20 @@ bool Cursor::setRow(long nRow) {
     return this->checkSanity();
 }
 
-bool Cursor::toBeginning() {
+bool Cursor::toBeginningOfLine() {
     return this->setColumn(0);
 }
 
-bool Cursor::toEnd() {
+bool Cursor::toEndOfLine() {
     return this->setColumn(this->buffer->getRowLength(this->row));
+}
+
+bool Cursor::toBeginningOfBuffer() {
+    return this->setRow(0);
+}
+
+bool Cursor::toEndOfBuffer() {
+    return this->setRow(this->buffer->getSize());
 }
 
 bool Cursor::left() {

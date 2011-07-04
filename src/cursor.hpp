@@ -25,9 +25,14 @@ class Cursor {
         bool setRow(long nRow);
 
         /// Moves cursor to beginning of line
-        bool toBeginning();
+        bool toBeginningOfLine();
         /// Moves cursor to end of line
-        bool toEnd();
+        bool toEndOfLine();
+
+        /// Moves cursor to beginning of buffer
+        bool toBeginningOfBuffer();
+        /// Moves cursor to end of buffer
+        bool toEndOfBuffer();
 
         /// Move the cursor to the left
         bool left();
