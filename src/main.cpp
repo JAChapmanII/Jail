@@ -60,7 +60,7 @@ int main(int argc, char** argv) {
     mArgParser.add(ArgParser::SwitchName("--width", "-w"), &Config::setWidth,
             "Sets the maximum width in columns of the hex dump output");
     mArgParser.add(ArgParser::SwitchName("", "-R"), &Config::setReadOnly,
-            (string)"Puts jail into read-only mode, so that you cannot" +
+            (string)"Puts jail into read-only mode, so that you cannot " +
             (string)"overwrite the backing file");
 
     mArgParser.parseArguments(argc, argv);
