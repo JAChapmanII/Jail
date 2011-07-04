@@ -172,7 +172,11 @@ void Controller::run() {
                     case ':':
                     case ';':
                         command = this->getCommand();
-                        if(command == "w") {
+                        if(command == (string)"q") {
+                            done = true;
+                            break;
+                        }
+                        if(command == (string)"w") {
                             if(this->view->getBuffer()->isReadOnly()) {
                                 stringstream ss; ss << this->getModeline();
                                 ss << " -- Buffer is read only";
