@@ -50,6 +50,7 @@ Usage:
         x: delete the character in front of the cursor
 
         q: quit (no prompt to save file)
+        ZZ: save and quit (abort quitting if we can't save for some reason)
 
         :: prompt for a named command
             w: save the file overtop of the opened one
