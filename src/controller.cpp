@@ -292,12 +292,12 @@ string Controller::getCommand() {
 }
 
 string Controller::getModeline() {
+    double ruler = 100;
+    if(this->view->getBuffer()->getSize() > 0)
+        ruler = (this->cursor->getRow() + 1) * 100 / this->view->getBuffer()->getSize();
     stringstream ss; 
     ss << ": (" << this->cursor->getCol()
-        << ", " << this->cursor->getRow() << ") -- %"
-        << this->cursor->getRow() * 100 /
-            // TODO ugly hack to get number of lines
-            this->view->getBuffer()->getData().size() << " ";
+        << ", " << this->cursor->getRow() << ") -- %" << ruler << " ";
     ss << " " << ((this->state == State::Insert) ? "Insert" : "Command");
     return ss.str();
 }
