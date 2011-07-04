@@ -14,7 +14,13 @@ Buffer::Buffer(FileIO *iFile, bool iReadOnly) : // TODO: formatting guidelines
     if(fLength < 0)
         throw fLength;
 
-    string contents = (string)this->file->getData();
+    string contents;
+    // TODO: implement proper fix
+    if(fLength > 0)
+        contents = (string)this->file->getData();
+    else
+        contents = " ";
+
     this->length = contents.length();
 
     if(contents.find('\n') == string::npos) {
