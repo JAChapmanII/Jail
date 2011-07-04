@@ -12,6 +12,9 @@ Building:
     A (pretty crappy) Makefile is set up, so simply issue
         make
     on any decently set up GNU/Linux machine
+    Note: If you want the version information to be correct (if you're making
+        a package or some such) run "make config" beforehand to generate the
+        latest config.hpp
 
     See the Makefile for other options.
 

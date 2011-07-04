@@ -3,7 +3,7 @@ BINDIR=bin
 SOURCES=$(wildcard $(SRCDIR)/*.cpp)
 HEADERS=$(wildcard $(SRCDIR)/*.hpp)
 OBJS=$(SOURCES:.cpp=.o)
-EXEC=jl
+EXEC=$(BINDIR)/jl
 
 CC=g++
 CFLAGS=
@@ -28,14 +28,14 @@ else
 CFLAGS+=-g
 endif
 
-all: config $(EXEC)
+all: $(EXEC)
 
 config:
 	./mkversion.sh
 
 $(EXEC): $(OBJS)
 	mkdir -p $(BINDIR)
-	$(CC) -o $(BINDIR)/$(EXEC) $(LFLAGS) $?
+	$(CC) -o $(EXEC) $(LFLAGS) $?
 
 %.o: %.cpp $(HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
