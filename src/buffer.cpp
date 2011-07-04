@@ -103,6 +103,8 @@ int Buffer::erase(long eRow, long eCol) {
 
 int Buffer::deleteLine(long eRow) {
     this->data.erase(this->data.begin() + eRow);
+    if(this->data.empty())
+        this->data.push_back("");
     return 0;
 }
 
