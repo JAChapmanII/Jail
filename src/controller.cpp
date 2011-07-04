@@ -95,6 +95,12 @@ void Controller::run() {
                                 this->cursor->getCol());
                         break;
 
+                    case 'x':
+                        this->cursor->right();
+                        this->cursor->backspace();
+                        this->view->repaint();
+                        break;
+
                     case 'q':
                         done = true;
                         break;
