@@ -1,4 +1,4 @@
-jail is currently nothing. Yay!
+jail is currently a rough clone of vim.
 
 WARNING: jail is starting to manipulate files. Use this functionality at your
 own risk. The developers hold no responsibility for any and all files and
@@ -8,17 +8,50 @@ What will it be?
     Soon (I hope) it will be a rather bad clone of vim in C++. Further on, it
     will hopefully be a not so bad clone of vim.
 
-Building (the nothing):
-    A standard Makefile is set up, so simply issue
+Building:
+    A (pretty crappy) Makefile is set up, so simply issue
         make
     on any decently set up GNU/Linux machine
 
     See the Makefile for other options.
 
-Running (the nothing):
-    ./bin/jl
+Running:
+    ./bin/jl [switches] <file name>
+    If you run jail without a file name, it will list the switches. It
+    probably also has a help file I'm not entirely sure XD
 
 Usage:
     Read what it says. Maybe the devs will make a man page. Or maybe the --help
     switch will actually provide some level of help in the future. Maybe.
+
+    There are several commands from vim implemented:
+        0: move cursor to the beginning of the line
+        $: move cursor to the end of the line
+        j,  down: move cursor down
+        k,    up: move cursor up
+        h,  left: move cursor left
+        l, right: move cursor right
+
+        I: move to beginning of line and go into insert mode
+        i: enter insert mode
+
+        A: move to end of line and go into insert mode
+        a: move the cursor right once and enter insert mode
+
+        O: create a new line above the current one, move to it and enter insert mode
+        o: create a new line below the current one, move to it and enter insert mode
+
+        PageUp,   ^B: move a full page up
+        PageDown, ^F: move down a full page
+
+        x: delete the character in front of the cursor
+
+        q: quit (no prompt to save file)
+
+        :: prompt for a named command
+            w: save the file overtop of the opened one
+
+    In insert mode, the arrow keys and the full page movement keys still work.
+    Backspace deletes the character behind the cursor.
+    Escape switches back to command mode.
 
