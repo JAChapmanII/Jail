@@ -51,13 +51,14 @@ Usage:
         PageDown, ^F: move down a full page
 
         x: delete the character in front of the cursor
-        dd: delete the line the cursor is on [Note: do NOT delete all lines this way...]
+        dd: delete the line the cursor is on
 
         q: quit (no prompt to save file)
         ZZ: save and quit (abort quitting if we can't save for some reason)
 
         :, ;: prompt for a named command
             w: save the file overtop of the opened one
+            q: quit (no prompt to save file)
 
     In insert mode, the arrow keys and the full page movement keys still work.
     Backspace deletes the character behind the cursor.
