@@ -51,6 +51,7 @@ Usage:
         PageDown, ^F: move down a full page
 
         x: delete the character in front of the cursor
+        dd: delete the line the cursor is on [Note: do NOT delete all lines this way...]
 
         q: quit (no prompt to save file)
         ZZ: save and quit (abort quitting if we can't save for some reason)
