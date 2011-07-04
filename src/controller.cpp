@@ -24,6 +24,52 @@ void Controller::run() {
         int i = this->window->getKey();
         switch(this->state) {
             case State::Command:
+                if(!command.empty()) {
+                    switch(i) {
+                        case Key::Escape:
+                            command = "";
+                            break;
+
+                        case Key::Backspace:
+                            command.resize(command.length() - 1);
+                            break;
+
+                        default:
+                            if(i >= ' ' && i <= '~')
+                                command += (char)i;
+                            if(i == '\n')
+                                command = "";
+                            // execute command if it is one
+                            if(command == (string)"ZZ") {
+                                if(this->view->getBuffer()->isReadOnly()) {
+                                    stringstream ss; ss << this->getModeline();
+                                    ss << " -- Buffer is read only";
+                                    this->window->write(
+                                            this->window->getHeight() - 1, ss.str());
+                                    this->window->update(
+                                            this->cursor->getCol() - this->view->getStartX(),
+                                            this->cursor->getRow() - this->view->getStartY());
+                                    sleep(1);
+                                    break;
+                                }
+                                int saved = this->view->getBuffer()->save();
+                                if(saved < 0) {
+                                    stringstream ss; ss << this->getModeline();
+                                    ss << " -- Writing the buffer failed";
+                                    this->window->write(
+                                            this->window->getHeight() - 1, ss.str());
+                                    this->window->update(
+                                            this->cursor->getCol() - this->view->getStartX(),
+                                            this->cursor->getRow() - this->view->getStartY());
+                                    sleep(1);
+                                    break;
+                                }
+                                done = true;
+                            }
+                            break;
+                    }
+                    break;
+                }
                 switch(i) {
                     case '0':
                         this->cursor->toBeginning();
@@ -136,6 +182,8 @@ void Controller::run() {
                         break;
 
                     default:
+                        if(i >= ' ' && i <= '~')
+                            command += (char)i;
                         break;
                 }
                 break;
@@ -195,7 +243,8 @@ void Controller::run() {
         if(!this->view->checkSanity())
             this->view->repaint();
 
-        this->window->write(this->window->getHeight() - 1, this->getModeline());
+        stringstream ss; ss << this->getModeline() << " -- :" << command;
+        this->window->write(this->window->getHeight() - 1, ss.str());
         this->window->update(this->cursor->getCol() - this->view->getStartX(),
                 this->cursor->getRow() - this->view->getStartY());
     }
