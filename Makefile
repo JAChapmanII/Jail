@@ -35,7 +35,7 @@ config:
 
 $(EXEC): $(OBJS)
 	mkdir -p $(BINDIR)
-	$(CC) -o $(EXEC) $(LFLAGS) $?
+	$(CC) -o $(EXEC) $(LFLAGS) $^
 
 %.o: %.cpp $(HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
