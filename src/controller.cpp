@@ -41,6 +41,8 @@ void Controller::run() {
                                 command = "";
                             // execute command if it is one
                             if(command == (string)"dd") {
+                                // TODO: if this deletes the last line we
+                                // segfault :D
                                 this->cursor->deleteLine();
                                 this->view->checkSanity();
                                 this->view->repaint();
