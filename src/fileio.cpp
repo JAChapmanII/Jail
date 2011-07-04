@@ -33,6 +33,9 @@ int FileIO::read() {
     this->length = this->file.tellg();
     this->file.seekg(0, ios::beg);
 
+    if(this->length == 0)
+        return 0;
+
     // TODO: these things could fail
     this->data = new char[this->length];
     this->file.read(this->data, this->length);
