@@ -102,6 +102,8 @@ int Buffer::erase(long eRow, long eCol) {
 }
 
 int Buffer::combineLines(long eRow) {
+    if((eRow < 0) || (eRow >= (long)this->data.size() - 1))
+        return 1;
     this->data[eRow].append(this->data[eRow + 1]);
     return this->deleteLine(eRow + 1);
 }
