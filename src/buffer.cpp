@@ -101,6 +101,20 @@ int Buffer::erase(long eRow, long eCol) {
     return 0;
 }
 
+int Buffer::condenseSpace(long eRow, long eCol) {
+    if((eCol < -1) || (eCol >= (long)this->data[eRow].length()))
+        return 1;
+    if((eRow < 0) || (eRow >= (long)this->data.size()))
+        return 1;
+    // TODO: is space command
+    // TODO: I don't think tabs work in jl right now at all
+    eCol++;
+    while((eCol < (long)this->data[eRow].length()) && (this->data[eRow][eCol] == ' '))
+        this->data[eRow].erase(eCol, 1);
+    // TODO: we could find out how many spaces there are and then do one erase
+    return 0;
+}
+
 int Buffer::combineLines(long eRow) {
     if((eRow < 0) || (eRow >= (long)this->data.size() - 1))
         return 1;
