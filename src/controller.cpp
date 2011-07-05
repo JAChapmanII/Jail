@@ -203,6 +203,7 @@ void Controller::run() {
                                     this->cursor->getRow() - this->view->getStartY());
                             sleep(1);
                         }
+                        command = "";
                         break;
 
                     default:
@@ -284,6 +285,12 @@ string Controller::getCommand() {
         switch(i) {
             case Key::Escape:
                 return "";
+            case Key::Backspace:
+                if(ret.empty())
+                    return "";
+                else
+                    ret.resize(ret.length() - 1);
+                break;
             case '\n':
                 return ret;
             default:
