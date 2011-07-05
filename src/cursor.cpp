@@ -130,7 +130,7 @@ int Cursor::backspace() {
     return this->left();
 }
 
-int Cursor::forwardDelete() {
+int Cursor::erase() {
     if(this->col == this->buffer->getRowLength(this->row))
         return this->combineLines();
     this->right();
@@ -138,6 +138,7 @@ int Cursor::forwardDelete() {
 }
 
 int Cursor::combineLines() {
+    // TODO: what the hell do these return values mean?
     if(this->buffer->combineLines(this->row))
         return 1;
     this->insert(' ');
