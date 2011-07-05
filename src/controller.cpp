@@ -64,6 +64,7 @@ void Controller::run() {
                                             this->cursor->getCol() - this->view->getStartX(),
                                             this->cursor->getRow() - this->view->getStartY());
                                     sleep(1);
+                                    command = "";
                                     break;
                                 }
                                 int saved = this->view->getBuffer()->save();
@@ -76,6 +77,7 @@ void Controller::run() {
                                             this->cursor->getCol() - this->view->getStartX(),
                                             this->cursor->getRow() - this->view->getStartY());
                                     sleep(1);
+                                    command = "";
                                     break;
                                 }
                                 done = true;
@@ -186,21 +188,21 @@ void Controller::run() {
                                 this->window->update(
                                         this->cursor->getCol() - this->view->getStartX(),
                                         this->cursor->getRow() - this->view->getStartY());
-                                sleep(1);
-                                break;
+                                command = "";
+                            } else {
+                                int saved = this->view->getBuffer()->save();
+                                stringstream ss; ss << this->getModeline();
+                                ss << " -- ";
+                                if(saved < 0)
+                                    ss << "Failed to save.";
+                                else
+                                    ss << "Saved " << saved << " bytes to file";
+                                string m = ss.str();
+                                this->window->write(this->window->getHeight() - 1, m);
+                                this->window->update(
+                                        this->cursor->getCol() - this->view->getStartX(),
+                                        this->cursor->getRow() - this->view->getStartY());
                             }
-                            int saved = this->view->getBuffer()->save();
-                            stringstream ss; ss << this->getModeline();
-                            ss << " -- ";
-                            if(saved < 0)
-                                ss << "Failed to save.";
-                            else
-                                ss << "Saved " << saved << " bytes to file";
-                            string m = ss.str();
-                            this->window->write(this->window->getHeight() - 1, m);
-                            this->window->update(
-                                    this->cursor->getCol() - this->view->getStartX(),
-                                    this->cursor->getRow() - this->view->getStartY());
                             sleep(1);
                         }
                         command = "";
