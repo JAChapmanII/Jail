@@ -101,6 +101,11 @@ int Buffer::erase(long eRow, long eCol) {
     return 0;
 }
 
+int Buffer::combineLines(long eRow) {
+    this->data[eRow].append(this->data[eRow + 1]);
+    return this->deleteLine(eRow + 1);
+}
+
 int Buffer::deleteLine(long eRow) {
     this->data.erase(this->data.begin() + eRow);
     if(this->data.empty())

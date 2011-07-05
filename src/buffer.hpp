@@ -37,6 +37,8 @@ class Buffer {
         int insert(long iRow, long iCol, char c);
         /// Erase a character out of the Buffer
         int erase(long eRow, long eCol);
+        /// Combines a line with the line after it
+        int combineLines(long eRow);
         /// Delete an entire line
         int deleteLine(long eRow);
 
