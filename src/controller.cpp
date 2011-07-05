@@ -170,10 +170,6 @@ void Controller::run() {
                         this->view->repaint();
                         break;
 
-                    case 'q':
-                        done = true;
-                        break;
-
                     case ':':
                     case ';':
                         command = this->getCommand();
