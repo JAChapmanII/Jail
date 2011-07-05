@@ -47,10 +47,13 @@ Usage:
         O: create a new line above the current one, move to it and enter insert mode
         o: create a new line below the current one, move to it and enter insert mode
 
+        J: combine the line the cursor is on with the one after it
+
         PageUp,   ^B: move a full page up
         PageDown, ^F: move down a full page
 
         x: delete the character in front of the cursor
+            If you are at the end of a line, this is equivalent to J
         dd: delete the line the cursor is on
 
         q: quit (no prompt to save file)
