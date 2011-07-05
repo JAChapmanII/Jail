@@ -142,7 +142,10 @@ int Cursor::combineLines() {
     if(this->buffer->combineLines(this->row))
         return 1;
     this->insert(' ');
-    return this->left();
+    this->left();
+    // TODO: return value very whack here XD
+    // TODO: investigate J behaviour more
+    return this->buffer->condenseSpace(this->row, this->col);
 }
 
 int Cursor::deleteLine() {
