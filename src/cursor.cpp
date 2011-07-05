@@ -130,6 +130,20 @@ int Cursor::backspace() {
     return this->left();
 }
 
+int Cursor::forwardDelete() {
+    if(this->col == this->buffer->getRowLength(this->row))
+        return this->combineLines();
+    this->right();
+    return this->backspace();
+}
+
+int Cursor::combineLines() {
+    if(this->buffer->combineLines(this->row))
+        return 1;
+    this->insert(' ');
+    return this->left();
+}
+
 int Cursor::deleteLine() {
     this->buffer->deleteLine(this->getRow());
     return this->checkSanity();

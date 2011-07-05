@@ -55,6 +55,10 @@ class Cursor {
         int insert(char c);
         /// Delete the character before the cursor
         int backspace();
+        /// Delete the character after the cursor
+        int forwardDelete();
+        /// Combines a line with the one after it (inserts a space)
+        int combineLines();
         /// Deletes the entire line the cursor is on
         int deleteLine();
 
