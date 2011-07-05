@@ -160,8 +160,13 @@ void Controller::run() {
                         break;
 
                     case 'x':
-                        this->cursor->right();
-                        this->cursor->backspace();
+                        this->cursor->erase();
+                        this->view->repaint();
+                        break;
+
+                    case 'J':
+                        this->cursor->toEndOfLine();
+                        this->cursor->combineLines();
                         this->view->repaint();
                         break;
 
