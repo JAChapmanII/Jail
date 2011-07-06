@@ -95,6 +95,7 @@ void Controller::run() {
 
                     case 'h':
                     case Key::Left:
+                    case Key::Backspace:
                         this->cursor->left();
                         break;
 
