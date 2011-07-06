@@ -28,6 +28,7 @@ class Controller {
     protected:
         std::string getCommand();
         std::string getModeline();
+        void writeModeline(std::string mline);
 
         View *view;
         Window *window;
