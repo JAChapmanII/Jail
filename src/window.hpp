@@ -6,8 +6,6 @@
 // TODO include into a namespace?
 #include <ncurses.h>
 
-#include "cursor.hpp"
-
 // TODO guh, better way to do this?
 namespace Key {
     enum Key {

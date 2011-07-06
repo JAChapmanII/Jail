@@ -3,6 +3,7 @@
 
 #include "buffer.hpp"
 #include "window.hpp"
+#include "cursor.hpp"
 
 /**
  * An ncurses view of a Buffer
