@@ -32,7 +32,7 @@ Usage:
         $: move cursor to the end of the line
         j,  down: move cursor down
         k,    up: move cursor up
-        h,  left: move cursor left
+        h,  left: move cursor left  [backspace also does this]
         l, right: move cursor right
 
         gg: move cursor to top of buffer
