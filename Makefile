@@ -12,7 +12,7 @@ LDFLAGS+=-pg
 endif
 
 ifndef nowall
-CXXFLAGS+=-Wextra -pedantic -Weffc++ -Wswitch-default -Wswitch-enum
+CXXFLAGS+=-Wall -Wextra -pedantic -Weffc++ -Wswitch-default -Wswitch-enum
 CXXFLAGS+=-Wmissing-include-dirs -Winline -Wfloat-equal -Wundef
 CXXFLAGS+=-Wcast-align -Wredundant-decls -Winit-self -Wshadow
 endif
