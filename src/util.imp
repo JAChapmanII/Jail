@@ -1,0 +1,24 @@
+// vim: ft=cpp:
+#include <algorithm>
+
+template<typename K, typename V>
+        typename std::map<K, V>::iterator util::find(std::map<K, V> &map, K &value) {
+    return map.find(value);
+}
+template<typename T, typename V>
+        typename T::iterator util::find(T &container, V &value) {
+    return std::find(container.begin(), container.end(), value);
+}
+
+template<typename T, typename V>
+        bool util::contains(T &container, V &value) {
+    return find(container, value) != container.end();
+}
+
+template<typename T, typename V>
+        typename T::iterator util::find_if(T &container,
+                std::function<bool(V)> predicate) {
+    return std::find_if(container.begin(), container.end(), predicate);
+}
+
+// vim:ts=4 et sw=4 sts=4

@@ -15,10 +15,10 @@ class ArgParser {
         typedef std::pair<std::string, std::string> SwitchName;
 
         /// Type for a void callback function invoked on different switches
-        typedef int (*VoidCallbackFunction)();
+        typedef void (*VoidCallbackFunction)();
 
         /// Type for a string callback function invoked on different switches
-        typedef int (*StringCallbackFunction)(std::string);
+        typedef void (*StringCallbackFunction)(std::string);
         /// Typedef for the map of (string) functions to run after parsing
         typedef std::multimap<StringCallbackFunction, std::string> StringCallMap;
         /// An entry in a StringCallMap

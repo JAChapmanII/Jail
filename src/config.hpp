@@ -4,12 +4,12 @@
 #include <string>
 
 namespace Config {
-    int setVerbose();
-    int setQuiet();
-    int setDump();
-    int setHexMode();
-    int setHexDump();
-    int setReadOnly();
+    void setVerbose();
+    void setQuiet();
+    void setDump();
+    void setHexMode();
+    void setHexDump();
+    void setReadOnly();
 
     bool isVerbose();
     bool isQuiet();
@@ -17,7 +17,7 @@ namespace Config {
     bool isHexMode();
     bool isReadOnly();
 
-    int setWidth(std::string w);
+    void setWidth(std::string w);
     int getWidth();
 
     std::string getVersion();

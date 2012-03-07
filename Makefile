@@ -1,9 +1,16 @@
 SRCDIR=src
 BINDIR=bin
-SOURCES=$(wildcard $(SRCDIR)/*.cpp)
-OBJECTS=$(SOURCES:.cpp=.o)
-EXEC=jl
+OBJDIR=obj
+#SOURCES=$(wildcard $(SRCDIR)/*.cpp)
+#OBJECTS=$(SOURCES:.cpp=.o)
+EXEC=jail
 
+OBJECTS=
+OBJECTS+=$(OBJDIR)/argparser.o $(OBJDIR)/fileio.o $(OBJDIR)/config.o
+OBJECTS+=$(OBJDIR)/buffer.o $(OBJDIR)/view.o $(OBJDIR)/controller.o
+OBJECTS+=$(OBJDIR)/window.o $(OBJDIR)/cursor.o
+
+CXXFLAGS=-std=c++0x
 LDFLAGS=-lncurses
 
 ifdef profile
@@ -23,34 +30,40 @@ else
 CXXFLAGS+=-g
 endif
 
-all: $(BINDIR)/$(EXEC)
+all: dir $(BINDIR)/$(EXEC)
+dir:
+	mkdir -p $(OBJDIR) $(BINDIR)
 
-$(BINDIR)/$(EXEC): $(OBJECTS)
-	mkdir -p $(BINDIR)
+$(BINDIR)/$(EXEC): $(OBJDIR)/$(EXEC).o $(OBJECTS)
 	$(CXX) -o $(BINDIR)/$(EXEC) $(LDFLAGS) $^
 
-$(SRCDIR)/argparser.o: $(SRCDIR)/argparser.cpp $(SRCDIR)/argparser.hpp
-$(SRCDIR)/buffer.o: $(SRCDIR)/buffer.cpp $(SRCDIR)/buffer.hpp \
+$(OBJDIR)/argparser.o: $(SRCDIR)/argparser.cpp $(SRCDIR)/argparser.hpp
+$(OBJDIR)/buffer.o: $(SRCDIR)/buffer.cpp $(SRCDIR)/buffer.hpp \
   $(SRCDIR)/fileio.hpp
-$(SRCDIR)/config.o: $(SRCDIR)/config.cpp $(SRCDIR)/config.hpp \
+$(OBJDIR)/config.o: $(SRCDIR)/config.cpp $(SRCDIR)/config.hpp \
   $(SRCDIR)/version.hpp
-$(SRCDIR)/controller.o: $(SRCDIR)/controller.cpp $(SRCDIR)/controller.hpp \
+$(OBJDIR)/controller.o: $(SRCDIR)/controller.cpp $(SRCDIR)/controller.hpp \
   $(SRCDIR)/window.hpp $(SRCDIR)/view.hpp $(SRCDIR)/buffer.hpp \
   $(SRCDIR)/fileio.hpp $(SRCDIR)/cursor.hpp
-$(SRCDIR)/cursor.o: $(SRCDIR)/cursor.cpp $(SRCDIR)/cursor.hpp \
+$(OBJDIR)/cursor.o: $(SRCDIR)/cursor.cpp $(SRCDIR)/cursor.hpp \
   $(SRCDIR)/buffer.hpp $(SRCDIR)/fileio.hpp
-$(SRCDIR)/fileio.o: $(SRCDIR)/fileio.cpp $(SRCDIR)/fileio.hpp
-$(SRCDIR)/main.o: $(SRCDIR)/main.cpp $(SRCDIR)/argparser.hpp \
+$(OBJDIR)/fileio.o: $(SRCDIR)/fileio.cpp $(SRCDIR)/fileio.hpp
+$(OBJDIR)/main.o: $(SRCDIR)/main.cpp $(SRCDIR)/argparser.hpp \
   $(SRCDIR)/fileio.hpp $(SRCDIR)/config.hpp $(SRCDIR)/buffer.hpp \
   $(SRCDIR)/view.hpp $(SRCDIR)/window.hpp $(SRCDIR)/cursor.hpp \
   $(SRCDIR)/controller.hpp
-$(SRCDIR)/view.o: $(SRCDIR)/view.cpp $(SRCDIR)/view.hpp $(SRCDIR)/buffer.hpp \
+$(OBJDIR)/view.o: $(SRCDIR)/view.cpp $(SRCDIR)/view.hpp $(SRCDIR)/buffer.hpp \
   $(SRCDIR)/fileio.hpp $(SRCDIR)/window.hpp $(SRCDIR)/cursor.hpp
-$(SRCDIR)/window.o: $(SRCDIR)/window.cpp $(SRCDIR)/window.hpp
+$(OBJDIR)/window.o: $(SRCDIR)/window.cpp $(SRCDIR)/window.hpp
 
-$(SRCDIR)/version.hpp::
+# TODO: will the above rules mesh with the following?
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+	$(CXX) -c -o $@ $< $(CXXFLAGS)
+
+$(OBJDIR)/version.hpp::
 	./mkversion.sh
 
 clean:
-	rm -f $(BINDIR)/$(EXEC) $(OBJECTS)
+	rm -f $(BINDIR)/$(EXEC) $(OBJDIR)/*.o
 

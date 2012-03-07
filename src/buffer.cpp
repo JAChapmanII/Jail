@@ -43,9 +43,8 @@ int Buffer::getLength() const {
 
 string Buffer::getString() {
     string res;
-    for(vector<string>::iterator i = this->data.begin(); i != this->data.end();
-            ++i)
-        res += (*i) + '\n';
+    for(auto line : this->data)
+        res += line + '\n';
     return res;
 }
 

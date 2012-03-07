@@ -23,9 +23,9 @@ using std::vector;
 #include "view.hpp"
 #include "controller.hpp"
 
-int parseCommand(string command);
-int printHelp();
-int printVersion();
+void parseCommand(string command);
+void printHelp();
+void printVersion();
 void dump(vector<string> fileNames);
 void view(vector<string> fileNames);
 void edit(vector<string> fileNames);
@@ -96,7 +96,7 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-int parseCommand(string command) {
+void parseCommand(string command) {
     cout << command;
     switch(command[0]) {
         case ':':
@@ -109,12 +109,10 @@ int parseCommand(string command) {
             cout << " looks like a fine command to me!";
     }
     cout << endl;
-    return 0;
 }
 
-int printVersion() {
+void printVersion() {
     cout << "version: " << Config::getVersion() << endl;
-    return 0;
 }
 
 void dump(vector<string> fileNames) {

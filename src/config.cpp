@@ -14,30 +14,30 @@ namespace Config {
     int outWidth = 80;
 #include "version.hpp"
 
-    int setVerbose() {
+    void setVerbose() {
         beVerbose = true;
         beQuiet = false;
     }
 
-    int setQuiet() {
+    void setQuiet() {
         beQuiet = true;
         beVerbose = false;
     }
 
-    int setDump() {
+    void setDump() {
         doDump = true;
     }
 
-    int setHexMode() {
+    void setHexMode() {
         hexMode = true;
     }
 
-    int setHexDump() {
+    void setHexDump() {
         hexMode = true;
         doDump = true;
     }
 
-    int setReadOnly() {
+    void setReadOnly() {
         readOnly = true;
     }
 
@@ -61,7 +61,7 @@ namespace Config {
         return readOnly;
     }
 
-    int setWidth(string w) {
+    void setWidth(string w) {
         istringstream ss(w);
         int tmp = 0;
         if(ss >> tmp)

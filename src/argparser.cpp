@@ -3,11 +3,12 @@ using std::string;
 using std::vector;
 using std::pair;
 
-#include <algorithm>
-
 #include <iostream>
 using std::cout;
 using std::endl;
+
+#include "util.hpp"
+using util::contains;
 
 ArgParser::ArgParser() : // TODO: formatting guidlines here?
         voidCallbackMap(),
@@ -55,7 +56,7 @@ void ArgParser::add(SwitchName commandName, VoidCallbackFunction function) {
 }
 
 void ArgParser::add(SwitchName commandName, VoidCallbackFunction function,
-        std::string help) {
+        string help) {
     this->add(commandName, function);
     this->addHelp(commandName, help);
 }
@@ -114,20 +115,24 @@ void ArgParser::queue(VoidCallbackFunction function) {
 }
 
 ArgParser::VoidCallbackFunction *ArgParser::findVoidCBF(string switchName) {
-    for(VoidCbMap::iterator i = this->voidCallbackMap.begin();
-            i != this->voidCallbackMap.end(); ++i)
-        if((i->first.first == switchName) ||
-            (i->first.second == switchName))
-            return &(i->second);
+    for(auto it = this->voidCallbackMap.begin();
+            it != this->voidCallbackMap.end(); ++it)
+        if((it->first.first == switchName) || (it->first.second == switchName))
+            return &(it->second);
+    //for(auto it : this->voidCallbackMap)
+        //if((it.first.first == switchName) || (it.first.second == switchName))
+            //return &(it.second);
     return NULL;
 }
 
 ArgParser::StringCallbackFunction *ArgParser::findStringCBF(string switchName) {
-    for(StringCbMap::iterator i = this->stringCallbackMap.begin();
-            i != this->stringCallbackMap.end(); ++i)
-        if((i->first.first == switchName) ||
-            (i->first.second == switchName))
-            return &(i->second);
+    for(auto it = this->stringCallbackMap.begin();
+            it != this->stringCallbackMap.end(); ++it)
+        if((it->first.first == switchName) || (it->first.second == switchName))
+            return &(it->second);
+    //for(auto sci : this->stringCallbackMap)
+        //if((sci.first.first == switchName) || (sci.first.second == switchName))
+            //return &(sci.second);
     return NULL;
 }
 
@@ -135,7 +140,7 @@ int ArgParser::parseArguments(int argc, char **argv) {
     this->invocationName = (string)argv[0];
     for(int i = 1; i < argc; ++i) {
         string cArg = (string)argv[i];
-        // Break out of nomarl argument parsing
+        // Break out of normal argument parsing
         if(cArg == (string)"--") {
             for(int j = i + 1; j < argc; ++j) {
                 cArg = (string)argv[j];
@@ -152,7 +157,7 @@ int ArgParser::parseArguments(int argc, char **argv) {
         VoidCallbackFunction *vCBF = this->findVoidCBF(cArg);
         if(vCBF != NULL) {
             // only queue a void callback function once
-            if(find(this->voidCalls.begin(), this->voidCalls.end(), *vCBF) == this->voidCalls.end())
+            if(!contains(this->voidCalls, *vCBF))
                 this->voidCalls.push_back(*vCBF);
         } else {
             StringCallbackFunction *sCBF = this->findStringCBF(cArg);
@@ -181,17 +186,15 @@ void ArgParser::runCommands() const {
 }
 
 void ArgParser::runVoidCommands() const {
-    for(vector<VoidCallbackFunction>::const_iterator i = this->voidCalls.begin();
-            i != this->voidCalls.end(); ++i)
+    for(auto vc : this->voidCalls)
         // call the stored function
-        (*i)();
+        vc();
 }
 
 void ArgParser::runStringCommands() const {
-    for(StringCallMap::const_iterator i = this->stringCalls.begin();
-            i != this->stringCalls.end(); ++i) // TODO spacing here too?
+    for(auto sc : this->stringCalls)
         // call the stored function with its argument
-        (*(i->first))(i->second);
+        (*sc.first)(sc.second);
 }
 
 void ArgParser::runDefaultCommand() const {
@@ -205,19 +208,18 @@ void ArgParser::runDefaultCommand() const {
 void ArgParser::printHelp() const {
     if(this->helpHeader != "")
         cout << this->helpHeader << endl;
-    for(HelpMap::const_iterator i = this->helpMap.begin();
-            i != this->helpMap.end(); ++i) {
+    for(auto hme : this->helpMap) {
         cout << "\t";
-        if(!i->first.first.empty())
-            cout << i->first.first;
-        if(!i->first.second.empty()) {
-            if(!i->first.first.empty())
+        if(!hme.first.first.empty())
+            cout << hme.first.first;
+        if(!hme.first.second.empty()) {
+            if(!hme.first.first.empty())
                 cout << "|";
-            cout << i->first.second;
+            cout << hme.first.second;
         }
-        cout << ": " << i->second << endl;
+        cout << ": " << hme.second << endl;
     }
-    if(this->helpFooter != "")
+    if(!this->helpFooter.empty())
         cout << this->helpFooter << endl;
 }
 
