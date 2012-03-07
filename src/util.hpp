@@ -3,6 +3,7 @@
 
 #include <map>
 #include <functional>
+#include <string>
 
 namespace util {
     // An std::find wrapper that automatically searches the entire container
@@ -18,6 +19,10 @@ namespace util {
     // A std::find_if wrapper which automatically searches the entire container
     template<typename T, typename V>
             typename T::iterator find_if(T &container, std::function<bool(V)> predicate);
+
+    // A simple function to convert a string to a type supporting stream ops
+    template<typename T>
+            T fromString(std::string &str);
 }
 
 #include "util.imp"

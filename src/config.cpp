@@ -4,6 +4,9 @@ using std::string;
 #include <sstream>
 using std::istringstream;
 
+#include "util.hpp"
+using util::fromString;
+
 namespace Config {
     bool beVerbose = false;
     bool beQuiet = false;
@@ -62,10 +65,9 @@ namespace Config {
     }
 
     void setWidth(string w) {
-        istringstream ss(w);
-        int tmp = 0;
-        if(ss >> tmp)
-            outWidth = (tmp > 3) ? tmp : 3;
+        outWidth = fromString<int>(w);
+        if(outWidth < 3)
+            outWidth = 3;
     }
     int getWidth() {
         return outWidth;
