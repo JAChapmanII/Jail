@@ -65,9 +65,7 @@ namespace Config {
         istringstream ss(w);
         int tmp = 0;
         if(ss >> tmp)
-            return outWidth = (tmp > 3) ? tmp : 3;
-        else
-            return outWidth;
+            outWidth = (tmp > 3) ? tmp : 3;
     }
     int getWidth() {
         return outWidth;
