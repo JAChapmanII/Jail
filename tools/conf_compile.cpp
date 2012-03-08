@@ -6,7 +6,25 @@ using std::endl;
 #include <fstream>
 using std::ofstream;
 
+#include <string>
+using std::string;
+
 #include "config.hpp"
+
+string escape(string str) {
+    string result;
+    for(char c : str) {
+        switch(c) {
+            case '"':
+                result += "\\\"";
+                break;
+            default:
+                result += c;
+                break;
+        }
+    }
+    return result;
+}
 
 int main(int argc, char **argv) {
     if(argc < 3) {
@@ -27,11 +45,12 @@ int main(int argc, char **argv) {
     for(auto i = config::map.begin(); i != config::map.end(); ++i) {
         for(auto j = i->second.begin(); j != i->second.end(); ++j) {
             if(argc > 3)
-                cout << "config::map[\"" << i->first << "\"]"
-                    << "[\"" << j->first
-                    << "\"] = \"" << j->second << "\";" << endl;
-            out << "config::map[\"" << i->first << "\"]"
-                << "[\"" << j->first << "\"] = \"" << j->second << "\";" << endl;
+                cout << "config::map[\"" << escape(i->first) << "\"]"
+                    << "[\"" << escape(j->first)
+                    << "\"] = \"" << escape(j->second) << "\";" << endl;
+            out << "config::map[\"" << escape(i->first) << "\"]"
+                << "[\"" << escape(j->first)
+                << "\"] = \"" << escape(j->second) << "\";" << endl;
         }
     }
 
