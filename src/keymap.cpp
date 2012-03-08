@@ -36,6 +36,7 @@ void keymap::init() {
         return;
 
     keymap_inited = true;
+#include "default_keymap.cpp"
 
     function_map["quit"] = [](Controller &controller, View &view) {
             controller.stop();

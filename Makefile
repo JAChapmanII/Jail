@@ -40,7 +40,7 @@ endif
 all: dir top $(BINDIR)/$(EXEC)
 dir:
 	mkdir -p $(OBJDIR) $(BINDIR)
-top: $(SRCDIR)/version.hpp $(LIBDIR)/default_config.cpp
+top: $(SRCDIR)/version.hpp $(LIBDIR)/default_config.cpp $(SRCDIR)/default_keymap.cpp
 
 # main $(EXEC) binary
 $(BINDIR)/$(EXEC): $(OBJDIR)/$(EXEC).o $(OBJECTS)
@@ -61,6 +61,8 @@ $(LIBDIR)/default_config.cpp: jailrc.def
 	./mkconfig.sh
 $(SRCDIR)/default_keymap.cpp: keymap.def
 	$(BINDIR)/conf_compile $< $@
+	# TODO: move into _complie
+	sed -i 's/^config::map/keymap_map/' $(SRCDIR)/default_keymap.cpp
 
 
 # TODO: proper targets to get correct depenencies?
@@ -75,5 +77,5 @@ $(OBJDIR)/%.o: $(TOOLS_SRCDIR)/%.cpp
 
 clean:
 	rm -f $(BINDIR)/$(EXEC) $(TOOLS) $(OBJDIR)/*.o
-	rm -f $(LIBDIR)/default_config.cpp $(SRCDIR)/version.hpp
+	rm -f $(LIBDIR)/default_config.cpp $(SRCDIR)/default_keymap.cpp $(SRCDIR)/version.hpp
 
