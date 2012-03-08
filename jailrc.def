@@ -1,5 +1,5 @@
 [core]
-config = jailrc
+config = .jailrc
 
 [keymap]
 

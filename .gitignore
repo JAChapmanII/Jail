@@ -5,5 +5,5 @@ bin/*
 src/version.hpp
 lib/defines.cpp
 
-jailrc
+.jailrc
 
