@@ -31,8 +31,10 @@ class Controller {
         /// Alias to run
         void operator()();
 
-    protected:
+        /// Enter named command mode
         std::string getCommand();
+
+    protected:
         std::string getModeline();
         void writeModeline(std::string mline);
 
