@@ -21,6 +21,7 @@ using std::vector;
 
 #include "buffer.hpp"
 #include "view.hpp"
+#include "keymap.hpp"
 #include "controller.hpp"
 
 void parseCommand(string command);

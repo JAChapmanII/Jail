@@ -10,7 +10,7 @@ LIB_OBJECTS=$(OBJDIR)/datamap.o $(OBJDIR)/util.o
 OBJECTS=$(LIB_OBJECTS)
 OBJECTS+=$(OBJDIR)/argparser.o $(OBJDIR)/fileio.o $(OBJDIR)/config.o
 OBJECTS+=$(OBJDIR)/buffer.o $(OBJDIR)/view.o $(OBJDIR)/controller.o
-OBJECTS+=$(OBJDIR)/window.o $(OBJDIR)/cursor.o
+OBJECTS+=$(OBJDIR)/window.o $(OBJDIR)/cursor.o $(OBJDIR)/keymap.o
 
 CXXFLAGS=-std=c++0x -I$(LIBDIR)
 LDFLAGS=-lncurses
