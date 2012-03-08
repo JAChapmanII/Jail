@@ -1,7 +1,4 @@
 [core]
 config = .jailrc
-
-[keymap]
-
-[ui]
+keymap = keymap.def
 

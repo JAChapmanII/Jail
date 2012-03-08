@@ -1,0 +1,69 @@
+[core]
+    # available modes
+    modes = command, insert
+
+# user defined functions
+[functions]
+    combine-line = view-down, insert-beginning, k:backspace
+
+    append-end  = cursor-end, cursor-right, mode:insert
+    append-here = cursor-right, mode:insert
+
+    insert-beginning = cursor-beginning, mode:insert
+    insert-here      = mode:insert
+    insert-down      = append-end, k:enter
+    insert-up        = view-up, insert-down
+
+# keymap settings which are always present
+[global]
+    k:down  = cursor-down
+    k:up    = cursor-up
+    k:left  = cursor-left
+    k:right = cursor-right
+
+    k:pageup = view-pageup
+    k:^b     = view-pageup
+    k:pagedown = view-pagedown
+    k:^f       = view-pagedown
+
+# keymap settings for command mode
+[command-mode]
+    k:escape = command-clear
+    k:enter = command-clear
+
+    "ZZ" = save, quit
+
+    "dd" = delete-line
+    "gg" = view-beginning
+    "G" = view-end
+
+    "0" = cursor-beginning
+    "$" = cursor-end
+
+    "k" = cursor-up
+    "j" = cursor-down
+    "h" = cursor-left
+    "l" = cursor-right
+
+    "I" = insert-beginning
+    "i" = insert-here
+    "A" = append-end
+    "a" = append-here
+    "o" = insert-down
+    "O" = insert-up
+
+    "x" = delete-character
+
+    "J" = combine-line
+
+    k:semicolon = named-command
+    k:colon     = named-command
+
+    default = none
+
+# keymap settings when in insert mode
+[insert-mode]
+    k:escape = mode:command
+    k:backspace = backspace
+    default = value
+
