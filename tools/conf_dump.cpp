@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
             cerr << "Usage: " << argv[0] << " [in conf]" << endl;
             return 0;
         } else {
-            int ret = config::load(argv[1]);
+            int ret = config::map.load(argv[1]);
             if(ret == 0 || ret == -1) {
                 return 2;
             }
@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    for(auto i = config::begin(); i != config::end(); ++i) {
+    for(auto i = config::map.begin(); i != config::map.end(); ++i) {
         cout << i->first << endl;
         for(auto j = i->second.begin(); j != i->second.end(); ++j)
             cout << "\t" << j->first << " = " << j->second << "" << endl;

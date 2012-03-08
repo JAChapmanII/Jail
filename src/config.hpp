@@ -2,8 +2,12 @@
 #define DCONFIG_HPP
 
 #include <string>
+#include "datamap.hpp"
 
-namespace Config {
+namespace config {
+    extern DataMap map;
+    void init();
+
     void setVerbose();
     void setQuiet();
     void setDump();

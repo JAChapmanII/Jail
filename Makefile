@@ -5,10 +5,10 @@ BINDIR=bin
 
 EXEC=jail
 
-LIB_OBJECTS=$(OBJDIR)/datamap.o $(OBJDIR)/util.o $(OBJDIR)/config.o
+LIB_OBJECTS=$(OBJDIR)/datamap.o $(OBJDIR)/util.o
 
-OBJECTS=
-OBJECTS+=$(OBJDIR)/argparser.o $(OBJDIR)/fileio.o $(OBJDIR)/dconfig.o
+OBJECTS=$(LIB_OBJECTS)
+OBJECTS+=$(OBJDIR)/argparser.o $(OBJDIR)/fileio.o $(OBJDIR)/config.o
 OBJECTS+=$(OBJDIR)/buffer.o $(OBJDIR)/view.o $(OBJDIR)/controller.o
 OBJECTS+=$(OBJDIR)/window.o $(OBJDIR)/cursor.o
 
@@ -17,7 +17,7 @@ LDFLAGS=-lncurses
 
 
 TOOLS=$(BINDIR)/conf_compile $(BINDIR)/conf_dump
-TOOLS_OBJECTS=$(LIB_OBJECTS)
+TOOLS_OBJECTS=$(LIB_OBJECTS) $(OBJDIR)/config.o
 TOOLS_SRCDIR=tools
 
 ifdef profile
@@ -69,7 +69,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 $(OBJDIR)/%.o: $(LIBDIR)/%.cpp
 	$(CXX) -c -o $@ $< $(CXXFLAGS)
 $(OBJDIR)/%.o: $(TOOLS_SRCDIR)/%.cpp
-	$(CXX) -c -o $@ $< $(CXXFLAGS)
+	$(CXX) -c -o $@ $< $(CXXFLAGS) -I$(SRCDIR)
 
 clean:
 	rm -f $(BINDIR)/$(EXEC) $(TOOLS) $(OBJDIR)/*.o

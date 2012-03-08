@@ -1,4 +1,4 @@
-#include "dconfig.hpp"
+#include "config.hpp"
 using std::string;
 
 #include <sstream>
@@ -7,7 +7,7 @@ using std::istringstream;
 #include "util.hpp"
 using util::fromString;
 
-namespace Config {
+namespace config {
     bool beVerbose = false;
     bool beQuiet = false;
     bool doDump = false;
@@ -16,6 +16,17 @@ namespace Config {
     bool readOnly = false;
     int outWidth = 80;
 #include "version.hpp"
+
+    DataMap map;
+    static bool inited = false;
+
+    void init() {
+        if(inited)
+            return;
+#include "defines.cpp"
+        inited = true;
+    }
+
 
     void setVerbose() {
         beVerbose = true;

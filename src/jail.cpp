@@ -17,7 +17,7 @@ using std::vector;
 
 #include "argparser.hpp"
 #include "fileio.hpp"
-#include "dconfig.hpp"
+#include "config.hpp"
 
 #include "buffer.hpp"
 #include "view.hpp"
@@ -45,28 +45,28 @@ int main(int argc, char** argv) {
     mArgParser.add(ArgParser::SwitchName("--version", ""), &printVersion,
             "Print the version of jail which is running");
     mArgParser.add(ArgParser::SwitchName("--verbose", "-v"),
-            &Config::setVerbose, "Set the output to be verbose");
-    mArgParser.add(ArgParser::SwitchName("--quiet", "-q"), &Config::setQuiet,
+            &config::setVerbose, "Set the output to be verbose");
+    mArgParser.add(ArgParser::SwitchName("--quiet", "-q"), &config::setQuiet,
             "Set the output to be quiet");
 
     mArgParser.add(ArgParser::SwitchName("--parse-command", ""), &parseCommand,
             "Attempt to say what jail would do with a command");
-    mArgParser.add(ArgParser::SwitchName("--dump", ""), &Config::setDump,
+    mArgParser.add(ArgParser::SwitchName("--dump", ""), &config::setDump,
             "Dump the contents of a file to the screen");
-    mArgParser.add(ArgParser::SwitchName("--hex", ""), &Config::setHexMode,
+    mArgParser.add(ArgParser::SwitchName("--hex", ""), &config::setHexMode,
             "When dumping, output in hexadecimal");
     mArgParser.add(ArgParser::SwitchName("--hex-dump", ""),
-            &Config::setHexDump, "Combination of --hex and --dump");
-    mArgParser.add(ArgParser::SwitchName("--width", "-w"), &Config::setWidth,
+            &config::setHexDump, "Combination of --hex and --dump");
+    mArgParser.add(ArgParser::SwitchName("--width", "-w"), &config::setWidth,
             "Sets the maximum width in columns of the hex dump output");
-    mArgParser.add(ArgParser::SwitchName("", "-R"), &Config::setReadOnly,
+    mArgParser.add(ArgParser::SwitchName("", "-R"), &config::setReadOnly,
             (string)"Puts jail into read-only mode, so that you cannot " +
             (string)"overwrite the backing file");
 
     mArgParser.parseArguments(argc, argv);
     mArgParser.runCommands();
 
-    if(Config::isVerbose()) {
+    if(config::isVerbose()) {
         cout << "Invoked as: " << mArgParser.getInvocationName() << "\n";
 
         vector<string> extraArguments = mArgParser.getExtraArguments();
@@ -79,15 +79,15 @@ int main(int argc, char** argv) {
         cout << endl;
     }
 
-    if(Config::isVerbose())
+    if(config::isVerbose())
         cout << "We're being verbose!" << endl;
 
-    if(Config::isDump())
+    if(config::isDump())
         dump(mArgParser.getExtraArguments());
     else {
         // TODO: this may not be the only other option. Currently, the output
         // looks alright though. Must fix! /TODO
-        if(Config::isReadOnly())
+        if(config::isReadOnly())
             view(mArgParser.getExtraArguments());
         else
             edit(mArgParser.getExtraArguments());
@@ -112,7 +112,7 @@ void parseCommand(string command) {
 }
 
 void printVersion() {
-    cout << "version: " << Config::getVersion() << endl;
+    cout << "version: " << config::getVersion() << endl;
 }
 
 void dump(vector<string> fileNames) {
@@ -130,14 +130,14 @@ void dump(vector<string> fileNames) {
         return;
     }
 
-    if(Config::isVerbose())
+    if(config::isVerbose())
         cout << "File \"" << fileName << "\" is " << length << " bytes long.\n";
 
-    if(!Config::isHexMode()) {
+    if(!config::isHexMode()) {
         cout << file.getData();
     } else {
         char *data = file.getData();
-        int stop = (Config::getWidth() + 1) / 3;
+        int stop = (config::getWidth() + 1) / 3;
         cout << hex;
         for(int i = 0; i < length; ++i) {
             cout << setw(2) << setfill('0') << (unsigned int)data[i] << ' ';

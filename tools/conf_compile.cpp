@@ -14,7 +14,8 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    int ret = config::load(argv[1]);
+    config::init();
+    int ret = config::map.load(argv[1]);
     if(ret == 0 || ret == -1) {
         return 2;
     }
@@ -23,7 +24,7 @@ int main(int argc, char **argv) {
 
     ofstream out(argv[2]);
 
-    for(auto i = config::begin(); i != config::end(); ++i) {
+    for(auto i = config::map.begin(); i != config::map.end(); ++i) {
         for(auto j = i->second.begin(); j != i->second.end(); ++j) {
             if(argc > 3)
                 cout << "config::map[\"" << i->first << "\"]"
