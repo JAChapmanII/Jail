@@ -10,7 +10,8 @@ Controller::Controller(View *iView) :
         view(iView),
         window(iView->getWindow()),
         cursor(iView->getCursor()),
-        state(State::Command) {
+        state(State::Command),
+        done(false) {
 }
 
 void Controller::run() {
@@ -18,9 +19,8 @@ void Controller::run() {
 
     this->cursor->move(0, 0);
     string line(this->window->getWidth(), ' ');
-    bool done = false;
     string command;
-    while(!done) {
+    while(!this->done) {
         int i = this->window->getKey();
         switch(this->state) {
             case State::Command:
@@ -68,7 +68,7 @@ void Controller::run() {
                                     command = "";
                                     break;
                                 }
-                                done = true;
+                                this->done = true;
                             }
                             break;
                     }
@@ -165,7 +165,7 @@ void Controller::run() {
                     case ';':
                         command = this->getCommand();
                         if(command == (string)"q") {
-                            done = true;
+                            this->done = true;
                             break;
                         }
                         if(command == (string)"w") {
@@ -244,7 +244,7 @@ void Controller::run() {
                 }
                 break;
             default:
-                done = true;
+                this->done = true;
                 break;
         }
         if(!this->view->checkSanity())
@@ -253,6 +253,28 @@ void Controller::run() {
         stringstream ss; ss << this->getModeline() << " -- :" << command;
         this->writeModeline(ss.str());
     }
+}
+
+void Controller::stop() {
+    this->done = true;
+}
+
+void Controller::write() {
+    if(this->view->getBuffer()->isReadOnly()) {
+        stringstream ss; ss << this->getModeline();
+        ss << " -- Buffer is read only";
+        this->writeModeline(ss.str());
+    } else {
+        int saved = this->view->getBuffer()->save();
+        stringstream ss; ss << this->getModeline();
+        ss << " -- ";
+        if(saved < 0)
+            ss << "Failed to save.";
+        else
+            ss << "Saved " << saved << " bytes to file";
+        this->writeModeline(ss.str());
+    }
+    sleep(1);
 }
 
 string Controller::getCommand() {

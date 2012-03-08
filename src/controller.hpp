@@ -22,6 +22,12 @@ class Controller {
         /// Let this take control of IO and the screen
         void run();
 
+        /// Mark the end of this controller's lifespan
+        void stop();
+
+        /// Save the underlying buffer to the backing file
+        void write();
+
         /// Alias to run
         void operator()();
 
@@ -34,6 +40,7 @@ class Controller {
         Window *window;
         Cursor *cursor;
         State::State state;
+        bool done;
 };
 
 #endif // CONTROLLER_HPP
