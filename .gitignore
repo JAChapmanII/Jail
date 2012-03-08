@@ -3,7 +3,7 @@
 bin/*
 
 src/version.hpp
-lib/defines.cpp
+lib/default_config.cpp
 
 .jailrc
 

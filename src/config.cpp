@@ -23,7 +23,7 @@ namespace config {
     void init() {
         if(inited)
             return;
-#include "defines.cpp"
+#include "default_config.cpp"
         inited = true;
     }
 

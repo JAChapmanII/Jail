@@ -5,7 +5,7 @@ DUMP="./$BINDIR/conf_dump"
 COMP="./$BINDIR/conf_compile"
 
 DEF="./jailrc.def"
-CONF="lib/defines.cpp"
+CONF="lib/default_config.cpp"
 OBJ="./obj/config.o"
 
 if [[ -x $COMP ]]; then

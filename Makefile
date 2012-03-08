@@ -40,7 +40,7 @@ endif
 all: dir top $(BINDIR)/$(EXEC)
 dir:
 	mkdir -p $(OBJDIR) $(BINDIR)
-top: $(SRCDIR)/version.hpp $(LIBDIR)/defines.cpp
+top: $(SRCDIR)/version.hpp $(LIBDIR)/default_config.cpp
 
 # main $(EXEC) binary
 $(BINDIR)/$(EXEC): $(OBJDIR)/$(EXEC).o $(OBJECTS)
@@ -56,8 +56,8 @@ $(BINDIR)/conf_dump: $(OBJDIR)/conf_dump.o $(TOOLS_OBJECTS)
 $(SRCDIR)/version.hpp:
 	./mkversion.sh
 
-# defines file target
-$(LIBDIR)/defines.cpp: jailrc.def
+# default_config file target
+$(LIBDIR)/default_config.cpp: jailrc.def
 	./mkconfig.sh
 
 
@@ -73,5 +73,5 @@ $(OBJDIR)/%.o: $(TOOLS_SRCDIR)/%.cpp
 
 clean:
 	rm -f $(BINDIR)/$(EXEC) $(TOOLS) $(OBJDIR)/*.o
-	rm -f $(LIBDIR)/defines.cpp $(SRCDIR)/version.hpp
+	rm -f $(LIBDIR)/default_config.cpp $(SRCDIR)/version.hpp
 
