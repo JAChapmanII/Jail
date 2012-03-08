@@ -31,4 +31,16 @@ template<typename T>
     ss >> ret;
     return ret;
 }
+
+template<typename T>
+        std::string util::join(std::vector<T> fields, std::string separator) {
+    std::stringstream ss;
+    for(unsigned i = 0; i < fields.size(); ++i) {
+        ss << fields[i];
+        if(i != fields.size() - 1)
+            ss << separator;
+    }
+    return ss.str();
+}
+
 // vim:ts=4 et sw=4 sts=4

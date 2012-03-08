@@ -1,8 +1,21 @@
 #include "util.hpp"
 using std::string;
+using std::vector;
 
 bool util::startsWith(string str, string start) {
     return str.compare(0, start.size(), start) == 0;
+}
+
+vector<string> util::split(string str, string on) {
+    vector<string> fields;
+    size_t fsep = 0;
+    while((fsep = str.find_first_of(on)) != string::npos) {
+        fields.push_back(str.substr(0, fsep));
+        str = str.substr(fsep + 1);
+    }
+    if(!str.empty())
+        fields.push_back(str);
+    return fields;
 }
 
 string util::trim(const string &str, string remove) {

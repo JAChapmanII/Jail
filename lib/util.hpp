@@ -4,6 +4,7 @@
 #include <map>
 #include <functional>
 #include <string>
+#include <vector>
 
 namespace util {
     // An std::find wrapper that automatically searches the entire container
@@ -28,6 +29,12 @@ namespace util {
 
     // Returns true if a string starts with a prefix
     bool startsWith(std::string str, std::string start);
+
+    // Split a string into a list of separated fields
+    std::vector<std::string> split(std::string str, std::string on);
+    // Join a vector of strings into a single
+    template<typename T>
+            std::string join(std::vector<T> fields, std::string separator = ",");
 
     // Removes contents of remove from either side of str
     std::string trim(const std::string &str, std::string remove = " \t\r\n");
