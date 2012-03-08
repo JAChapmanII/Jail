@@ -35,6 +35,7 @@ int main(int argc, char** argv) {
         cout << "Usage: " << argv[0] << endl;
         return 1;
     }
+    config::init();
 
     ArgParser mArgParser;
     mArgParser.setHelp();
