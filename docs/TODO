@@ -5,11 +5,7 @@ Fix/remove all TODOs found in source files.
 
 TODO should have actual TODO things in it.
 
-Configuration needs to have attention drawn to it and talked about.
-    Most of the functions in main should be elsewhere, as half are about
-    configuration
-
-Move non-configuration, non-main functions to some other file/class
+Move non-main functions out of src/jail ?
 
 We're using the return value of the Cursor's move functions to see if we
 should try to scroll or not, however this has caused a dirty hack to be
@@ -21,4 +17,8 @@ through a Controller's view's getBuffer function, yay indirection!) is a
 horrible hack. It most likely invalidates all assumed state. I don't know what
 happens if you use it more than once. Or try to read from the FileIO
 afterward. Yay!
+
+Finish up src/keymap. This involves solidifying the configuration format a
+bit, and deciding what is and is not a pre-defined function. I have some
+ideas/work for this, it will come soon.
 
