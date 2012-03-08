@@ -1,5 +1,5 @@
 [core]
-    # available modes
+    # available modes, first is default mode
     modes = command, insert
 
 # user defined functions
@@ -29,13 +29,15 @@
 # keymap settings for command mode
 [command-mode]
     k:escape = command-clear
-    k:enter = command-clear
+    k:enter  = command-clear
 
     "ZZ" = save, quit
 
     "dd" = delete-line
+    "x"  = delete-character
+
     "gg" = view-beginning
-    "G" = view-end
+    "G " = view-end
 
     "0" = cursor-beginning
     "$" = cursor-end
@@ -52,8 +54,6 @@
     "o" = insert-down
     "O" = insert-up
 
-    "x" = delete-character
-
     "J" = combine-line
 
     k:semicolon = named-command
@@ -65,5 +65,5 @@
 [insert-mode]
     k:escape = mode:command
     k:backspace = backspace
-    default = value
+    default = insert
 

@@ -22,3 +22,10 @@ Finish up src/keymap. This involves solidifying the configuration format a
 bit, and deciding what is and is not a pre-defined function. I have some
 ideas/work for this, it will come soon.
 
+CodeBlock says the config format looks a lot like the ini format. Looking at
+the page he links, it does. If jail ever becomes a "let's make the best
+program possible" project and not a "let's learn everything we can" project,
+the lib/datamap implementation should probably be replaced with a "real" lib.
+Honestly at this point the code is so simple it would be hard to screw up
+(*crosses fingers*).
+
