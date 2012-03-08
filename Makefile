@@ -59,6 +59,8 @@ $(SRCDIR)/version.hpp:
 # default_config file target
 $(LIBDIR)/default_config.cpp: jailrc.def
 	./mkconfig.sh
+$(SRCDIR)/default_keymap.cpp: keymap.def
+	$(BINDIR)/conf_compile $< $@
 
 
 # TODO: proper targets to get correct depenencies?

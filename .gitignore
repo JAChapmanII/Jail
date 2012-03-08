@@ -4,6 +4,7 @@ bin/*
 
 src/version.hpp
 lib/default_config.cpp
+src/default_keymap.cpp
 
 .jailrc
 
