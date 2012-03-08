@@ -17,7 +17,7 @@ using std::vector;
 
 #include "argparser.hpp"
 #include "fileio.hpp"
-#include "config.hpp"
+#include "dconfig.hpp"
 
 #include "buffer.hpp"
 #include "view.hpp"

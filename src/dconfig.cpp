@@ -1,4 +1,4 @@
-#include "config.hpp"
+#include "dconfig.hpp"
 using std::string;
 
 #include <sstream>

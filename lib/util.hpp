@@ -8,7 +8,8 @@
 namespace util {
     // An std::find wrapper that automatically searches the entire container
     template<typename K, typename V>
-            typename std::map<K, V>::iterator find(std::map<K, V> &map, K &value);
+            typename std::map<K, V>::iterator find(
+                    std::map<K, V> &map, K &value);
     template<typename T, typename V>
             typename T::iterator find(T &container, V &value);
 
@@ -18,11 +19,18 @@ namespace util {
 
     // A std::find_if wrapper which automatically searches the entire container
     template<typename T, typename V>
-            typename T::iterator find_if(T &container, std::function<bool(V)> predicate);
+            typename T::iterator find_if(T &container,
+                    const std::function<bool(V)> &predicate);
 
     // A simple function to convert a string to a type supporting stream ops
     template<typename T>
-            T fromString(std::string &str);
+            T fromString(const std::string &str);
+
+    // Returns true if a string starts with a prefix
+    bool startsWith(std::string str, std::string start);
+
+    // Removes contents of remove from either side of str
+    std::string trim(const std::string &str, std::string remove = " \t\r\n");
 }
 
 #include "util.imp"

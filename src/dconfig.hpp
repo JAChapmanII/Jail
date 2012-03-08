@@ -1,5 +1,5 @@
-#ifndef CONFIG_HPP
-#define CONFIG_HPP
+#ifndef DCONFIG_HPP
+#define DCONFIG_HPP
 
 #include <string>
 
@@ -23,5 +23,5 @@ namespace Config {
     std::string getVersion();
 }
 
-#endif // CONFIG_HPP
+#endif // DCONFIG_HPP
 // vim:ts=4 et sw=4 sts=4

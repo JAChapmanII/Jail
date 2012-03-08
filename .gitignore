@@ -1,4 +1,9 @@
 *.out
 *.o
 bin/*
+
 src/version.hpp
+lib/defines.cpp
+
+jailrc
+

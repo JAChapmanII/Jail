@@ -1,17 +1,24 @@
 SRCDIR=src
-BINDIR=bin
+LIBDIR=lib
 OBJDIR=obj
-#SOURCES=$(wildcard $(SRCDIR)/*.cpp)
-#OBJECTS=$(SOURCES:.cpp=.o)
+BINDIR=bin
+
 EXEC=jail
 
+LIB_OBJECTS=$(OBJDIR)/datamap.o $(OBJDIR)/util.o $(OBJDIR)/config.o
+
 OBJECTS=
-OBJECTS+=$(OBJDIR)/argparser.o $(OBJDIR)/fileio.o $(OBJDIR)/config.o
+OBJECTS+=$(OBJDIR)/argparser.o $(OBJDIR)/fileio.o $(OBJDIR)/dconfig.o
 OBJECTS+=$(OBJDIR)/buffer.o $(OBJDIR)/view.o $(OBJDIR)/controller.o
 OBJECTS+=$(OBJDIR)/window.o $(OBJDIR)/cursor.o
 
-CXXFLAGS=-std=c++0x
+CXXFLAGS=-std=c++0x -I$(LIBDIR)
 LDFLAGS=-lncurses
+
+
+TOOLS=$(BINDIR)/conf_compile $(BINDIR)/conf_dump
+TOOLS_OBJECTS=$(LIB_OBJECTS)
+TOOLS_SRCDIR=tools
 
 ifdef profile
 CXXFLAGS+=-pg
@@ -30,40 +37,41 @@ else
 CXXFLAGS+=-g
 endif
 
-all: dir $(BINDIR)/$(EXEC)
+all: dir top $(BINDIR)/$(EXEC)
 dir:
 	mkdir -p $(OBJDIR) $(BINDIR)
+top: $(SRCDIR)/version.hpp $(LIBDIR)/defines.cpp
 
+# main $(EXEC) binary
 $(BINDIR)/$(EXEC): $(OBJDIR)/$(EXEC).o $(OBJECTS)
-	$(CXX) -o $(BINDIR)/$(EXEC) $(LDFLAGS) $^
+	$(CXX) -o $@ $(LDFLAGS) $^
 
-$(OBJDIR)/argparser.o: $(SRCDIR)/argparser.cpp $(SRCDIR)/argparser.hpp
-$(OBJDIR)/buffer.o: $(SRCDIR)/buffer.cpp $(SRCDIR)/buffer.hpp \
-  $(SRCDIR)/fileio.hpp
-$(OBJDIR)/config.o: $(SRCDIR)/config.cpp $(SRCDIR)/config.hpp \
-  $(SRCDIR)/version.hpp
-$(OBJDIR)/controller.o: $(SRCDIR)/controller.cpp $(SRCDIR)/controller.hpp \
-  $(SRCDIR)/window.hpp $(SRCDIR)/view.hpp $(SRCDIR)/buffer.hpp \
-  $(SRCDIR)/fileio.hpp $(SRCDIR)/cursor.hpp
-$(OBJDIR)/cursor.o: $(SRCDIR)/cursor.cpp $(SRCDIR)/cursor.hpp \
-  $(SRCDIR)/buffer.hpp $(SRCDIR)/fileio.hpp
-$(OBJDIR)/fileio.o: $(SRCDIR)/fileio.cpp $(SRCDIR)/fileio.hpp
-$(OBJDIR)/main.o: $(SRCDIR)/main.cpp $(SRCDIR)/argparser.hpp \
-  $(SRCDIR)/fileio.hpp $(SRCDIR)/config.hpp $(SRCDIR)/buffer.hpp \
-  $(SRCDIR)/view.hpp $(SRCDIR)/window.hpp $(SRCDIR)/cursor.hpp \
-  $(SRCDIR)/controller.hpp
-$(OBJDIR)/view.o: $(SRCDIR)/view.cpp $(SRCDIR)/view.hpp $(SRCDIR)/buffer.hpp \
-  $(SRCDIR)/fileio.hpp $(SRCDIR)/window.hpp $(SRCDIR)/cursor.hpp
-$(OBJDIR)/window.o: $(SRCDIR)/window.cpp $(SRCDIR)/window.hpp
+# tools make targets
+$(BINDIR)/conf_compile: $(OBJDIR)/conf_compile.o $(TOOLS_OBJECTS)
+	$(CXX) -o $@ $^
+$(BINDIR)/conf_dump: $(OBJDIR)/conf_dump.o $(TOOLS_OBJECTS)
+	$(CXX) -o $@ $^
 
-# TODO: will the above rules mesh with the following?
-
-$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
-	$(CXX) -c -o $@ $< $(CXXFLAGS)
-
-$(OBJDIR)/version.hpp::
+# version file target
+$(SRCDIR)/version.hpp:
 	./mkversion.sh
 
+# defines file target
+$(LIBDIR)/defines.cpp: jailrc.def
+	./mkconfig.sh
+
+
+# TODO: proper targets to get correct depenencies?
+
+# targets to create object files
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+	$(CXX) -c -o $@ $< $(CXXFLAGS)
+$(OBJDIR)/%.o: $(LIBDIR)/%.cpp
+	$(CXX) -c -o $@ $< $(CXXFLAGS)
+$(OBJDIR)/%.o: $(TOOLS_SRCDIR)/%.cpp
+	$(CXX) -c -o $@ $< $(CXXFLAGS)
+
 clean:
-	rm -f $(BINDIR)/$(EXEC) $(OBJDIR)/*.o
+	rm -f $(BINDIR)/$(EXEC) $(TOOLS) $(OBJDIR)/*.o
+	rm -f $(LIBDIR)/defines.cpp $(SRCDIR)/version.hpp
 
