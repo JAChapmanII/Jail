@@ -27,6 +27,10 @@ Usage:
     Read what it says. Maybe the devs will make a man page. Or maybe the --help
     switch will actually provide some level of help in the future. Maybe.
 
+    Note: this section needs updating. If you look in keymap.def you can see
+    what the default keymap looks like. The keymap file will probably get its
+    own documentation in another file.
+
     There are several commands from vim implemented:
         0: move cursor to the beginning of the line
         $: move cursor to the end of the line
@@ -49,6 +53,7 @@ Usage:
 
         J: combine the line the cursor is on with the one after it
 
+        Note: these are not currently implemented anymore
         PageUp,   ^B: move a full page up
         PageDown, ^F: move down a full page
 
@@ -59,10 +64,12 @@ Usage:
         ZZ: save and quit (abort quitting if we can't save for some reason)
 
         :, ;: prompt for a named command
-            w: save the file overtop of the opened one
-            q: quit (no prompt to save file)
+            write: save the file overtop of the opened one
+            quit: quit (no prompt to save file)
 
+    Note: this is a lie... but it is coming back!
     In insert mode, the arrow keys and the full page movement keys still work.
+
     Backspace deletes the character behind the cursor.
     Escape switches back to command mode.
 
