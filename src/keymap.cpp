@@ -121,6 +121,7 @@ void keymap::init() {
 //# mode-<one of the core.modes>
 //# backspace
 
+// TODO: normalize key-names <C-f>, <^f> -> <C-f>, etc.
 void keymap::load(std::string file) {
     keymap_map.load(file);
 
@@ -238,7 +239,11 @@ void keymap::push_execute(int keycode) {
     if(keymap_map.has("global.default") &&
             keymap_map.get("global.default") == "check-last") {
         string last = mapkey(keycode);
-        tryExecute(last, true);
+        if(tryExecute(last, true)) {
+            // TODO: this really makes things clash :)
+            if(command.length() > last.length())
+                command = command.substr(0, command.length() - last.length());
+        }
     }
     return;
 }
@@ -257,14 +262,30 @@ int keymap::mapkey(string key) {
         return 127;
     if(key == (string)"<enter>")
         return '\n';
+    if(key == (string)"<C-b>")
+        return 2;
+    if(key == (string)"<C-f>")
+        return 6;
+    if(key == (string)"<pageup>")
+        return 339;
+    if(key == (string)"<pagedown>")
+        return 338;
     return key[0];
 }
 string keymap::mapkey(int key) {
-    switch(key) {
+    switch((unsigned)key) {
+        case 2:
+            return "<C-b>";
+        case 6:
+            return "<C-f>";
         case 27:
             return "<escape>";
         case 127:
             return "<bspace>";
+        case 338:
+            return "<pagedown>";
+        case 339:
+            return "<pageup>";
         //case '\n':
             //return "<enter>";
     }
