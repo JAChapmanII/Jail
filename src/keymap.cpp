@@ -22,6 +22,7 @@ using util::trim;
 using util::startsWith;
 
 #include "datamap.hpp"
+#include "window.hpp"
 
 // TODO: this doesn't work with multiple controllers/views, or if it does it
 // TODO: probably isn't thread safe...
@@ -217,6 +218,8 @@ bool keymap::execute(string function) {
 
 void keymap::push_execute(int keycode) {
     command += mapkey(keycode);
+    // TODO: this needs to go by tokens
+    // TODO: we'll probably store an vector<int> and convert as needed
     for(int i = 1; i <= command.length(); ++i) {
         string subcommand = command.substr(0, i);
         if(tryExecute(subcommand)) {
@@ -262,37 +265,56 @@ string keymap::getCommand() {
 // TODO: better way to handle this?
 int keymap::mapkey(string key) {
     if(key == (string)"<escape>")
-        return 27;
+        return Key::Escape;
     if(key == (string)"<space>")
-        return ' ';
+        return Key::Space;
     if(key == (string)"<bspace>")
-        return 127;
+        return Key::Backspace;
     if(key == (string)"<enter>")
-        return '\n';
+        return Key::Enter;
     if(key == (string)"<C-b>")
-        return 2;
+        return Key::CtrlB;
     if(key == (string)"<C-f>")
-        return 6;
+        return Key::CtrlF;
     if(key == (string)"<pageup>")
-        return 339;
+        return Key::PageUp;
     if(key == (string)"<pagedown>")
-        return 338;
+        return Key::PageDown;
+
+    if(key == (string)"<left>")
+        return Key::Left;
+    if(key == (string)"<right>")
+        return Key::Right;
+    if(key == (string)"<up>")
+        return Key::Up;
+    if(key == (string)"<down>")
+        return Key::Down;
+
     return key[0];
 }
 string keymap::mapkey(int key) {
     switch((unsigned)key) {
-        case 2:
+        case Key::CtrlB:
             return "<C-b>";
-        case 6:
+        case Key::CtrlF:
             return "<C-f>";
-        case 27:
+        case Key::Escape:
             return "<escape>";
-        case 127:
+        case Key::Backspace:
             return "<bspace>";
-        case 338:
+        case Key::PageDown:
             return "<pagedown>";
-        case 339:
+        case Key::PageUp:
             return "<pageup>";
+
+        case Key::Left:
+            return "<left>";
+        case Key::Right:
+            return "<right>";
+        case Key::Up:
+            return "<up>";
+        case Key::Down:
+            return "<down>";
         //case '\n':
             //return "<enter>";
     }
