@@ -7,9 +7,10 @@
 #include <ncurses.h>
 
 // TODO guh, better way to do this?
+// TODO move out of here?
 namespace Key {
     enum Key {
-        CtrlB = 2, CtrlF = 6,
+        CtrlB = 2, CtrlF = 6, Enter = '\n',
         Escape = 27,
         Up = KEY_UP, Down = KEY_DOWN, Left = KEY_LEFT, Right = KEY_RIGHT,
         Space = ' ', ExclamationPoint, QuotationMark, Octothorpe, Currency,
