@@ -13,6 +13,9 @@ namespace keymap {
     void load(std::string file);
     bool execute(std::string function);
     void push_execute(int keycode);
+
+    std::string getMode();
+
 }
 
 #endif // KEYMAP_HPP

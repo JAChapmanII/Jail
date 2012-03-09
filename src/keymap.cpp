@@ -212,4 +212,8 @@ void keymap::push_execute(int keycode) {
     return;
 }
 
+string keymap::getMode() {
+    return mode;
+}
+
 // vim:ts=4 et sw=4 sts=4

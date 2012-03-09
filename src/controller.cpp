@@ -92,7 +92,7 @@ string Controller::getModeline() {
     stringstream ss; 
     ss << ": (" << this->cursor->getCol()
         << ", " << this->cursor->getRow() << ") -- %" << ruler << " ";
-    ss << " " << ((this->state == State::Insert) ? "Insert" : "Command");
+    ss << " " << keymap::getMode();
     return ss.str();
 }
 
