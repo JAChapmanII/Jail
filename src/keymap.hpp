@@ -6,11 +6,12 @@
 #include "view.hpp"
 
 namespace keymap {
-    Controller *keymap_controller;
-    View *keymap_view;
+    extern Controller *keymap_controller;
+    extern View *keymap_view;
 
     void init();
     void load(std::string file);
+    bool execute(std::string function);
     void push_execute(int keycode);
 }
 

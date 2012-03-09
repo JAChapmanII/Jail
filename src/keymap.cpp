@@ -17,14 +17,23 @@ using std::endl;
 #include "util.hpp"
 using util::split;
 using util::join;
+using util::contains;
+using util::trim;
+using util::startsWith;
 
 #include "datamap.hpp"
 
+// TODO: this doesn't work with multiple controllers/views, or if it does it
+// TODO: probably isn't thread safe...
+Controller *keymap::keymap_controller = NULL;
+View *keymap::keymap_view = NULL;
+
 static DataMap keymap_map;
 static map<string, function<void(Controller &, View &)>> function_map;
+static map<string, string> customFunction_map;
 static vector<string> modes;
 static string mode;
-static vector<int> command;
+static string command;
 static bool keymap_inited = false;
 
 // function_map lamda prototype:
@@ -92,7 +101,7 @@ void keymap::init() {
             view.getCursor()->right();
         };
     function_map["named-command"] = [](Controller &controller, View &view) {
-            controller.getCommand();
+            execute(controller.getCommand());
         };
     function_map["command-clear"] = [](Controller &controller, View &view) {
             command.clear();
@@ -104,42 +113,93 @@ void keymap::init() {
 
 void keymap::load(std::string file) {
     keymap_map.load(file);
+
     modes.clear();
-    modes.push_back("");
     if(keymap_map.has("core.modes")) {
         vector<string> moreModes = split(keymap_map.get("core.modes"), ",");
         for(auto nmode : moreModes)
             if(!nmode.empty())
                 modes.push_back(nmode);
     }
-    cerr << "mode count: " << modes.size() << endl;
+    modes.push_back("");
+    mode = modes[0] + "-mode";
+    cerr << "mode count: " << modes.size() << " -- " << mode << endl;
+
+    customFunction_map.clear();
+    if(keymap_map.hasScope("functions")) {
+        for(auto func : keymap_map["functions"])
+            customFunction_map[func.first] = func.second;
+    }
 }
 
-static void execute(vector<int> com) {
-    cerr << "executing: " << join(com) << endl;
+static bool tryExecute(string command) {
+    if(!keymap::keymap_controller || !keymap::keymap_view) {
+        cerr << "keymap::execute: controller or view undefined" << endl;
+        return false;
+    }
+
+    string function = "";
+    if(keymap_map.has(mode, command))
+        function = keymap_map.get(mode, command);
+    else if(keymap_map.has("global", command))
+        function = keymap_map.get("global", command);
+    else
+        return false;
+
+    vector<string> sfuncs = split(function);
+    for(auto sfunc : sfuncs) {
+        sfunc = trim(sfunc);
+        if(startsWith(sfunc, "mode:")) {
+            mode = sfunc.substr(5);
+            continue;
+        }
+        if(startsWith(sfunc, "insert:")) {
+            command += sfunc.substr(7);
+            continue;
+        }
+        if(!keymap::execute(sfunc))
+            break;
+    }
+
+    return true;
+}
+
+bool keymap::execute(string function) {
+    if(!keymap_controller || !keymap_view) {
+        cerr << "keymap::execute: controller or view undefined" << endl;
+        return false;
+    }
+    if(contains(customFunction_map, function)) {
+        //cerr << function << " is custom function" << endl;
+        return true;
+    }
+    if(contains(function_map, function)) {
+        function_map[function](*keymap_controller, *keymap_view);
+        return true;
+    }
+    cerr << "keymap::execute: " << function << " is not a function" << endl;
+    return false;
 }
 
 void keymap::push_execute(int keycode) {
-    command.push_back(keycode);
-    // TODO: convert command into string?
-    /*
-    if(keymap_map.has(mode, command)) {
-        execute(mode + "." + command);
-        command = "";
-        return;
+    command += (char)keycode;
+    for(int i = 1; i < command.length(); ++i) {
+        string subcommand = command.substr(0, i);
+        if(tryExecute(subcommand)) {
+            command = command.substr(i);
+            i = 0;
+        }
     }
-    if(keymap_map.has("global", command)) {
-        execute("global." + command);
-        command = "";
-        return;
-    }
-    */
     if(keymap_map.has(mode, "default")) {
         string defaction = keymap_map.get(mode, "default");
         if(defaction == "none") {
             // TODO: don't hard-code this number
-            if(keycode == 127)
-                command.resize(command.size() - 1);
+            if(keycode == 127) {
+                if(command.length() == 1)
+                    command.clear();
+                else
+                    command.resize(command.size() - 2);
+            }
             return;
         }
         if(defaction == "insert") {
