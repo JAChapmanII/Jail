@@ -2,9 +2,11 @@
 #define KEYMAP_HPP
 
 #include <string>
+#include <vector>
 #include "controller.hpp"
 #include "view.hpp"
 
+// TODO: turn this into a real class so we can have more than one?
 namespace keymap {
     extern Controller *keymap_controller;
     extern View *keymap_view;
@@ -16,6 +18,10 @@ namespace keymap {
 
     std::string getMode();
 
+    int mapkey(std::string key);
+    std::string mapkey(int key);
+
+    std::vector<int> mapkeys(std::string keys);
 }
 
 #endif // KEYMAP_HPP
