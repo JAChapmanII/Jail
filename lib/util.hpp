@@ -31,7 +31,7 @@ namespace util {
     bool startsWith(std::string str, std::string start);
 
     // Split a string into a list of separated fields
-    std::vector<std::string> split(std::string str, std::string on);
+    std::vector<std::string> split(std::string str, std::string on = ",");
     // Join a vector of strings into a single
     template<typename T>
             std::string join(std::vector<T> fields, std::string separator = ",");
