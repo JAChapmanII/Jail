@@ -38,6 +38,9 @@ class Controller {
         Window *window;
         Cursor *cursor;
         bool done;
+
+        std::string message;
+        int messageLeft;
 };
 
 #endif // CONTROLLER_HPP

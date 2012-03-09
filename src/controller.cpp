@@ -4,15 +4,15 @@ using std::string;
 #include <sstream>
 using std::stringstream;
 
-#include <unistd.h>
-
 #include "keymap.hpp"
 
 Controller::Controller(View *iView) :
         view(iView),
         window(iView->getWindow()),
         cursor(iView->getCursor()),
-        done(false) {
+        done(false),
+        message(""),
+        messageLeft(0) {
 }
 
 void Controller::run() {
@@ -33,6 +33,8 @@ void Controller::run() {
 
         stringstream ss; ss << this->getModeline() << " -- :" << command;
         this->writeModeline(ss.str());
+        if(this->messageLeft)
+            this->messageLeft--;
     }
 }
 
@@ -42,20 +44,18 @@ void Controller::stop() {
 
 void Controller::write() {
     if(this->view->getBuffer()->isReadOnly()) {
-        stringstream ss; ss << this->getModeline();
-        ss << " -- Buffer is read only";
-        this->writeModeline(ss.str());
+        this->message = "Buffer is read only";
     } else {
         int saved = this->view->getBuffer()->save();
-        stringstream ss; ss << this->getModeline();
-        ss << " -- ";
         if(saved < 0)
-            ss << "Failed to save.";
-        else
-            ss << "Saved " << saved << " bytes to file";
-        this->writeModeline(ss.str());
+            this->message = "Failed to save.";
+        else {
+            stringstream ss;
+            ss << saved;
+            this->message = "Saved " + ss.str() + " bytes to file";
+        }
     }
-    sleep(1);
+    this->messageLeft = 30;
 }
 
 string Controller::getCommand() {
@@ -92,6 +92,8 @@ string Controller::getModeline() {
     ss << ": (" << this->cursor->getCol()
         << ", " << this->cursor->getRow() << ") -- %" << ruler << " ";
     ss << " " << keymap::getMode();
+    if((this->messageLeft > 0) && !this->message.empty())
+        ss << " -- " << this->message;
     return ss.str();
 }
 
