@@ -12,7 +12,6 @@ Controller::Controller(View *iView) :
         view(iView),
         window(iView->getWindow()),
         cursor(iView->getCursor()),
-        state(State::Command),
         done(false) {
 }
 
