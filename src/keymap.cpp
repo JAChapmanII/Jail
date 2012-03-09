@@ -215,6 +215,8 @@ void keymap::push_execute(int keycode) {
     for(int i = 1; i <= command.length(); ++i) {
         string subcommand = command.substr(0, i);
         if(tryExecute(subcommand)) {
+            if(command.empty())
+                break;
             command = command.substr(i);
             i = 1;
         }
