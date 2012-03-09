@@ -36,7 +36,12 @@ int main(int argc, char** argv) {
         cout << "Usage: " << argv[0] << endl;
         return 1;
     }
+
+    keymap::init();
     config::init();
+    if(config::map.has("core.keymap")) {
+        keymap::load(config::map.get("core.keymap"));
+    }
 
     ArgParser mArgParser;
     mArgParser.setHelp();
