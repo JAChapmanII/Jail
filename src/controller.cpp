@@ -6,6 +6,8 @@ using std::stringstream;
 
 #include <unistd.h>
 
+#include "keymap.hpp"
+
 Controller::Controller(View *iView) :
         view(iView),
         window(iView->getWindow()),
@@ -15,6 +17,8 @@ Controller::Controller(View *iView) :
 }
 
 void Controller::run() {
+    keymap::keymap_controller = this;
+    keymap::keymap_view = this->view;
     this->view->view();
 
     this->cursor->move(0, 0);
@@ -22,231 +26,9 @@ void Controller::run() {
     string command;
     while(!this->done) {
         int i = this->window->getKey();
-        switch(this->state) {
-            case State::Command:
-                if(!command.empty()) {
-                    switch(i) {
-                        case Key::Escape:
-                            command = "";
-                            break;
 
-                        case Key::Backspace:
-                            command.resize(command.length() - 1);
-                            break;
+        keymap::push_execute(i);
 
-                        default:
-                            if(i >= ' ' && i <= '~')
-                                command += (char)i;
-                            if(i == '\n')
-                                command = "";
-                            // execute command if it is one
-                            if(command == (string)"dd") {
-                                this->cursor->deleteLine();
-                                this->view->checkSanity();
-                                this->view->repaint();
-                                command = "";
-                                break;
-                            }
-                            if(command == (string)"gg") {
-                                this->cursor->toBeginningOfBuffer();
-                                command = "";
-                                break;
-                            }
-                            if(command == (string)"ZZ") {
-                                if(this->view->getBuffer()->isReadOnly()) {
-                                    this->writeModeline(this->getModeline() + 
-                                            " -- Buffer is read only");
-                                    sleep(1);
-                                    command = "";
-                                    break;
-                                }
-                                int saved = this->view->getBuffer()->save();
-                                if(saved < 0) {
-                                    this->writeModeline(this->getModeline() +
-                                            " -- Writing the buffer failed");
-                                    sleep(1);
-                                    command = "";
-                                    break;
-                                }
-                                this->done = true;
-                            }
-                            break;
-                    }
-                    break;
-                }
-                switch(i) {
-                    case '0':
-                        this->cursor->toBeginningOfLine();
-                        break;
-
-                    case '$':
-                        this->cursor->toEndOfLine();
-                        break;
-
-                    case 'j':
-                    case Key::Down:
-                        this->cursor->down();
-                        break;
-
-                    case 'k':
-                    case Key::Up:
-                        this->cursor->up();
-                        break;
-
-                    case 'h':
-                    case Key::Left:
-                    case Key::Backspace:
-                        this->cursor->left();
-                        break;
-
-                    case 'l':
-                    case Key::Right:
-                        this->cursor->right();
-                        break;
-
-                    case 'G':
-                        this->cursor->toEndOfBuffer();
-                        break;
-
-                    case 'I':
-                        this->cursor->toBeginningOfLine();
-                    case 'i':
-                        this->state = State::Insert;
-                        break;
-
-                    case 'A':
-                        this->cursor->toEndOfLine();
-                    case 'a':
-                        this->cursor->right();
-                        this->state = State::Insert;
-                        break;
-
-                    case 'o':
-                        this->cursor->toEndOfLine();
-                        this->cursor->insert('\n');
-                        this->state = State::Insert;
-                        this->view->repaint();
-                        break;
-
-                    case 'O':
-                        this->cursor->toBeginningOfLine();
-                        this->cursor->insert('\n');
-                        this->cursor->up();
-                        this->state = State::Insert;
-                        this->view->repaint();
-                        break;
-
-                    case Key::PageUp:
-                    case Key::CtrlB:
-                        this->cursor->move(
-                                this->cursor->getRow() - this->window->getHeight() + 1,
-                                this->cursor->getCol());
-                        break;
-
-                    case Key::PageDown:
-                    case Key::CtrlF:
-                        this->cursor->move(
-                                this->cursor->getRow() + this->window->getHeight() - 1,
-                                this->cursor->getCol());
-                        break;
-
-                    case 'x':
-                        this->cursor->erase();
-                        this->view->repaint();
-                        break;
-
-                    case 'J':
-                        this->cursor->toEndOfLine();
-                        this->cursor->combineLines();
-                        this->view->repaint();
-                        break;
-
-                    case ':':
-                    case ';':
-                        command = this->getCommand();
-                        if(command == (string)"q") {
-                            this->done = true;
-                            break;
-                        }
-                        if(command == (string)"w") {
-                            if(this->view->getBuffer()->isReadOnly()) {
-                                stringstream ss; ss << this->getModeline();
-                                ss << " -- Buffer is read only";
-                                this->writeModeline(ss.str());
-                            } else {
-                                int saved = this->view->getBuffer()->save();
-                                stringstream ss; ss << this->getModeline();
-                                ss << " -- ";
-                                if(saved < 0)
-                                    ss << "Failed to save.";
-                                else
-                                    ss << "Saved " << saved << " bytes to file";
-                                this->writeModeline(ss.str());
-                            }
-                            sleep(1);
-                        }
-                        command = "";
-                        break;
-
-                    default:
-                        if(i >= ' ' && i <= '~')
-                            command += (char)i;
-                        break;
-                }
-                break;
-            case State::Insert:
-                switch(i) {
-                    case Key::Down:
-                        this->cursor->down();
-                        break;
-
-                    case Key::Up:
-                        this->cursor->up();
-                        break;
-
-                    case Key::Left:
-                        this->cursor->left();
-                        break;
-
-                    case Key::Right:
-                        this->cursor->right();
-                        break;
-
-                    case Key::PageUp:
-                    case Key::CtrlB:
-                        this->cursor->move(
-                                this->cursor->getRow() - this->window->getHeight() + 1,
-                                this->cursor->getCol());
-                        break;
-
-                    case Key::PageDown:
-                    case Key::CtrlF:
-                        this->cursor->move(
-                                this->cursor->getRow() + this->window->getHeight() - 1,
-                                this->cursor->getCol());
-                        break;
-
-                    case Key::Escape:
-                        this->state = State::Command;
-                        break;
-
-                    case Key::Backspace:
-                        this->cursor->backspace();
-                        this->view->repaint();
-                        break;
-
-                    default:
-                        if((i >= ' ' && i <= 126) || (i == '\n')) {
-                            this->cursor->insert((char)i);
-                            this->view->repaint();
-                        }
-                        break;
-                }
-                break;
-            default:
-                this->done = true;
-                break;
-        }
         if(!this->view->checkSanity())
             this->view->repaint();
 
