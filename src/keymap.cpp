@@ -113,6 +113,8 @@ void keymap::init() {
                 command.clear();
             else
                 command.resize(command.size() - l - 1);
+            // TODO: this should actually backspace the lats token, such as
+            // TODO: <space> or l
         };
     function_map["backspace"] = [](Controller &controller, View &view) {
             view.getCursor()->backspace();
