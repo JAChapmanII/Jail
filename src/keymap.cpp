@@ -109,7 +109,7 @@ void keymap::init() {
     function_map["command-backspace"] = [](Controller &controller, View &view) {
             // TODO: don't hard code?
             int l = mapkey(127).length();
-            if(command.length() == l)
+            if(command.length() <= l)
                 command.clear();
             else
                 command.resize(command.size() - l - 1);
