@@ -23,16 +23,16 @@ void Controller::run() {
     this->cursor->move(0, 0);
     string line(this->window->getWidth(), ' ');
     while(!this->done) {
-        int i = this->window->getKey();
-
-        keymap::push_execute(i);
-
         if(!this->view->checkSanity())
             this->view->repaint();
 
         this->writeModeline(this->getModeline());
         if(this->messageLeft)
             this->messageLeft--;
+
+        int i = this->window->getKey();
+        keymap::push_execute(i);
+
     }
 }
 
