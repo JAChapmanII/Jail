@@ -33,3 +33,8 @@ With the advent of keymap::, Controller's purpose has become kind of fuzzy.
 Now it is more of a bridge between a few components. Is it possible to move
 this into main, or somewhere else it would fit better?
 
+Now that we keep around dead commands under normal cirmustances, things like
+<bspace> don't work well, as they appear after a bunch of non-command things.
+The global check-last is intended to fix this, but there is probably a better
+way that is more consistent with everything else. Think about it.
+
