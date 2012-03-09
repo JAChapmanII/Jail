@@ -251,6 +251,9 @@ void keymap::push_execute(int keycode) {
 string keymap::getMode() {
     return mode;
 }
+string keymap::getCommand() {
+    return command;
+}
 
 // TODO: better way to handle this?
 int keymap::mapkey(string key) {

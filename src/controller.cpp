@@ -22,7 +22,6 @@ void Controller::run() {
 
     this->cursor->move(0, 0);
     string line(this->window->getWidth(), ' ');
-    string command;
     while(!this->done) {
         int i = this->window->getKey();
 
@@ -31,8 +30,7 @@ void Controller::run() {
         if(!this->view->checkSanity())
             this->view->repaint();
 
-        stringstream ss; ss << this->getModeline() << " -- :" << command;
-        this->writeModeline(ss.str());
+        this->writeModeline(this->getModeline());
         if(this->messageLeft)
             this->messageLeft--;
     }
@@ -92,6 +90,7 @@ string Controller::getModeline() {
     ss << ": (" << this->cursor->getCol()
         << ", " << this->cursor->getRow() << ") -- %" << ruler << " ";
     ss << " " << keymap::getMode();
+    ss << " :" << keymap::getCommand();
     if((this->messageLeft > 0) && !this->message.empty())
         ss << " -- " << this->message;
     return ss.str();
