@@ -4,7 +4,7 @@
 
 # user defined functions
 [functions]
-    combine-line = view-down, insert-beginning, insert:backspace
+    combine-line = cursor-down, insert-beginning, insert:<bspace><space>, mode:command
 
     append-end  = cursor-end, cursor-right, mode:insert
     append-here = cursor-right, mode:insert
@@ -12,26 +12,32 @@
     insert-beginning = cursor-beginning, mode:insert
     insert-here      = mode:insert
     insert-down      = append-end, insert:<enter>
-    insert-up        = view-up, insert-down
+    insert-up        = cursor-up, insert-down
 
 # keymap settings which are always present
 [global]
+    <escape> = command-clear
+
+    # TODO: these
     <down>  = cursor-down
     <up>    = cursor-up
     <left>  = cursor-left
     <right> = cursor-right
 
+    # TODO: these
     <pageup> = view-pageup
     <C-b>    = view-pageup
     <pagedown> = view-pagedown
     <C-f>      = view-pagedown
 
+    default = check-last
+
 # keymap settings for command mode
 [command-mode]
-    <escape> = command-clear
     <enter>  = command-clear
+    <bspace> = command-backspace
 
-    ZZ = save, quit
+    ZZ = write, quit
 
     dd = delete-line
     x  = delete-character
@@ -64,5 +70,6 @@
 # keymap settings when in insert mode
 [insert-mode]
     <escape> = mode:command
+    <bspace> = backspace
     default = insert
 
