@@ -44,3 +44,6 @@ used for command name suggestions?
 
 Capture SIGTERM so we don't lose contents of file... oops
 
+Arrow keys move twice... edit: actually, only in command mode... It works fine
+in insert mode. Which is really nice since it is defined in global :S
+
