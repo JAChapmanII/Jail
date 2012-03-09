@@ -106,6 +106,16 @@ void keymap::init() {
     function_map["command-clear"] = [](Controller &controller, View &view) {
             command.clear();
         };
+    function_map["command-backspace"] = [](Controller &controller, View &view) {
+            if(command.length() == 1)
+                command.clear();
+            else
+                command.resize(command.size() - 2);
+        };
+    function_map["backspace"] = [](Controller &controller, View &view) {
+            view.getCursor()->backspace();
+            view.repaint();
+        };
 }
 
 //# mode-<one of the core.modes>
