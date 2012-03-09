@@ -53,7 +53,6 @@ Usage:
 
         J: combine the line the cursor is on with the one after it
 
-        Note: these are not currently implemented anymore
         PageUp,   ^B: move a full page up
         PageDown, ^F: move down a full page
 
@@ -67,7 +66,6 @@ Usage:
             write: save the file overtop of the opened one
             quit: quit (no prompt to save file)
 
-    Note: this is a lie... but it is coming back!
     In insert mode, the arrow keys and the full page movement keys still work.
 
     Backspace deletes the character behind the cursor.
