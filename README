@@ -29,7 +29,7 @@ Usage:
 
     Note: this section needs updating. If you look in keymap.def you can see
     what the default keymap looks like. The keymap file will probably get its
-    own documentation in another file.
+    own documentation in another file, planned as docs/README_keymap
 
     There are several commands from vim implemented:
         0: move cursor to the beginning of the line
