@@ -17,6 +17,7 @@
 # keymap settings which are always present
 [global]
     <escape> = command-clear
+    <bspace> = command-backspace
 
     # TODO: these
     <down>  = cursor-down
@@ -35,7 +36,6 @@
 # keymap settings for command mode
 [command-mode]
     <enter>  = command-clear
-    <bspace> = command-backspace
 
     ZZ = write, quit
 
