@@ -23,8 +23,10 @@ namespace config {
     void init() {
         if(inited)
             return;
-#include "default_config.cpp"
         inited = true;
+#include "default_config.cpp"
+        if(map.has("core.config"))
+            map.load(map.get("core.config"));
     }
 
 
