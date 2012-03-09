@@ -63,7 +63,7 @@
     J = combine-line
 
     : = named-command
-    : = named-command
+    ; = named-command
 
     default = none
 
