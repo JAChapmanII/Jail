@@ -38,3 +38,7 @@ Now that we keep around dead commands under normal cirmustances, things like
 The global check-last is intended to fix this, but there is probably a better
 way that is more consistent with everything else. Think about it.
 
+When loading the function maps, we need to bulid something like a prefix tree
+to find out what the abbreviated commands are named. This tree can also be
+used for command name suggestions?
+
