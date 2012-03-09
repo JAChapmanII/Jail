@@ -67,7 +67,7 @@ void keymap::init() {
                     cursor->getRow() + window->getHeight() - 1,
                     cursor->getCol());
         };
-    function_map["view-beggining"] = [](Controller &controller, View &view) {
+    function_map["view-beginning"] = [](Controller &controller, View &view) {
             view.getCursor()->toBeginningOfBuffer();
         };
     function_map["view-end"] = [](Controller &controller, View &view) {
