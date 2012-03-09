@@ -29,3 +29,7 @@ the lib/datamap implementation should probably be replaced with a "real" lib.
 Honestly at this point the code is so simple it would be hard to screw up
 (*crosses fingers*).
 
+With the advent of keymap::, Controller's purpose has become kind of fuzzy.
+Now it is more of a bridge between a few components. Is it possible to move
+this into main, or somewhere else it would fit better?
+
