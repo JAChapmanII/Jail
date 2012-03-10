@@ -44,7 +44,7 @@ template<typename T>
 }
 
 template<typename T, typename O, typename F>
-        std::vector<O> util::map(std::vector<T> &container, const F &predicate) {
+        std::vector<O> util::map(std::vector<T> container, const F &predicate) {
     std::vector<O> out;
     out.reserve(container.size());
     for(T val : container)

@@ -29,6 +29,8 @@ namespace util {
 
     // Returns true if a string starts with a prefix
     bool startsWith(std::string str, std::string start);
+    // Returns true if a string ends with a suffix
+    bool endsWith(std::string str, std::string end);
 
     // Split a string into a list of separated fields
     std::vector<std::string> split(std::string str, std::string on = ",");
@@ -38,10 +40,10 @@ namespace util {
 
     // Apply a mapping function to every element in a vector
     template<typename T, typename O, typename F>
-            std::vector<O> map(std::vector<T> &container, const F &predicate);
+            std::vector<O> map(std::vector<T> container, const F &predicate);
 
     // Removes contents of remove from either side of str
-    std::string trim(const std::string &str, std::string remove = " \t\r\n");
+    std::string trim(std::string str, std::string remove = " \t\r\n");
 }
 
 #include "util.imp"

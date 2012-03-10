@@ -3,7 +3,14 @@ using std::string;
 using std::vector;
 
 bool util::startsWith(string str, string start) {
+    if(start.size() > str.size())
+        return false;
     return str.compare(0, start.size(), start) == 0;
+}
+bool util::endsWith(std::string str, std::string end) {
+    if(end.size() > str.size())
+        return false;
+    return str.compare(str.size() - end.size() - 1, end.size(), end) == 0;
 }
 
 vector<string> util::split(string str, string on) {
@@ -18,7 +25,7 @@ vector<string> util::split(string str, string on) {
     return fields;
 }
 
-string util::trim(const string &str, string remove) {
+string util::trim(string str, string remove) {
     if(str.find_first_not_of(remove) == string::npos)
         return "";
     return str.substr(str.find_first_not_of(remove),
