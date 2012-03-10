@@ -4,7 +4,7 @@
 
 # user defined functions
 [functions]
-    combine-line = cursor-down, insert-beginning, insert:<bspace><space>, mode:command
+    combine-line = cursor-down, insert-beginning, insert:<bspace><space><escape>
 
     append-end  = cursor-end, cursor-right, mode:insert
     append-here = cursor-right, mode:insert
@@ -12,7 +12,7 @@
     insert-beginning = cursor-beginning, mode:insert
     insert-here      = mode:insert
     insert-down      = append-end, insert:<enter>
-    insert-up        = cursor-up, insert-down
+    insert-up        = insert-beginning, insert:<enter><up>
 
 # keymap settings which are always present
 [global]
