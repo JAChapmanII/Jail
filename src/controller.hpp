@@ -22,7 +22,7 @@ class Controller {
         void stop();
 
         /// Save the underlying buffer to the backing file
-        void write();
+        bool write();
 
         /// Alias to run
         void operator()();

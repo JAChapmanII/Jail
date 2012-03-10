@@ -40,20 +40,25 @@ void Controller::stop() {
     this->done = true;
 }
 
-void Controller::write() {
+bool Controller::write() {
+    bool result = false;
     if(this->view->getBuffer()->isReadOnly()) {
         this->message = "Buffer is read only";
+        result = false;
     } else {
         int saved = this->view->getBuffer()->save();
-        if(saved < 0)
+        if(saved < 0) {
             this->message = "Failed to save.";
-        else {
+            result = false;
+        } else {
             stringstream ss;
             ss << saved;
             this->message = "Saved " + ss.str() + " bytes to file";
+            result = true;
         }
     }
     this->messageLeft = 30;
+    return result;
 }
 
 string Controller::getCommand() {
