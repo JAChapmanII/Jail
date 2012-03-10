@@ -24,6 +24,7 @@ void Window::start() {
     noecho();
     intrflush(stdscr, false);
     keypad(stdscr, true);
+    meta(stdscr, true);
 
     this->update(0, 0);
 }
