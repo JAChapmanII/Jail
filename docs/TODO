@@ -42,8 +42,5 @@ When loading the function maps, we need to bulid something like a prefix tree
 to find out what the abbreviated commands are named. This tree can also be
 used for command name suggestions?
 
-Capture SIGTERM so we don't lose contents of file... oops
-
-Arrow keys move twice... edit: actually, only in command mode... It works fine
-in insert mode. Which is really nice since it is defined in global :S
+Capture SIGTERM so we can display an appropriate message
 

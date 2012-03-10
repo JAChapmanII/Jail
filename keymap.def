@@ -19,13 +19,11 @@
     <escape> = command-clear
     <bspace> = command-backspace
 
-    # TODO: these
     <down>  = cursor-down
     <up>    = cursor-up
     <left>  = cursor-left
     <right> = cursor-right
 
-    # TODO: these
     <pageup> = view-pageup
     <C-b>    = view-pageup
     <pagedown> = view-pagedown
