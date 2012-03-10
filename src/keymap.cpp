@@ -115,10 +115,13 @@ void keymap::init() {
             return true;
         };
     function_map["command-backspace"] = [](Controller &controller, View &view) -> bool {
+            // TODO: currently taken care of by the fact that we return true...
+            /*
             if(command.size() <= 1)
                 command.clear();
             else
-                command.resize(command.size() - 2);
+                command.resize(command.size() - 1);
+            */
             return true;
         };
     function_map["backspace"] = [](Controller &controller, View &view) -> bool {
@@ -291,6 +294,8 @@ int keymap::mapkey(string key) {
         return Key::Space;
     if(key == (string)"<bspace>")
         return Key::Backspace;
+    if(key == (string)"<backspace>")
+        return Key::Backspace;
     if(key == (string)"<enter>")
         return Key::Enter;
     if(key == (string)"<C-b>")
@@ -336,11 +341,13 @@ string keymap::mapkey(int key) {
             return "<up>";
         case Key::Down:
             return "<down>";
+        case Key::Enter:
+            return "<enter>";
+        case Key::Space:
+            return "<space>";
 
         default:
             break;
-        //case '\n':
-            //return "<enter>";
     }
     if((key >= ' ') && (key <= '~'))
         return (string)"" + (char)key;
