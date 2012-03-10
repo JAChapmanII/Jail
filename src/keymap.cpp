@@ -333,10 +333,7 @@ int keymap::mapkey(string key) {
         return Key::Backspace;
     if(key == (string)"<enter>")
         return Key::Enter;
-    if(key == (string)"<C-b>")
-        return Key::CtrlB;
-    if(key == (string)"<C-f>")
-        return Key::CtrlF;
+
     if(key == (string)"<pageup>")
         return Key::PageUp;
     if(key == (string)"<pagedown>")
@@ -351,14 +348,15 @@ int keymap::mapkey(string key) {
     if(key == (string)"<down>")
         return Key::Down;
 
+    if(startsWith(key, "<C-") && endsWith(key, ">") && (key.size() == 5) &&
+            ((key[3] >= 'a') && (key[3] <= 'z')))
+        // Ctrl <a-z> maps to 1 - 26
+        return key[3] - 'a';
+
     return key[0];
 }
 string keymap::mapkey(int key) {
     switch((unsigned)key) {
-        case Key::CtrlB:
-            return "<C-b>";
-        case Key::CtrlF:
-            return "<C-f>";
         case Key::Escape:
             return "<escape>";
         case Key::Backspace:
@@ -384,6 +382,9 @@ string keymap::mapkey(int key) {
         default:
             break;
     }
+    if((key >= 1) && (key <= 26))
+        // Ctrl <a-z> maps to 1 - 26
+        return (string)"<C-" + (char)(key + 'a' - 1) + ">";
     if((key >= ' ') && (key <= '~'))
         return (string)"" + (char)key;
     stringstream ss;
