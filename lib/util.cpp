@@ -10,7 +10,7 @@ bool util::startsWith(string str, string start) {
 bool util::endsWith(std::string str, std::string end) {
     if(end.size() > str.size())
         return false;
-    return str.compare(str.size() - end.size() - 1, end.size(), end) == 0;
+    return str.compare(str.size() - end.size(), end.size(), end) == 0;
 }
 
 vector<string> util::split(string str, string on) {
