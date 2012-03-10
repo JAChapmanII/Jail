@@ -153,7 +153,6 @@ void keymap::load(std::string file) {
                                         return mapkey(code);
                                     }), "");
                         }
-                        cerr << "altering value: " << dms->value << endl;
                         vector<string> fields = util::map<string, string>(
                             // TODO: defaulted parameters in trim?
                             split(dms->value), [](string s) { return trim(s); });
@@ -168,7 +167,6 @@ void keymap::load(std::string file) {
                             }
                         }
                         dms->value = join(nfs, ",");
-                        cerr << "\tres: " << dms->value << endl;
                         break;
                 }
             });
@@ -183,14 +181,6 @@ void keymap::load(std::string file) {
         }
     }
     modes.push_back("");
-    mode = modes[0] + "-mode";
-    cerr << "mode count: " << modes.size() << " -- " << mode << endl;
-
-    for(auto m : modes) {
-        cerr << "mode: " << m << endl;
-        for(auto e : keymap_map[m + "-mode"])
-            cerr << e.first << " -> " << e.second << endl;
-    }
 
     customFunction_map.clear();
     if(keymap_map.hasScope("functions")) {
