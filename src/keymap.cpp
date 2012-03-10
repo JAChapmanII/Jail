@@ -30,7 +30,7 @@ Controller *keymap::keymap_controller = NULL;
 View *keymap::keymap_view = NULL;
 
 static DataMap keymap_map;
-static map<string, function<void(Controller &, View &)>> function_map;
+static map<string, function<bool(Controller &, View &)>> function_map;
 static map<string, string> customFunction_map;
 static vector<string> modes;
 static string mode;
@@ -38,7 +38,7 @@ static vector<int> command;
 static bool keymap_inited = false;
 
 // function_map lamda prototype:
-//    function_map[""] = [](Controller &controller, View &view) {
+//    function_map[""] = [](Controller &controller, View &view) -> bool {
 //        });
 
 void keymap::init() {
@@ -48,74 +48,80 @@ void keymap::init() {
     keymap_inited = true;
 #include "default_keymap.cpp"
 
-    function_map["quit"] = [](Controller &controller, View &view) {
+    function_map["quit"] = [](Controller &controller, View &view) -> bool {
             controller.stop();
+            return true;
         };
-    function_map["write"] = [](Controller &controller, View &view) {
-            controller.write();
+    function_map["write"] = [](Controller &controller, View &view) -> bool {
+            return controller.write();
         };
-    function_map["view-pageup"] = [](Controller &controller, View &view) {
+    function_map["view-pageup"] = [](Controller &controller, View &view) -> bool {
             Cursor *cursor = view.getCursor();
             Window *window = view.getWindow();
-            cursor->move(
+            return cursor->move(
                     cursor->getRow() - window->getHeight() + 1,
                     cursor->getCol());
         };
-    function_map["view-pagedown"] = [](Controller &controller, View &view) {
+    function_map["view-pagedown"] = [](Controller &controller, View &view) -> bool {
             Cursor *cursor = view.getCursor();
             Window *window = view.getWindow();
-            cursor->move(
+            return cursor->move(
                     cursor->getRow() + window->getHeight() - 1,
                     cursor->getCol());
         };
-    function_map["view-beginning"] = [](Controller &controller, View &view) {
-            view.getCursor()->toBeginningOfBuffer();
+    function_map["view-beginning"] = [](Controller &controller, View &view) -> bool {
+            return view.getCursor()->toBeginningOfBuffer();
         };
-    function_map["view-end"] = [](Controller &controller, View &view) {
-            view.getCursor()->toEndOfBuffer();
+    function_map["view-end"] = [](Controller &controller, View &view) -> bool {
+            return view.getCursor()->toEndOfBuffer();
         };
-    function_map["delete-line"] = [](Controller &controller, View &view) {
-            view.getCursor()->deleteLine();
+    function_map["delete-line"] = [](Controller &controller, View &view) -> bool {
+            bool result = view.getCursor()->deleteLine();
             view.checkSanity();
             view.repaint();
+            return result;
         };
-    function_map["delete-character"] = [](Controller &controller, View &view) {
-            view.getCursor()->erase();
+    function_map["delete-character"] = [](Controller &controller, View &view) -> bool {
+            bool result = view.getCursor()->erase();
             view.repaint();
+            return result;
         };
-    function_map["cursor-beginning"] = [](Controller &controller, View &view) {
-            view.getCursor()->toBeginningOfLine();
+    function_map["cursor-beginning"] = [](Controller &controller, View &view) -> bool {
+            return view.getCursor()->toBeginningOfLine();
         };
-    function_map["cursor-end"] = [](Controller &controller, View &view) {
-            view.getCursor()->toEndOfLine();
+    function_map["cursor-end"] = [](Controller &controller, View &view) -> bool {
+            return view.getCursor()->toEndOfLine();
         };
-    function_map["cursor-up"] = [](Controller &controller, View &view) {
-            view.getCursor()->up();
+    function_map["cursor-up"] = [](Controller &controller, View &view) -> bool {
+            return view.getCursor()->up();
         };
-    function_map["cursor-down"] = [](Controller &controller, View &view) {
-            view.getCursor()->down();
+    function_map["cursor-down"] = [](Controller &controller, View &view) -> bool {
+            return view.getCursor()->down();
         };
-    function_map["cursor-left"] = [](Controller &controller, View &view) {
-            view.getCursor()->left();
+    function_map["cursor-left"] = [](Controller &controller, View &view) -> bool {
+            return view.getCursor()->left();
         };
-    function_map["cursor-right"] = [](Controller &controller, View &view) {
-            view.getCursor()->right();
+    function_map["cursor-right"] = [](Controller &controller, View &view) -> bool {
+            return view.getCursor()->right();
         };
-    function_map["named-command"] = [](Controller &controller, View &view) {
-            execute(controller.getCommand());
+    function_map["named-command"] = [](Controller &controller, View &view) -> bool {
+            return execute(controller.getCommand());
         };
-    function_map["command-clear"] = [](Controller &controller, View &view) {
+    function_map["command-clear"] = [](Controller &controller, View &view) -> bool {
             command.clear();
+            return true;
         };
-    function_map["command-backspace"] = [](Controller &controller, View &view) {
+    function_map["command-backspace"] = [](Controller &controller, View &view) -> bool {
             if(command.size() <= 1)
                 command.clear();
             else
                 command.resize(command.size() - 2);
+            return true;
         };
-    function_map["backspace"] = [](Controller &controller, View &view) {
-            view.getCursor()->backspace();
+    function_map["backspace"] = [](Controller &controller, View &view) -> bool {
+            bool result = view.getCursor()->backspace();
             view.repaint();
+            return result;
         };
 }
 
@@ -210,13 +216,12 @@ bool keymap::execute(string function) {
         for(auto sfunc : sfuncs) {
             sfunc = trim(sfunc);
             if(!keymap::execute(sfunc))
-                break;
+                return false;
         }
         return true;
     }
     if(contains(function_map, function)) {
-        function_map[function](*keymap_controller, *keymap_view);
-        return true;
+        return function_map[function](*keymap_controller, *keymap_view);
     }
     cerr << "keymap::execute: " << function << " is not a function" << endl;
     return false;
