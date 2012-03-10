@@ -23,6 +23,7 @@ using util::join;
 using util::contains;
 using util::trim;
 using util::startsWith;
+using util::endsWith;
 
 #include "datamap.hpp"
 #include "window.hpp"
@@ -136,7 +137,41 @@ void keymap::init() {
 
 // TODO: normalize key-names <C-f>, <^f> -> <C-f>, etc.
 void keymap::load(std::string file) {
-    keymap_map.load(file);
+    keymap_map.load(file, [](DataMapState *dms) {
+                switch(dms->type) {
+                    case DMSType::Invalid:
+                        cerr << "keymap::load: invalid line: " << dms->line << endl;
+                        break;
+                    case DMSType::Scope:
+                        break; // don't alter scopes
+                    case DMSType::Entry:
+                        if((dms->scope == (string)"global") ||
+                                endsWith(dms->scope, "-mode")) {
+                            string first = dms->key;
+                            dms->key = join(util::map<int, string>(
+                                    mapkeys(dms->key), [](int code) -> string {
+                                        return mapkey(code);
+                                    }), "");
+                        }
+                        cerr << "altering value: " << dms->value << endl;
+                        vector<string> fields = util::map<string, string>(
+                            // TODO: defaulted parameters in trim?
+                            split(dms->value), [](string s) { return trim(s); });
+                        vector<string> nfs;
+                        for(auto f : fields) {
+                            if(startsWith(f, "insert:")) {
+                                vector<int> codes = mapkeys(f.substr(7));
+                                nfs.push_back("insert:" + asString(codes));
+                            } else {
+                            // don't alter non-inserts
+                            nfs.push_back(f);
+                            }
+                        }
+                        dms->value = join(nfs, ",");
+                        cerr << "\tres: " << dms->value << endl;
+                        break;
+                }
+            });
 
     modes.clear();
     if(keymap_map.has("core.modes")) {
