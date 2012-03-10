@@ -5,16 +5,31 @@
 #include <string>
 #include <functional>
 
+class DataMap;
+
+namespace DMSType {
+    enum DMSType { Scope, Entry, Invalid };
+}
+
+struct DataMapState {
+    DataMap *dm;
+    DMSType::DMSType type;
+    std::string scope;
+    std::string key;
+    std::string value;
+    std::string line;
+    int result;
+};
+
 class DataMap {
     public:
-        enum SType { Scope, Key, Value, Invalid };
         typedef std::map<std::string, std::string> VMap;
 
         DataMap(std::string defaultScope = "core");
 
         long load(std::string file);
         long load(std::string file,
-                const std::function<std::string(DataMap *, std::string, SType)> &predicate);
+                const std::function<void(DataMapState *)> &predicate);
 
         static std::string extractScope(std::string scoped_variable);
         static std::string extractVariable(std::string scoped_variable);

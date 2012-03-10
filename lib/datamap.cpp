@@ -21,14 +21,20 @@ DataMap::DataMap(std::string defaultScope) : m_defaultScope(defaultScope),
 }
 
 long DataMap::load(string file) {
-    this->load(file, [](DataMap *dm, string s, DataMap::SType t){
-            if(t == DataMap::Invalid)
-                cerr << "DataMap::load: unidentifiable line: " << s << endl;
-            return s;
+    return this->load(file, [](DataMapState *dms) -> void {
+            switch(dms->type) {
+                case DMSType::Invalid:
+                    cerr << "DataMap::load: unidentifiable line: "
+                        << dms->line << endl;
+                    break;
+                case DMSType::Scope:
+                case DMSType::Entry:
+                default:
+                    break;
+            }
         });
 }
-long DataMap::load(string file,
-        const function<string(DataMap *, string, DataMap::SType)> &predicate) {
+long DataMap::load(string file, const function<void(DataMapState *)> &predicate) {
     // if no file was passed
     if(file.empty()) {
         cerr << "DataMap::load: can't pass empty file parameter" << endl;
@@ -43,7 +49,8 @@ long DataMap::load(string file,
     }
 
     long addedEntries = 0;
-    string scope = this->m_defaultScope;
+    DataMapState dms = {
+        this, DMSType::Invalid, this->m_defaultScope, "", "", "", 0 };
     while(!in.eof()) {
         // read the next line
         string line;
@@ -56,6 +63,9 @@ long DataMap::load(string file,
         if(line.empty())
             continue;
 
+        dms.line = line;
+        dms.result = 0;
+
         char equals = '=';
 
         // if it is a comment, ignore it
@@ -63,19 +73,30 @@ long DataMap::load(string file,
             continue;
         // if it is a scope line
         } else if(line[0] == '[' && line[line.length() - 1] == ']') {
-            scope = trim(line.substr(1, line.length() - 2));
-            scope = predicate(this, scope, DataMap::Scope);
+            dms.type = DMSType::Scope;
+            dms.value = trim(line.substr(1, line.length() - 2));
         // if it is a variable definition
         } else if(util::contains(line, equals)) {
-            string key = trim(line.substr(0, line.find('='))),
-                    val = trim(line.substr(line.find('=') + 1));
-            key = predicate(this, key, DataMap::Key);
-            val = predicate(this, val, DataMap::Value);
-            this->m_map[scope][key] = val;
-            addedEntries++;
+            dms.type = DMSType::Entry;
+            dms.key = trim(line.substr(0, line.find('=')));
+            dms.value = trim(line.substr(line.find('=') + 1));
         } else {
-            predicate(this, line, DataMap::Invalid);
+            dms.type = DMSType::Invalid;
         }
+
+        predicate(&dms);
+        switch(dms.type) {
+            case DMSType::Scope:
+                dms.scope = dms.value;
+                break;
+            case DMSType::Entry:
+                this->m_map[dms.scope][dms.key] = dms.value;
+                addedEntries++;
+                break;
+            case DMSType::Invalid:
+                break;
+        }
+        addedEntries += dms.result;
     }
     return addedEntries;
 }
