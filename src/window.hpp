@@ -10,7 +10,11 @@
 // TODO move out of here?
 namespace Key {
     enum Key {
-        CtrlB = 2, CtrlF = 6, Enter = '\n',
+        // Ctrl-Letter maps to 1 - 26
+        CtrlA = 1, CtrlB, CtrlC, CtrlD, CtrlE, CtrlF, CtrlG, CtrlH, CtrlI,
+        Enter = '\n', /* TODO: wuh-oh CtrlJ, */
+        CtrlK, CtrlL, CtrlM, CtrlN, CtrlO, CtrlP, CtrlQ, CtrlR, CtrlS, CtrlT,
+        CtrlU, CtrlV, CtrlW, CtrlX, CtrlY, CtrlZ,
         Escape = 27,
         Up = KEY_UP, Down = KEY_DOWN, Left = KEY_LEFT, Right = KEY_RIGHT,
         Space = ' ', ExclamationPoint, QuotationMark, Octothorpe, Currency,
