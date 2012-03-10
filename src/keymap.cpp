@@ -327,6 +327,8 @@ int keymap::mapkey(string key) {
         return Key::Escape;
     if(key == (string)"<space>")
         return Key::Space;
+    if(key == (string)"<tab>")
+        return Key::Tab;
     if(key == (string)"<bspace>")
         return Key::Backspace;
     if(key == (string)"<backspace>")
@@ -378,6 +380,8 @@ string keymap::mapkey(int key) {
             return "<enter>";
         case Key::Space:
             return "<space>";
+        case Key::Tab:
+            return "<tab>";
 
         default:
             break;

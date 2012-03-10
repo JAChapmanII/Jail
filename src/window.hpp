@@ -11,7 +11,8 @@
 namespace Key {
     enum Key {
         // Ctrl-Letter maps to 1 - 26
-        CtrlA = 1, CtrlB, CtrlC, CtrlD, CtrlE, CtrlF, CtrlG, CtrlH, CtrlI,
+        CtrlA = 1, CtrlB, CtrlC, CtrlD, CtrlE, CtrlF, CtrlG, CtrlH,
+        Tab = '\t', /* TODO: wuh-oh again CtrlI,*/
         Enter = '\n', /* TODO: wuh-oh CtrlJ, */
         CtrlK, CtrlL, CtrlM, CtrlN, CtrlO, CtrlP, CtrlQ, CtrlR, CtrlS, CtrlT,
         CtrlU, CtrlV, CtrlW, CtrlX, CtrlY, CtrlZ,
