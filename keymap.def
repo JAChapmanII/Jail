@@ -17,7 +17,7 @@
 # keymap settings which are always present
 [global]
     <escape> = command-clear
-    <bspace> = command-backspace
+    <backspace> = command-backspace
 
     <down>  = cursor-down
     <up>    = cursor-up
