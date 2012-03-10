@@ -2,6 +2,7 @@
 using std::map;
 using std::string;
 using std::getline;
+using std::function;
 
 #include <iostream>
 using std::cerr;
@@ -20,6 +21,14 @@ DataMap::DataMap(std::string defaultScope) : m_defaultScope(defaultScope),
 }
 
 long DataMap::load(string file) {
+    this->load(file, [](DataMap *dm, string s, DataMap::SType t){
+            if(t == DataMap::Invalid)
+                cerr << "DataMap::load: unidentifiable line: " << s << endl;
+            return s;
+        });
+}
+long DataMap::load(string file,
+        const function<string(DataMap *, string, DataMap::SType)> &predicate) {
     // if no file was passed
     if(file.empty()) {
         cerr << "DataMap::load: can't pass empty file parameter" << endl;
@@ -55,14 +64,17 @@ long DataMap::load(string file) {
         // if it is a scope line
         } else if(line[0] == '[' && line[line.length() - 1] == ']') {
             scope = trim(line.substr(1, line.length() - 2));
+            scope = predicate(this, scope, DataMap::Scope);
         // if it is a variable definition
         } else if(util::contains(line, equals)) {
             string key = trim(line.substr(0, line.find('='))),
                     val = trim(line.substr(line.find('=') + 1));
+            key = predicate(this, key, DataMap::Key);
+            val = predicate(this, val, DataMap::Value);
             this->m_map[scope][key] = val;
             addedEntries++;
         } else {
-            cerr << "DataMap::load: unidentifiable line: " << line << endl;
+            predicate(this, line, DataMap::Invalid);
         }
     }
     return addedEntries;

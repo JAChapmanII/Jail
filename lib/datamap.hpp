@@ -3,14 +3,18 @@
 
 #include <map>
 #include <string>
+#include <functional>
 
 class DataMap {
     public:
+        enum SType { Scope, Key, Value, Invalid };
         typedef std::map<std::string, std::string> VMap;
 
         DataMap(std::string defaultScope = "core");
 
         long load(std::string file);
+        long load(std::string file,
+                const std::function<std::string(DataMap *, std::string, SType)> &predicate);
 
         static std::string extractScope(std::string scoped_variable);
         static std::string extractVariable(std::string scoped_variable);
