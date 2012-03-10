@@ -17,7 +17,8 @@ namespace keymap {
     void push_execute(int keycode);
 
     std::string getMode();
-    std::string getCommand();
+    std::vector<int> getCommand();
+    std::string asString(std::vector<int> command);
 
     int mapkey(std::string key);
     std::string mapkey(int key);

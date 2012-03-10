@@ -90,7 +90,7 @@ string Controller::getModeline() {
     ss << ": (" << this->cursor->getCol()
         << ", " << this->cursor->getRow() << ") -- %" << ruler << " ";
     ss << " " << keymap::getMode();
-    ss << " :" << keymap::getCommand();
+    ss << " :" << keymap::asString(keymap::getCommand());
     if((this->messageLeft > 0) && !this->message.empty())
         ss << " -- " << this->message;
     return ss.str();

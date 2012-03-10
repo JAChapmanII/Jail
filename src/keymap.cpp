@@ -34,7 +34,7 @@ static map<string, function<void(Controller &, View &)>> function_map;
 static map<string, string> customFunction_map;
 static vector<string> modes;
 static string mode;
-static string command;
+static vector<int> command;
 static bool keymap_inited = false;
 
 // function_map lamda prototype:
@@ -108,14 +108,10 @@ void keymap::init() {
             command.clear();
         };
     function_map["command-backspace"] = [](Controller &controller, View &view) {
-            // TODO: don't hard code?
-            int l = mapkey(127).length();
-            if(command.length() <= l)
+            if(command.size() <= 1)
                 command.clear();
             else
-                command.resize(command.size() - l - 1);
-            // TODO: this should actually backspace the lats token, such as
-            // TODO: <space> or l
+                command.resize(command.size() - 2);
         };
     function_map["backspace"] = [](Controller &controller, View &view) {
             view.getCursor()->backspace();
@@ -156,20 +152,29 @@ void keymap::load(std::string file) {
     }
 }
 
+static void popCommand(size_t count) {
+    if(command.size() <= count)
+        command.clear();
+    else
+        command.erase(command.begin(), command.begin() + count);
+}
+
 // TODO: onlyGlobal? Really >_>
-static bool tryExecute(string command, bool onlyGlobal = false) {
+static bool tryExecute(vector<int> command, bool onlyGlobal = false) {
     if(!keymap::keymap_controller || !keymap::keymap_view) {
         cerr << "keymap::execute: controller or view undefined" << endl;
         return false;
     }
 
-    string function = "";
-    if(!onlyGlobal && keymap_map.has(mode, command))
-        function = keymap_map.get(mode, command);
-    else if(keymap_map.has("global", command))
-        function = keymap_map.get("global", command);
+    string function = "", scom = keymap::asString(command);
+    if(!onlyGlobal && keymap_map.has(mode, scom))
+        function = keymap_map.get(mode, scom);
+    else if(keymap_map.has("global", scom))
+        function = keymap_map.get("global", scom);
     else
         return false;
+
+    popCommand(command.size());
 
     vector<string> sfuncs = split(function);
     for(auto sfunc : sfuncs) {
@@ -191,7 +196,8 @@ bool keymap::execute(string function) {
     if(startsWith(function, "insert:")) {
         vector<int> codes = mapkeys(function.substr(7));
         for(int code : codes)
-            command += mapkey(code);
+            //command += mapkey(code);
+            push_execute(code);
         return true;
     }
 
@@ -217,16 +223,17 @@ bool keymap::execute(string function) {
 }
 
 void keymap::push_execute(int keycode) {
-    command += mapkey(keycode);
-    // TODO: this needs to go by tokens
-    // TODO: we'll probably store an vector<int> and convert as needed
-    for(int i = 1; i <= command.length(); ++i) {
-        string subcommand = command.substr(0, i);
-        if(tryExecute(subcommand)) {
-            if(command.empty())
+    command.push_back(keycode);
+    bool done = false;
+    while(!done) {
+        done = true;
+        vector<int> tmpCommand;
+        for(int i = 0; i < command.size(); ++i) {
+            tmpCommand.push_back(command[i]);
+            if(tryExecute(tmpCommand)) {
+                done = false;
                 break;
-            command = command.substr(i);
-            i = 1;
+            }
         }
     }
     if(keymap_map.has(mode, "default")) {
@@ -245,11 +252,11 @@ void keymap::push_execute(int keycode) {
     // TODO: proper way to do this?
     if(keymap_map.has("global.default") &&
             keymap_map.get("global.default") == "check-last") {
-        string last = mapkey(keycode);
+        vector<int> last = { keycode };
         if(tryExecute(last, true)) {
             // TODO: this really makes things clash :)
-            if(command.length() > last.length())
-                command = command.substr(0, command.length() - last.length());
+            if(!command.empty())
+                command.resize(command.size() - 1);
         }
     }
     return;
@@ -258,8 +265,14 @@ void keymap::push_execute(int keycode) {
 string keymap::getMode() {
     return mode;
 }
-string keymap::getCommand() {
+vector<int> keymap::getCommand() {
     return command;
+}
+string keymap::asString(vector<int> command) {
+    // TODO: more magic with templates here?
+    return join(util::map<int, string>(command, [](int code) -> string {
+                    return mapkey(code);
+                }), "");
 }
 
 // TODO: better way to handle this?
