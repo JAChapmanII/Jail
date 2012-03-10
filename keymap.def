@@ -69,5 +69,6 @@
 [insert-mode]
     <escape> = mode:command
     <bspace> = backspace
+    <tab> = insert:<space><space><space><space>
     default = insert
 
