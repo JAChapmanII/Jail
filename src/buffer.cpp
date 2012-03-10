@@ -12,7 +12,8 @@ Buffer::Buffer(FileIO *iFile, bool iReadOnly) : // TODO: formatting guidelines
     int fLength = this->file->read();
 
     if(fLength < 0)
-        throw fLength;
+        // TODO: create it then? >_>
+        throw "Buffer::Buffer: passed file nonexistant";
 
     string contents;
     if(fLength > 0)

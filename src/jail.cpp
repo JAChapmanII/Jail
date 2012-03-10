@@ -15,6 +15,9 @@ using std::string;
 #include <vector>
 using std::vector;
 
+#include <exception>
+using std::exception;
+
 #include "argparser.hpp"
 #include "fileio.hpp"
 #include "config.hpp"
@@ -94,10 +97,15 @@ int main(int argc, char** argv) {
     else {
         // TODO: this may not be the only other option. Currently, the output
         // looks alright though. Must fix! /TODO
-        if(config::isReadOnly())
-            view(mArgParser.getExtraArguments());
-        else
-            edit(mArgParser.getExtraArguments());
+        try {
+            if(config::isReadOnly())
+                view(mArgParser.getExtraArguments());
+            else
+                edit(mArgParser.getExtraArguments());
+        } catch(char const *e) {
+            cerr << e << endl;
+            return 1;
+        }
     }
 
     return 0;
@@ -184,7 +192,6 @@ void edit(vector<string> fileNames) {
     View mView(&mWindow, &mBuffer);
     Controller mController(&mView);
     mController();
-
 }
 
 // vim:ts=4 et sw=4 sts=4
