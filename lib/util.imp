@@ -43,4 +43,13 @@ template<typename T>
     return ss.str();
 }
 
+template<typename T, typename O, typename F>
+        std::vector<O> util::map(std::vector<T> &container, const F &predicate) {
+    std::vector<O> out;
+    out.reserve(container.size());
+    for(T val : container)
+        out.push_back(predicate(val));
+    return out;
+}
+
 // vim:ts=4 et sw=4 sts=4

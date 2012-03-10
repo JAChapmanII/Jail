@@ -36,6 +36,10 @@ namespace util {
     template<typename T>
             std::string join(std::vector<T> fields, std::string separator = ",");
 
+    // Apply a mapping function to every element in a vector
+    template<typename T, typename O, typename F>
+            std::vector<O> map(std::vector<T> &container, const F &predicate);
+
     // Removes contents of remove from either side of str
     std::string trim(const std::string &str, std::string remove = " \t\r\n");
 }
