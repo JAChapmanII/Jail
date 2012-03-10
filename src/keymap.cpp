@@ -14,6 +14,9 @@ using std::vector;
 using std::cerr;
 using std::endl;
 
+#include <sstream>
+using std::stringstream;
+
 #include "util.hpp"
 using util::split;
 using util::join;
@@ -333,10 +336,17 @@ string keymap::mapkey(int key) {
             return "<up>";
         case Key::Down:
             return "<down>";
+
+        default:
+            break;
         //case '\n':
             //return "<enter>";
     }
-    return (string)"" + (char)key;
+    if((key >= ' ') && (key <= '~'))
+        return (string)"" + (char)key;
+    stringstream ss;
+    ss << "<" << key << ">";
+    return ss.str();
 }
 
 vector<int> keymap::mapkeys(string keys) {
